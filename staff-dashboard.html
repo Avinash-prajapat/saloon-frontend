@@ -15,12 +15,148 @@
             color: #0f172a;
             line-height: 1.6;
             min-height: 100vh;
+            display: flex;
         }
 
         a { text-decoration: none; color: inherit; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
-        /* ===== HEADER ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: #0f172a;
+            color: #94a3b8;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            padding: 20px 0;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+        }
+
+        .sidebar.open { left: 0; }
+
+        .sidebar .logo {
+            padding: 0 24px 20px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 16px;
+        }
+
+        .sidebar .logo h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar .logo h2 i { color: #8b5cf6; }
+        .sidebar .logo h2 span { color: #8b5cf6; }
+        .sidebar .logo p { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+        .sidebar .user-info {
+            padding: 0 24px 16px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .sidebar .user-info .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #8b5cf6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .sidebar .user-info .details .name { color: white; font-weight: 600; font-size: 15px; }
+        .sidebar .user-info .details .role { font-size: 12px; color: #64748b; }
+
+        .sidebar .nav-links {
+            list-style: none;
+            padding: 0 12px;
+        }
+
+        .sidebar .nav-links li { margin-bottom: 4px; }
+
+        .sidebar .nav-links li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .sidebar .nav-links li a:hover,
+        .sidebar .nav-links li a.active {
+            background: #1e293b;
+            color: white;
+        }
+
+        .sidebar .nav-links li a i { width: 20px; text-align: center; font-size: 16px; }
+
+        .sidebar .nav-divider {
+            height: 1px;
+            background: #1e293b;
+            margin: 12px 16px;
+        }
+
+        .sidebar .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: calc(100% - 24px);
+            margin: 0 12px;
+            font-family: inherit;
+        }
+
+        .sidebar .logout-btn:hover { background: #1e293b; }
+        .sidebar .logout-btn i { width: 20px; text-align: center; font-size: 16px; }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        .sidebar-overlay.active { display: block; }
+
+        .main-content {
+            flex: 1;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            width: 100%;
+        }
+
         header {
             background: #ffffff;
             border-bottom: 1px solid #e2e8f0;
@@ -35,11 +171,33 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 12px 20px;
         }
 
-        .logo {
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
             font-size: 22px;
+            color: #0f172a;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .menu-toggle:hover { background: #f1f5f9; color: #8b5cf6; }
+
+        .logo-header {
+            font-size: 18px;
             font-weight: 800;
             color: #0f172a;
             display: flex;
@@ -47,60 +205,39 @@
             gap: 8px;
         }
 
-        .logo i { color: #10b981; font-size: 24px; }
-        .logo span { color: #10b981; }
+        .logo-header i { color: #8b5cf6; font-size: 20px; }
+        .logo-header span { color: #8b5cf6; }
 
-        nav {
+        .header-right .staff-badge-mini {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 10px;
+            background: #ede9fe;
+            padding: 4px 12px 4px 8px;
+            border-radius: 20px;
+            border: 1px solid #c4b5fd;
         }
 
-        nav a {
-            font-size: 14px;
-            font-weight: 500;
-            color: #475569;
-            transition: color 0.2s;
-        }
-
-        nav a:hover { color: #10b981; }
-
-        .staff-badge {
+        .header-right .staff-badge-mini .avatar-mini {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             background: #8b5cf6;
             color: white;
-            padding: 3px 12px;
-            border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
-            margin-left: 6px;
-        }
-
-        .btn-logout {
-            background: #ef4444;
-            color: white !important;
-            padding: 7px 16px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: background 0.2s;
-            border: none;
-            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
             font-size: 13px;
-            font-family: inherit;
         }
 
-        .btn-logout:hover { background: #dc2626 !important; color: white !important; }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 22px;
+        .header-right .staff-badge-mini .name-mini {
+            font-weight: 600;
+            font-size: 13px;
             color: #0f172a;
-            cursor: pointer;
         }
 
-        /* ===== DASHBOARD ===== */
-        .dashboard { padding: 24px 0 60px; }
+        .dashboard { padding: 24px 20px 60px; }
 
         .dashboard-header {
             display: flex;
@@ -111,39 +248,13 @@
             margin-bottom: 20px;
         }
 
-        .dashboard-header .greeting h1 {
-            font-size: 26px;
+        .dashboard-header h1 {
+            font-size: 24px;
             font-weight: 800;
         }
-        .dashboard-header .greeting p { color: #64748b; font-size: 14px; }
 
-        .dashboard-header .user-badge {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: white;
-            padding: 6px 16px 6px 12px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
-        }
+        .dashboard-header p { color: #64748b; font-size: 14px; }
 
-        .dashboard-header .user-badge .avatar {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            background: #8b5cf6;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 16px;
-        }
-
-        .dashboard-header .user-badge .info .name { font-weight: 600; font-size: 14px; }
-        .dashboard-header .user-badge .info .role { font-size: 12px; color: #94a3b8; }
-
-        /* ===== DATE SELECTOR ===== */
         .date-selector {
             display: flex;
             align-items: center;
@@ -174,11 +285,11 @@
 
         .date-selector input[type="date"]:focus {
             outline: none;
-            border-color: #10b981;
+            border-color: #8b5cf6;
         }
 
         .date-selector .today-btn {
-            background: #10b981;
+            background: #8b5cf6;
             color: white;
             padding: 7px 16px;
             border: none;
@@ -190,7 +301,7 @@
             font-family: inherit;
         }
 
-        .date-selector .today-btn:hover { background: #059669; }
+        .date-selector .today-btn:hover { background: #7c3aed; }
 
         .date-selector .date-display {
             color: #64748b;
@@ -198,11 +309,10 @@
             margin-left: auto;
         }
 
-        /* ===== STATS ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
             margin-bottom: 24px;
         }
 
@@ -211,8 +321,10 @@
             padding: 16px;
             border-radius: 14px;
             border: 1px solid #e2e8f0;
-            text-align: center;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 14px;
         }
 
         .stat-card:hover {
@@ -220,20 +332,32 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        .stat-card .icon { font-size: 22px; margin-bottom: 2px; }
-        .stat-card .number { font-size: 24px; font-weight: 800; }
-        .stat-card .label { font-size: 12px; color: #64748b; }
+        .stat-card .icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
 
-        .stat-card.pending .icon { color: #f59e0b; }
-        .stat-card.pending .number { color: #f59e0b; }
-        .stat-card.arrived .icon { color: #3b82f6; }
-        .stat-card.arrived .number { color: #3b82f6; }
-        .stat-card.completed .icon { color: #10b981; }
-        .stat-card.completed .number { color: #10b981; }
-        .stat-card.cancelled .icon { color: #ef4444; }
-        .stat-card.cancelled .number { color: #ef4444; }
+        .stat-card .icon.pending { background: #fef3c7; color: #f59e0b; }
+        .stat-card .icon.arrived { background: #dbeafe; color: #3b82f6; }
+        .stat-card .icon.completed { background: #d1fae5; color: #10b981; }
+        .stat-card .icon.expired { background: #f1f5f9; color: #94a3b8; }
 
-        /* ===== BOOKINGS ===== */
+        .stat-card .info .number {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .stat-card .info .label {
+            font-size: 12px;
+            color: #64748b;
+        }
+
         .section-title {
             display: flex;
             justify-content: space-between;
@@ -257,6 +381,29 @@
             color: #475569;
         }
 
+        .section-title .auto-refresh {
+            font-size: 12px;
+            color: #94a3b8;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .section-title .auto-refresh .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            display: inline-block;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.3; }
+            100% { opacity: 1; }
+        }
+
         /* ===== BOOKING CARDS ===== */
         .booking-card {
             background: white;
@@ -269,12 +416,13 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 10px;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             border-left: 4px solid #94a3b8;
+            position: relative;
         }
 
         .booking-card:hover {
-            border-color: #10b981;
+            border-color: #8b5cf6;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
@@ -282,6 +430,20 @@
         .booking-card.status-arrived { border-left-color: #3b82f6; }
         .booking-card.status-completed { border-left-color: #10b981; }
         .booking-card.status-cancelled { border-left-color: #ef4444; }
+        .booking-card.status-expired { border-left-color: #94a3b8; opacity: 0.6; }
+
+        .booking-card.current-booking {
+            border-left-color: #8b5cf6;
+            background: #f5f3ff;
+            box-shadow: 0 0 0 2px #8b5cf6, 0 4px 12px rgba(139, 92, 246, 0.2);
+            animation: currentPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes currentPulse {
+            0% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+            50% { box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.1); }
+            100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+        }
 
         .booking-card .info {
             flex: 1;
@@ -292,12 +454,49 @@
             font-size: 18px;
             font-weight: 700;
             color: #0f172a;
+            transition: color 0.3s;
         }
 
         .booking-card .info .time .ampm {
             font-size: 13px;
             font-weight: 500;
             color: #64748b;
+        }
+
+        .booking-card .info .time .expired-tag {
+            font-size: 11px;
+            font-weight: 600;
+            color: #ef4444;
+            margin-left: 8px;
+            background: #fee2e2;
+            padding: 1px 10px;
+            border-radius: 12px;
+        }
+
+        .booking-card .info .time .current-tag {
+            font-size: 11px;
+            font-weight: 600;
+            color: #7c3aed;
+            margin-left: 8px;
+            background: #ede9fe;
+            padding: 1px 10px;
+            border-radius: 12px;
+            animation: blink 1s infinite;
+        }
+
+        .booking-card .info .time .past-tag {
+            font-size: 11px;
+            font-weight: 600;
+            color: #94a3b8;
+            margin-left: 8px;
+            background: #f1f5f9;
+            padding: 1px 10px;
+            border-radius: 12px;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
         }
 
         .booking-card .info .customer {
@@ -323,25 +522,11 @@
             text-transform: capitalize;
         }
 
-        .status-pending-badge {
-            background: #fef3c7;
-            color: #d97706;
-        }
-
-        .status-arrived-badge {
-            background: #dbeafe;
-            color: #2563eb;
-        }
-
-        .status-completed-badge {
-            background: #d1fae5;
-            color: #059669;
-        }
-
-        .status-cancelled-badge {
-            background: #fee2e2;
-            color: #dc2626;
-        }
+        .status-pending-badge { background: #fef3c7; color: #d97706; }
+        .status-arrived-badge { background: #dbeafe; color: #2563eb; }
+        .status-completed-badge { background: #d1fae5; color: #059669; }
+        .status-cancelled-badge { background: #fee2e2; color: #dc2626; }
+        .status-expired-badge { background: #f1f5f9; color: #94a3b8; }
 
         .booking-card .actions {
             display: flex;
@@ -363,51 +548,17 @@
             gap: 4px;
         }
 
-        .btn-sm-arrived {
-            background: #3b82f6;
-            color: white;
-        }
+        .btn-sm-arrived { background: #3b82f6; color: white; }
+        .btn-sm-arrived:hover { background: #2563eb; }
+        .btn-sm-complete { background: #10b981; color: white; }
+        .btn-sm-complete:hover { background: #059669; }
+        .btn-sm-cancel { background: #ef4444; color: white; }
+        .btn-sm-cancel:hover { background: #dc2626; }
+        .btn-sm-done { background: #d1fae5; color: #059669; cursor: default; }
+        .btn-sm-cancelled { background: #fee2e2; color: #dc2626; cursor: default; }
+        .btn-sm-expired { background: #f1f5f9; color: #94a3b8; cursor: default; }
+        .btn-sm:disabled { opacity: 0.5; cursor: not-allowed; }
 
-        .btn-sm-arrived:hover {
-            background: #2563eb;
-        }
-
-        .btn-sm-complete {
-            background: #10b981;
-            color: white;
-        }
-
-        .btn-sm-complete:hover {
-            background: #059669;
-        }
-
-        .btn-sm-cancel {
-            background: #ef4444;
-            color: white;
-        }
-
-        .btn-sm-cancel:hover {
-            background: #dc2626;
-        }
-
-        .btn-sm-done {
-            background: #d1fae5;
-            color: #059669;
-            cursor: default;
-        }
-
-        .btn-sm-cancelled {
-            background: #fee2e2;
-            color: #dc2626;
-            cursor: default;
-        }
-
-        .btn-sm:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* ===== EMPTY STATE ===== */
         .empty-state {
             text-align: center;
             padding: 40px 20px;
@@ -416,22 +567,10 @@
             border: 1px solid #e2e8f0;
         }
 
-        .empty-state i {
-            font-size: 48px;
-            color: #cbd5e1;
-            margin-bottom: 12px;
-        }
+        .empty-state i { font-size: 48px; color: #cbd5e1; margin-bottom: 12px; }
+        .empty-state h3 { font-size: 18px; color: #0f172a; }
+        .empty-state p { color: #94a3b8; }
 
-        .empty-state h3 {
-            font-size: 18px;
-            color: #0f172a;
-        }
-
-        .empty-state p {
-            color: #94a3b8;
-        }
-
-        /* ===== TOAST ===== */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -440,7 +579,7 @@
             border-radius: 12px;
             color: white;
             font-weight: 500;
-            z-index: 999;
+            z-index: 2000;
             animation: slideUp 0.3s ease;
             box-shadow: 0 8px 24px rgba(0,0,0,0.15);
             max-width: 380px;
@@ -450,6 +589,7 @@
         .toast-success { background: #10b981; }
         .toast-error { background: #ef4444; }
         .toast-info { background: #3b82f6; }
+        .toast-warning { background: #f59e0b; }
 
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -466,272 +606,245 @@
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .hidden { display: none !important; }
-
-        /* ============================================
-           RESPONSIVE - Mobile First
-           ============================================ */
-
-        /* Mobile (default) */
         @media (max-width: 480px) {
-            .container { padding: 0 12px; }
-
-            .dashboard-header .greeting h1 { font-size: 20px; }
-            .dashboard-header .user-badge { padding: 4px 12px 4px 10px; }
-            .dashboard-header .user-badge .avatar { width: 32px; height: 32px; font-size: 14px; }
-            .dashboard-header .user-badge .info .name { font-size: 13px; }
-
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
             .stat-card { padding: 12px; }
-            .stat-card .number { font-size: 20px; }
-            .stat-card .label { font-size: 11px; }
+            .stat-card .icon { width: 36px; height: 36px; font-size: 16px; }
+            .stat-card .info .number { font-size: 18px; }
+            .stat-card .info .label { font-size: 11px; }
 
-            .date-selector {
-                flex-direction: column;
-                align-items: stretch;
-                gap: 8px;
-                padding: 12px;
-            }
-
+            .date-selector { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px; }
             .date-selector .date-display { margin-left: 0; text-align: center; }
 
-            .booking-card {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 12px 14px;
-            }
-
+            .booking-card { flex-direction: column; align-items: flex-start; padding: 12px 14px; }
             .booking-card .info { width: 100%; min-width: unset; }
             .booking-card .info .time { font-size: 16px; }
             .booking-card .info .customer { font-size: 14px; }
             .booking-card .info .meta { font-size: 12px; }
-
-            .booking-card .actions {
-                width: 100%;
-                justify-content: flex-start;
-            }
-
+            .booking-card .actions { width: 100%; justify-content: flex-start; }
             .btn-sm { font-size: 11px; padding: 4px 10px; }
 
             .section-title h2 { font-size: 17px; }
+            .section-title .auto-refresh { font-size: 11px; }
 
-            .mobile-menu-btn { display: block; }
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
 
-            nav {
-                display: none;
-                flex-direction: column;
-                gap: 10px;
-                padding: 12px 0;
-                width: 100%;
-            }
+            .header-inner { padding: 10px 14px; }
+            .logo-header { font-size: 16px; }
+            .header-right .staff-badge-mini .name-mini { display: none; }
 
-            nav.open { display: flex; }
-            nav a { font-size: 14px; }
+            .dashboard { padding: 16px 12px 40px; }
+            .dashboard-header h1 { font-size: 20px; }
 
             .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
+
+            .menu-toggle { font-size: 18px; padding: 6px; }
         }
 
-        /* Tablet */
         @media (min-width: 481px) and (max-width: 1024px) {
-            .container { padding: 0 16px; }
-
-            .dashboard-header .greeting h1 { font-size: 24px; }
-
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 10px;
-            }
-
+            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
             .stat-card { padding: 14px; }
-            .stat-card .number { font-size: 22px; }
-
-            .booking-card {
-                padding: 12px 16px;
-            }
-
-            .booking-card .info .time { font-size: 17px; }
-
-            .date-selector {
-                gap: 10px;
-                padding: 10px 16px;
-            }
-
-            .date-selector input[type="date"] { font-size: 13px; }
-            .date-selector .today-btn { font-size: 13px; }
-            .date-selector .date-display { font-size: 13px; }
+            .booking-card { padding: 12px 16px; }
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
         }
 
-        /* Desktop */
         @media (min-width: 1025px) {
-            .container { padding: 0 24px; }
-
-            .dashboard-header .greeting h1 { font-size: 28px; }
-
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 16px;
-            }
-
-            .stat-card .number { font-size: 28px; }
-
-            .booking-card {
-                padding: 16px 20px;
-            }
-
+            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+            .stat-card .info .number { font-size: 24px; }
+            .booking-card { padding: 16px 20px; }
             .booking-card .info .time { font-size: 20px; }
-
-            .date-selector {
-                padding: 14px 20px;
-            }
-
-            .date-selector input[type="date"] { font-size: 14px; }
-            .date-selector .today-btn { font-size: 14px; }
-            .date-selector .date-display { font-size: 14px; }
-        }
-
-        /* Large Desktop */
-        @media (min-width: 1400px) {
-            .container { max-width: 1300px; }
-
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 20px;
-            }
-
-            .stat-card .number { font-size: 32px; }
+            .sidebar { left: -280px; }
+            .sidebar.open { left: 0; }
+            .menu-toggle { font-size: 22px; padding: 8px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
-    <header>
-        <div class="container">
-            <div class="header-inner">
-                <a href="index.html" class="logo">
-                    <i class="fas fa-scissors"></i> Premium<span>Salon</span>
-                </a>
-                <nav id="mainNav">
-                    <a href="index.html">Home</a>
-                    <a href="staff-dashboard.html" class="active">Dashboard <span class="staff-badge">Staff</span></a>
-                    <button class="btn-logout" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </nav>
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
-                    <i class="fas fa-bars"></i>
-                </button>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2><i class="fas fa-scissors"></i> Premium<span>Salon</span></h2>
+            <p>Staff Dashboard</p>
+        </div>
+
+        <div class="user-info">
+            <div class="avatar" id="sideAvatar">S</div>
+            <div class="details">
+                <div class="name" id="sideName">Staff</div>
+                <div class="role">Online Bookings</div>
             </div>
         </div>
-    </header>
 
-    <!-- ===== DASHBOARD ===== -->
-    <section class="dashboard">
-        <div class="container">
+        <ul class="nav-links">
+            <li><a href="staff-dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="booking.html"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+            <li><a href="services.html"><i class="fas fa-cut"></i> Services</a></li>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></li>
+        </ul>
 
-            <!-- Dashboard Header -->
-            <div class="dashboard-header">
-                <div class="greeting">
-                    <h1>👨‍💼 Staff Dashboard</h1>
-                    <p>Manage online bookings and customer appointments</p>
+        <div class="nav-divider"></div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+
+    <div class="main-content">
+
+        <header>
+            <div class="header-inner">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a href="index.html" class="logo-header">
+                        <i class="fas fa-scissors"></i> Premium<span>Salon</span>
+                    </a>
                 </div>
-                <div class="user-badge">
-                    <div class="avatar" id="userAvatar">S</div>
-                    <div class="info">
-                        <div class="name" id="userName">Staff Member</div>
-                        <div class="role">Online Bookings</div>
+                <div class="header-right">
+                    <div class="staff-badge-mini">
+                        <div class="avatar-mini" id="headerAvatar">S</div>
+                        <span class="name-mini" id="headerName">Staff</span>
                     </div>
                 </div>
             </div>
+        </header>
 
-            <!-- Date Selector -->
-            <div class="date-selector">
-                <label><i class="fas fa-calendar-day"></i> Select Date:</label>
-                <input type="date" id="bookingDate">
-                <button class="today-btn" onclick="setToday()">📅 Today</button>
-                <span class="date-display" id="dateDisplay"></span>
+        <section class="dashboard">
+            <div class="container" style="max-width:1200px; margin:0 auto;">
+
+                <div class="dashboard-header">
+                    <div>
+                        <h1>👨‍💼 Staff Dashboard</h1>
+                        <p>Manage online bookings and customer appointments</p>
+                    </div>
+                </div>
+
+                <div class="date-selector">
+                    <label><i class="fas fa-calendar-day"></i> Select Date:</label>
+                    <input type="date" id="bookingDate">
+                    <button class="today-btn" onclick="setToday()">📅 Today</button>
+                    <span class="date-display" id="dateDisplay"></span>
+                </div>
+
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card">
+                        <div class="icon pending"><i class="fas fa-clock"></i></div>
+                        <div class="info">
+                            <div class="number" id="pendingCount">0</div>
+                            <div class="label">Pending</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon arrived"><i class="fas fa-user-check"></i></div>
+                        <div class="info">
+                            <div class="number" id="arrivedCount">0</div>
+                            <div class="label">Arrived</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon completed"><i class="fas fa-check-circle"></i></div>
+                        <div class="info">
+                            <div class="number" id="completedCount">0</div>
+                            <div class="label">Completed</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon expired"><i class="fas fa-hourglass-end"></i></div>
+                        <div class="info">
+                            <div class="number" id="expiredCount">0</div>
+                            <div class="label">Expired</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section-title">
+                    <div>
+                        <h2><i class="fas fa-list"></i> Today's Bookings</h2>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+                        <span class="badge" id="bookingCount">0</span>
+                        <span class="auto-refresh">
+                            <span class="dot"></span> Live
+                        </span>
+                    </div>
+                </div>
+
+                <div id="bookingsContainer">
+                    <div style="text-align:center; padding:30px; color:#94a3b8;">
+                        <i class="fas fa-spinner fa-spin" style="font-size:28px; display:block; margin-bottom:10px;"></i>
+                        Loading bookings...
+                    </div>
+                </div>
+
             </div>
+        </section>
 
-            <!-- Stats -->
-            <div class="stats-grid" id="statsGrid">
-                <div class="stat-card pending">
-                    <div class="icon"><i class="fas fa-clock"></i></div>
-                    <div class="number" id="pendingCount">0</div>
-                    <div class="label">Pending</div>
-                </div>
-                <div class="stat-card arrived">
-                    <div class="icon"><i class="fas fa-user-check"></i></div>
-                    <div class="number" id="arrivedCount">0</div>
-                    <div class="label">Arrived</div>
-                </div>
-                <div class="stat-card completed">
-                    <div class="icon"><i class="fas fa-check-circle"></i></div>
-                    <div class="number" id="completedCount">0</div>
-                    <div class="label">Completed</div>
-                </div>
-                <div class="stat-card cancelled">
-                    <div class="icon"><i class="fas fa-times-circle"></i></div>
-                    <div class="number" id="cancelledCount">0</div>
-                    <div class="label">Cancelled</div>
-                </div>
-            </div>
+    </div>
 
-            <!-- Bookings -->
-            <div class="section-title">
-                <h2><i class="fas fa-list"></i> Today's Bookings</h2>
-                <span class="badge" id="bookingCount">0</span>
-            </div>
-
-            <div id="bookingsContainer">
-                <div style="text-align:center; padding:30px; color:#94a3b8;">
-                    <i class="fas fa-spinner fa-spin" style="font-size:28px; display:block; margin-bottom:10px;"></i>
-                    Loading bookings...
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- ===== TOAST ===== -->
     <div id="toastContainer"></div>
 
-    <!-- ============================================
-    JAVASCRIPT - COMPLETE STAFF DASHBOARD
-    ============================================ -->
     <script>
         // ============================================
         // CONFIG
         // ============================================
         const CONFIG = {
             API_BASE_URL: 'http://localhost:5000',
+            REFRESH_INTERVAL: 15000,
         };
 
         // ============================================
         // DOM REFS
         // ============================================
         const el = {
-            userName: document.getElementById('userName'),
-            userAvatar: document.getElementById('userAvatar'),
+            headerName: document.getElementById('headerName'),
+            headerAvatar: document.getElementById('headerAvatar'),
+            sideName: document.getElementById('sideName'),
+            sideAvatar: document.getElementById('sideAvatar'),
             bookingDate: document.getElementById('bookingDate'),
             dateDisplay: document.getElementById('dateDisplay'),
             bookingsContainer: document.getElementById('bookingsContainer'),
             pendingCount: document.getElementById('pendingCount'),
             arrivedCount: document.getElementById('arrivedCount'),
             completedCount: document.getElementById('completedCount'),
-            cancelledCount: document.getElementById('cancelledCount'),
+            expiredCount: document.getElementById('expiredCount'),
             bookingCount: document.getElementById('bookingCount'),
             toastContainer: document.getElementById('toastContainer'),
-            mobileMenuBtn: document.getElementById('mobileMenuBtn'),
-            mainNav: document.getElementById('mainNav'),
+            sidebar: document.getElementById('sidebar'),
+            sidebarOverlay: document.getElementById('sidebarOverlay'),
+            menuToggle: document.getElementById('menuToggle'),
         };
+
+        let refreshTimer = null;
+
+        // ============================================
+        // SIDEBAR FUNCTIONS
+        // ============================================
+        function openSidebar() {
+            el.sidebar.classList.add('open');
+            el.sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            el.sidebar.classList.remove('open');
+            el.sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function toggleSidebar() {
+            if (el.sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
 
         // ============================================
         // INIT
@@ -748,16 +861,42 @@
             displayUserInfo(user);
             setToday();
             setupDateChange();
-            setupMobileMenu();
+
+            el.menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSidebar();
+            });
+
+            el.sidebarOverlay.addEventListener('click', closeSidebar);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && el.sidebar.classList.contains('open')) {
+                    closeSidebar();
+                }
+            });
+
+            document.querySelector('.main-content').addEventListener('click', function(e) {
+                if (el.sidebar.classList.contains('open') && !e.target.closest('.sidebar') && !e.target.closest('.menu-toggle')) {
+                    closeSidebar();
+                }
+            });
+
+            startAutoRefresh();
             console.log('✅ Staff Dashboard Loaded');
+            console.log(`🔄 Auto-refresh every ${CONFIG.REFRESH_INTERVAL/1000} seconds`);
         });
 
         // ============================================
         // DISPLAY USER INFO
         // ============================================
         function displayUserInfo(user) {
-            el.userName.textContent = user.name || 'Staff Member';
-            el.userAvatar.textContent = (user.name || 'S')[0].toUpperCase();
+            const name = user.name || 'Staff';
+            const initial = name[0].toUpperCase();
+
+            el.headerName.textContent = name;
+            el.sideName.textContent = name;
+            el.headerAvatar.textContent = initial;
+            el.sideAvatar.textContent = initial;
         }
 
         // ============================================
@@ -780,6 +919,7 @@
                 if (date) {
                     updateDateDisplay(date);
                     loadBookings(date);
+                    resetAutoRefresh();
                 }
             });
         }
@@ -794,17 +934,83 @@
         }
 
         // ============================================
+        // CHECK IF BOOKING IS EXPIRED
+        // ============================================
+        function isBookingExpired(booking) {
+            if (!booking.booking_date || !booking.time) return false;
+
+            const now = new Date();
+            const bookingDate = new Date(booking.booking_date + 'T00:00:00');
+            const todayDate = new Date();
+            todayDate.setHours(0, 0, 0, 0);
+
+            if (bookingDate < todayDate) {
+                return true;
+            }
+
+            if (bookingDate.toDateString() === new Date().toDateString()) {
+                const [hours, minutes] = booking.time.split(':').map(Number);
+                const slotDateTime = new Date();
+                slotDateTime.setHours(hours, minutes, 0, 0);
+
+                const gracePeriod = new Date(slotDateTime.getTime() + 15 * 60000);
+                if (now > gracePeriod) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // ============================================
+        // CHECK IF BOOKING IS CURRENT (Happening Now)
+        // ============================================
+        function isCurrentBooking(booking) {
+            if (!booking.booking_date || !booking.time) return false;
+            if (booking.status === 'completed' || booking.status === 'cancelled' || booking.status === 'expired') return false;
+
+            const now = new Date();
+            const bookingDate = new Date(booking.booking_date + 'T00:00:00');
+            const [hours, minutes] = booking.time.split(':').map(Number);
+            const slotDateTime = new Date();
+            slotDateTime.setHours(hours, minutes, 0, 0);
+
+            const slotEnd = new Date(slotDateTime.getTime() + 15 * 60000);
+            const slotStart = new Date(slotDateTime.getTime() - 5 * 60000);
+
+            if (bookingDate.toDateString() === new Date().toDateString()) {
+                return now >= slotStart && now <= slotEnd;
+            }
+
+            return false;
+        }
+
+        // ============================================
+        // CHECK IF TIME IS PAST
+        // ============================================
+        function isPastTime(booking) {
+            if (!booking.booking_date || !booking.time) return false;
+
+            const now = new Date();
+            const bookingDate = new Date(booking.booking_date + 'T00:00:00');
+            const [hours, minutes] = booking.time.split(':').map(Number);
+            const slotDateTime = new Date();
+            slotDateTime.setHours(hours, minutes, 0, 0);
+
+            const gracePeriod = new Date(slotDateTime.getTime() + 15 * 60000);
+
+            if (bookingDate.toDateString() === new Date().toDateString()) {
+                return now > gracePeriod;
+            }
+
+            return bookingDate < new Date(new Date().setHours(0,0,0,0));
+        }
+
+        // ============================================
         // LOAD BOOKINGS
         // ============================================
         async function loadBookings(date) {
             const token = localStorage.getItem('token');
-
-            el.bookingsContainer.innerHTML = `
-                <div style="text-align:center; padding:30px; color:#94a3b8;">
-                    <i class="fas fa-spinner fa-spin" style="font-size:28px; display:block; margin-bottom:10px;"></i>
-                    Loading bookings...
-                </div>
-            `;
 
             try {
                 const response = await fetch(`${CONFIG.API_BASE_URL}/api/staff/bookings?date=${date}`, {
@@ -832,20 +1038,49 @@
         }
 
         // ============================================
-        // RENDER BOOKINGS
+        // RENDER BOOKINGS - ONLY TIME WISE SORTING
         // ============================================
         function renderBookings(result) {
             const bookings = result.bookings || [];
-            const summary = result.summary || {};
 
-            // Update stats
-            el.pendingCount.textContent = summary.pending || 0;
-            el.arrivedCount.textContent = summary.arrived || 0;
-            el.completedCount.textContent = summary.completed || 0;
-            el.cancelledCount.textContent = summary.cancelled || 0;
-            el.bookingCount.textContent = bookings.length;
+            let expiredCount = 0;
+            const updatedBookings = bookings.map(b => {
+                // Check if time is past - mark as expired
+                if (isPastTime(b) && (b.status === 'pending' || b.status === 'arrived')) {
+                    expiredCount++;
+                    return { ...b, status: 'expired' };
+                }
+                // Also check normal expiry
+                if (isBookingExpired(b) && (b.status === 'pending' || b.status === 'arrived')) {
+                    expiredCount++;
+                    return { ...b, status: 'expired' };
+                }
+                return b;
+            });
 
-            if (bookings.length === 0) {
+            // ✅ ONLY TIME WISE SORTING - Latest to Oldest
+            updatedBookings.sort((a, b) => {
+                return (b.time || '').localeCompare(a.time || '');
+            });
+
+            const pending = updatedBookings.filter(b => b.status === 'pending').length;
+            const arrived = updatedBookings.filter(b => b.status === 'arrived').length;
+            const completed = updatedBookings.filter(b => b.status === 'completed').length;
+            const expired = updatedBookings.filter(b => b.status === 'expired').length;
+
+            el.pendingCount.textContent = pending;
+            el.arrivedCount.textContent = arrived;
+            el.completedCount.textContent = completed;
+            el.expiredCount.textContent = expired;
+            el.bookingCount.textContent = updatedBookings.length;
+
+            if (expired > 0 && !window.expiredNotified) {
+                showToast(`⚠️ ${expired} booking(s) have expired.`, 'warning');
+                window.expiredNotified = true;
+                setTimeout(() => { window.expiredNotified = false; }, 30000);
+            }
+
+            if (updatedBookings.length === 0) {
                 el.bookingsContainer.innerHTML = `
                     <div class="empty-state">
                         <i class="fas fa-calendar-check"></i>
@@ -856,70 +1091,100 @@
                 return;
             }
 
-            // Sort by time
-            bookings.sort((a, b) => (a.time || '').localeCompare(b.time || ''));
-
             const statusMap = {
                 'pending': 'status-pending',
                 'arrived': 'status-arrived',
                 'completed': 'status-completed',
-                'cancelled': 'status-cancelled'
+                'cancelled': 'status-cancelled',
+                'expired': 'status-expired'
             };
 
             const badgeMap = {
                 'pending': 'status-pending-badge',
                 'arrived': 'status-arrived-badge',
                 'completed': 'status-completed-badge',
-                'cancelled': 'status-cancelled-badge'
+                'cancelled': 'status-cancelled-badge',
+                'expired': 'status-expired-badge'
             };
 
-            el.bookingsContainer.innerHTML = bookings.map(b => `
-                <div class="booking-card ${statusMap[b.status] || 'status-pending'}">
-                    <div class="info">
-                        <div class="time">
-                            ${b.time || 'N/A'}
-                            <span class="ampm">${b.time_ampm || ''}</span>
+            el.bookingsContainer.innerHTML = updatedBookings.map(b => {
+                const isCurrent = isCurrentBooking(b);
+                const isPast = isPastTime(b) && b.status !== 'completed' && b.status !== 'cancelled';
+                const currentClass = isCurrent ? 'current-booking' : '';
+                const currentTag = isCurrent ? '<span class="current-tag">🟣 Current</span>' : '';
+                const pastTag = isPast ? '<span class="past-tag">⏳ Past</span>' : '';
+
+                return `
+                    <div class="booking-card ${statusMap[b.status] || 'status-pending'} ${currentClass}">
+                        <div class="info">
+                            <div class="time">
+                                ${b.time || 'N/A'}
+                                <span class="ampm">${b.time_ampm || ''}</span>
+                                ${b.status === 'expired' ? '<span class="expired-tag">⏰ Expired</span>' : ''}
+                                ${currentTag}
+                                ${pastTag}
+                            </div>
+                            <div class="customer">${b.customer_name || 'Unknown'}</div>
+                            <div class="meta">
+                                <i class="fas fa-cut"></i> ${b.service || 'Service'}
+                                <i class="fas fa-phone" style="margin-left:10px;"></i> ${b.phone || 'N/A'}
+                                <i class="fas fa-hashtag" style="margin-left:10px;"></i> ${b.booking_id || 'N/A'}
+                            </div>
                         </div>
-                        <div class="customer">${b.customer_name || 'Unknown'}</div>
-                        <div class="meta">
-                            <i class="fas fa-cut"></i> ${b.service || 'Service'}
-                            <i class="fas fa-phone" style="margin-left:10px;"></i> ${b.phone || 'N/A'}
-                            <i class="fas fa-hashtag" style="margin-left:10px;"></i> ${b.booking_id || 'N/A'}
+                        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                            <span class="status-badge ${badgeMap[b.status] || 'status-pending-badge'}">
+                                ${b.status === 'expired' ? 'Expired' : (b.status || 'Pending')}
+                            </span>
+                            ${b.status === 'pending' && !isPast ? `
+                                <button class="btn-sm btn-sm-arrived" onclick="updateStatus('${b.booking_id}', 'arrived')">
+                                    <i class="fas fa-user-check"></i> Arrived
+                                </button>
+                                <button class="btn-sm btn-sm-cancel" onclick="updateStatus('${b.booking_id}', 'cancelled')">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            ` : ''}
+                            ${b.status === 'arrived' && !isPast ? `
+                                <button class="btn-sm btn-sm-complete" onclick="updateStatus('${b.booking_id}', 'completed')">
+                                    <i class="fas fa-check"></i> Complete
+                                </button>
+                                <button class="btn-sm btn-sm-cancel" onclick="updateStatus('${b.booking_id}', 'cancelled')">
+                                    <i class="fas fa-times"></i> Cancel
+                                </button>
+                            ` : ''}
+                            ${b.status === 'pending' && isPast ? `
+                                <span class="btn-sm btn-sm-expired">
+                                    <i class="fas fa-hourglass-end"></i> Expired
+                                </span>
+                            ` : ''}
+                            ${b.status === 'arrived' && isPast ? `
+                                <span class="btn-sm btn-sm-expired">
+                                    <i class="fas fa-hourglass-end"></i> Expired
+                                </span>
+                            ` : ''}
+                            ${b.status === 'completed' ? `
+                                <span class="btn-sm btn-sm-done">
+                                    <i class="fas fa-check-circle"></i> Done
+                                </span>
+                            ` : ''}
+                            ${b.status === 'cancelled' ? `
+                                <span class="btn-sm btn-sm-cancelled">
+                                    <i class="fas fa-times-circle"></i> Cancelled
+                                </span>
+                            ` : ''}
+                            ${b.status === 'expired' ? `
+                                <span class="btn-sm btn-sm-expired">
+                                    <i class="fas fa-hourglass-end"></i> Expired
+                                </span>
+                            ` : ''}
                         </div>
                     </div>
-                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                        <span class="status-badge ${badgeMap[b.status] || 'status-pending-badge'}">
-                            ${b.status || 'Pending'}
-                        </span>
-                        ${b.status === 'pending' ? `
-                            <button class="btn-sm btn-sm-arrived" onclick="updateStatus('${b.booking_id}', 'arrived')">
-                                <i class="fas fa-user-check"></i> Arrived
-                            </button>
-                            <button class="btn-sm btn-sm-cancel" onclick="updateStatus('${b.booking_id}', 'cancelled')">
-                                <i class="fas fa-times"></i> Cancel
-                            </button>
-                        ` : ''}
-                        ${b.status === 'arrived' ? `
-                            <button class="btn-sm btn-sm-complete" onclick="updateStatus('${b.booking_id}', 'completed')">
-                                <i class="fas fa-check"></i> Complete
-                            </button>
-                            <button class="btn-sm btn-sm-cancel" onclick="updateStatus('${b.booking_id}', 'cancelled')">
-                                <i class="fas fa-times"></i> Cancel
-                            </button>
-                        ` : ''}
-                        ${b.status === 'completed' ? `
-                            <span class="btn-sm btn-sm-done">
-                                <i class="fas fa-check-circle"></i> Done
-                            </span>
-                        ` : ''}
-                        ${b.status === 'cancelled' ? `
-                            <span class="btn-sm btn-sm-cancelled">
-                                <i class="fas fa-times-circle"></i> Cancelled
-                            </span>
-                        ` : ''}
-                    </div>
-                </div>
-            `).join('');
+                `;
+            }).join('');
+
+            const currentCount = updatedBookings.filter(b => isCurrentBooking(b)).length;
+            if (currentCount > 0) {
+                showToast(`🟣 ${currentCount} booking(s) currently in progress`, 'info');
+            }
         }
 
         // ============================================
@@ -936,7 +1201,6 @@
 
             const token = localStorage.getItem('token');
 
-            // Show loading on all buttons (disable them)
             document.querySelectorAll('.btn-sm').forEach(btn => btn.disabled = true);
 
             try {
@@ -968,8 +1232,27 @@
                 showToast('❌ Network error. Please try again.', 'error');
             }
 
-            // Re-enable buttons
             document.querySelectorAll('.btn-sm').forEach(btn => btn.disabled = false);
+        }
+
+        // ============================================
+        // AUTO REFRESH
+        // ============================================
+        function startAutoRefresh() {
+            if (refreshTimer) clearInterval(refreshTimer);
+            refreshTimer = setInterval(() => {
+                const date = el.bookingDate.value;
+                if (date) {
+                    loadBookings(date);
+                }
+            }, CONFIG.REFRESH_INTERVAL);
+        }
+
+        function resetAutoRefresh() {
+            if (refreshTimer) {
+                clearInterval(refreshTimer);
+                startAutoRefresh();
+            }
         }
 
         // ============================================
@@ -987,7 +1270,8 @@
         function showToast(message, type = 'info') {
             const container = el.toastContainer;
             const className = type === 'success' ? 'toast-success' :
-                             type === 'error' ? 'toast-error' : 'toast-info';
+                             type === 'error' ? 'toast-error' :
+                             type === 'warning' ? 'toast-warning' : 'toast-info';
 
             container.innerHTML = `<div class="toast ${className}">${message}</div>`;
 
@@ -996,17 +1280,9 @@
             }, 4000);
         }
 
-        // ============================================
-        // MOBILE MENU
-        // ============================================
-        function setupMobileMenu() {
-            el.mobileMenuBtn.addEventListener('click', function() {
-                el.mainNav.classList.toggle('open');
-            });
-        }
-
         console.log('✅ Staff Dashboard Loaded');
         console.log('📡 API URL:', CONFIG.API_BASE_URL);
+        console.log(`🔄 Auto-refresh every ${CONFIG.REFRESH_INTERVAL/1000} seconds`);
     </script>
 </body>
 </html>
