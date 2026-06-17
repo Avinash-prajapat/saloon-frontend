@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Services - Premium Salon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* ============================================
+           HEADER
+           ============================================ */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.92);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: #10b981;
+            font-size: 28px;
+        }
+
+        .logo span { color: #10b981; }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        nav a {
+            font-size: 15px;
+            font-weight: 500;
+            color: #475569;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #10b981;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #10b981;
+            border-radius: 4px;
+        }
+
+        .btn-nav {
+            background: #10b981;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: #059669 !important;
+            color: white !important;
+        }
+
+        .btn-nav-outline {
+            border: 2px solid #10b981;
+            color: #10b981 !important;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-nav-outline:hover {
+            background: #10b981;
+            color: white !important;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #0f172a;
+            cursor: pointer;
+        }
+
+        /* ============================================
+           SERVICES PAGE
+           ============================================ */
+        .page-header {
+            padding: 40px 0 24px;
+        }
+
+        .page-header h1 {
+            font-size: 36px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .page-header p {
+            color: #64748b;
+            font-size: 16px;
+            margin-top: 4px;
+        }
+
+        /* ============================================
+           SEARCH & FILTER
+           ============================================ */
+        .search-section {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+            background: white;
+            padding: 20px 24px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            align-items: center;
+        }
+
+        .search-box {
+            flex: 1;
+            min-width: 200px;
+            position: relative;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 12px 12px 12px 44px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            background: #f8fafc;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: #10b981;
+            background: white;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group select {
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .filter-group select:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+        .result-count {
+            color: #64748b;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 8px 16px;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+
+        /* ============================================
+           SERVICES GRID
+           ============================================ */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .service-card {
+            background: white;
+            border-radius: 16px;
+            padding: 28px 24px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.25s;
+            position: relative;
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            border-color: #10b981;
+        }
+
+        .service-card .badge {
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            background: #d1fae5;
+            color: #065f46;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 12px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .service-card .icon {
+            font-size: 36px;
+            color: #10b981;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .service-card h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .service-card .desc {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 12px;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .service-card .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 16px;
+            border-top: 1px solid #f1f5f9;
+        }
+
+        .service-card .price {
+            font-size: 24px;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        .service-card .duration {
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .service-card .duration i {
+            margin-right: 4px;
+        }
+
+        .btn-book {
+            background: #10b981;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-book:hover {
+            background: #059669;
+        }
+
+        /* ============================================
+           EMPTY STATE
+           ============================================ */
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #cbd5e1;
+            margin-bottom: 16px;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            color: #0f172a;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 48px 0 24px;
+            margin-top: 60px;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 32px;
+        }
+
+        .footer-grid h4 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .footer-grid a {
+            display: block;
+            margin-bottom: 6px;
+            transition: color 0.2s;
+        }
+
+        .footer-grid a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #1e293b;
+            padding-top: 20px;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* ============================================
+           TOAST
+           ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-width: 400px;
+        }
+
+        .toast-success { background: #10b981; }
+        .toast-error { background: #ef4444; }
+        .toast-info { background: #3b82f6; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden { display: none !important; }
+
+        .loading-spinner {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px;
+            color: #94a3b8;
+        }
+
+        .loading-spinner i {
+            font-size: 40px;
+            display: block;
+            margin-bottom: 12px;
+            color: #10b981;
+        }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 1024px) {
+            .services-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                flex-direction: column;
+                gap: 12px;
+                padding: 16px 0;
+                width: 100%;
+            }
+
+            nav.open {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .search-section {
+                flex-direction: column;
+                padding: 16px;
+            }
+
+            .filter-group {
+                width: 100%;
+            }
+
+            .filter-group select {
+                flex: 1;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 28px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-group {
+                flex-direction: column;
+            }
+
+            .filter-group select {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-scissors"></i> Premium<span>Salon</span>
+                </a>
+                <nav id="mainNav">
+                    <a href="index.html">Home</a>
+                    <a href="services.html" class="active">Services</a>
+                    <a href="booking.html">Book Now</a>
+                    <a href="customer-dashboard.html" id="dashboardLink" class="hidden">Dashboard</a>
+                    <a href="login.html" id="authLink">Login</a>
+                </nav>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== SERVICES PAGE ===== -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Our Services</h1>
+            <p>Choose from our range of professional grooming services</p>
+        </div>
+    </section>
+
+    <section>
+        <div class="container">
+            <!-- Search & Filter -->
+            <div class="search-section">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search services..." oninput="filterServices()">
+                </div>
+                <div class="filter-group">
+                    <select id="sortFilter" onchange="filterServices()">
+                        <option value="default">Sort: Default</option>
+                        <option value="price-low">Price: Low to High</option>
+                        <option value="price-high">Price: High to Low</option>
+                        <option value="name">Name: A to Z</option>
+                        <option value="duration">Duration: Shortest</option>
+                    </select>
+                    <span class="result-count" id="resultCount">Loading...</span>
+                </div>
+            </div>
+
+            <!-- Services Grid -->
+            <div class="services-grid" id="servicesContainer">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    Loading services...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h4 style="color:white; font-size:20px;">
+                        <i class="fas fa-scissors" style="color:#10b981;"></i> PremiumSalon
+                    </h4>
+                    <p style="margin-top:8px;">Premium grooming services at your village doorstep.</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <a href="services.html">Services</a>
+                    <a href="booking.html">Book Now</a>
+                    <a href="login.html">Login</a>
+                </div>
+                <div>
+                    <h4>Contact</h4>
+                    <a href="tel:+919876543210">+91 98765 43210</a>
+                    <a href="mailto:info@premiumsalon.com">info@premiumsalon.com</a>
+                </div>
+                <div>
+                    <h4>Follow Us</h4>
+                    <div style="display:flex; gap:12px; margin-top:8px;">
+                        <a href="#" style="font-size:20px;"><i class="fab fa-facebook"></i></a>
+                        <a href="#" style="font-size:20px;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" style="font-size:20px;"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" style="font-size:20px;"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 PremiumSalon. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toastContainer"></div>
+
+    <!-- ============================================
+    JAVASCRIPT
+    ============================================ -->
+    <script>
+        // ============================================
+        // CONFIG
+        // ============================================
+        const CONFIG = {
+            API_BASE_URL: 'http://localhost:5000',
+        };
+
+        // ============================================
+        // STATE
+        // ============================================
+        let allServices = [];
+        let filteredServices = [];
+
+        // ============================================
+        // DOM REFS
+        // ============================================
+        const elements = {
+            servicesContainer: document.getElementById('servicesContainer'),
+            searchInput: document.getElementById('searchInput'),
+            sortFilter: document.getElementById('sortFilter'),
+            resultCount: document.getElementById('resultCount'),
+            authLink: document.getElementById('authLink'),
+            toastContainer: document.getElementById('toastContainer'),
+            mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+            mainNav: document.getElementById('mainNav'),
+        };
+
+        // ============================================
+        // ICONS
+        // ============================================
+        const icons = ['fa-cut', 'fa-trim', 'fa-paint-brush', 'fa-razor', 'fa-hand-sparkles', 'fa-smile', 'fa-spa', 'fa-scissors'];
+
+        function getIcon(name) {
+            const lower = name.toLowerCase();
+            if (lower.includes('haircut')) return 'fa-cut';
+            if (lower.includes('beard') || lower.includes('trim')) return 'fa-trim';
+            if (lower.includes('color') || lower.includes('colour')) return 'fa-paint-brush';
+            if (lower.includes('shave')) return 'fa-razor';
+            if (lower.includes('massage')) return 'fa-hand-sparkles';
+            if (lower.includes('facial')) return 'fa-smile';
+            if (lower.includes('spa')) return 'fa-spa';
+            return 'fa-scissors';
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            loadServices();
+            checkAuth();
+            setupMobileMenu();
+            console.log('✅ Services Page Loaded');
+        });
+
+        // ============================================
+        // LOAD SERVICES
+        // ============================================
+        async function loadServices() {
+            try {
+                const res = await fetch(`${CONFIG.API_BASE_URL}/api/services`);
+                const data = await res.json();
+
+                if (!data || data.length === 0) {
+                    showEmptyState('No services available');
+                    return;
+                }
+
+                allServices = data;
+                filteredServices = [...allServices];
+                renderServices(filteredServices);
+                updateResultCount(filteredServices.length);
+
+            } catch (error) {
+                console.error('Error loading services:', error);
+                showEmptyState('Unable to load services. Please refresh.');
+            }
+        }
+
+        // ============================================
+        // RENDER SERVICES
+        // ============================================
+        function renderServices(services) {
+            if (!services || services.length === 0) {
+                showEmptyState('No services match your search.');
+                return;
+            }
+
+            elements.servicesContainer.innerHTML = services.map(s => `
+                <div class="service-card">
+                    <span class="badge">${s.is_active ? 'Available' : 'Unavailable'}</span>
+                    <span class="icon"><i class="fas ${getIcon(s.name)}"></i></span>
+                    <h3>${s.name}</h3>
+                    <p class="desc">${s.description || 'Professional service'}</p>
+                    <div class="footer">
+                        <div>
+                            <div class="price">₹${s.price}</div>
+                            <div class="duration"><i class="far fa-clock"></i> ${s.duration_minutes} min</div>
+                        </div>
+                        <button class="btn-book" onclick="bookService('${s.id}')">
+                            <i class="fas fa-calendar-plus"></i> Book
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // FILTER SERVICES
+        // ============================================
+        function filterServices() {
+            const search = elements.searchInput.value.toLowerCase().trim();
+            const sort = elements.sortFilter.value;
+
+            let result = allServices.filter(s => {
+                const nameMatch = s.name.toLowerCase().includes(search);
+                const descMatch = s.description ? s.description.toLowerCase().includes(search) : false;
+                return nameMatch || descMatch;
+            });
+
+            switch (sort) {
+                case 'price-low': result.sort((a, b) => a.price - b.price); break;
+                case 'price-high': result.sort((a, b) => b.price - a.price); break;
+                case 'name': result.sort((a, b) => a.name.localeCompare(b.name)); break;
+                case 'duration': result.sort((a, b) => a.duration_minutes - b.duration_minutes); break;
+                default: break;
+            }
+
+            filteredServices = result;
+            renderServices(result);
+            updateResultCount(result.length);
+        }
+
+        // ============================================
+        // UPDATE RESULT COUNT
+        // ============================================
+        function updateResultCount(count) {
+            elements.resultCount.textContent = `${count} service${count !== 1 ? 's' : ''}`;
+        }
+
+        // ============================================
+        // EMPTY STATE
+        // ============================================
+        function showEmptyState(message) {
+            elements.servicesContainer.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-cut"></i>
+                    <h3>${message}</h3>
+                    <p>Please check back later or try a different search.</p>
+                </div>
+            `;
+            updateResultCount(0);
+        }
+
+        // ============================================
+        // BOOK SERVICE
+        // ============================================
+        function bookService(serviceId) {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (!token || !user.id) {
+                localStorage.setItem('selectedServiceId', serviceId);
+                showToast('Please login to book a service', 'info');
+                setTimeout(() => {
+                    window.location.href = 'login.html';
+                }, 1200);
+                return;
+            }
+
+            window.location.href = `booking.html?service=${serviceId}`;
+        }
+
+        // ============================================
+        // CHECK AUTH
+        // ============================================
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (token && user.id) {
+                elements.authLink.textContent = 'Dashboard';
+                elements.authLink.href = user.role === 'admin' ? 'admin-dashboard.html' :
+                                         user.role === 'staff' ? 'staff-dashboard.html' :
+                                         'customer-dashboard.html';
+                elements.authLink.className = 'btn-nav';
+            } else {
+                elements.authLink.textContent = 'Login';
+                elements.authLink.href = 'login.html';
+                elements.authLink.className = 'btn-nav-outline';
+            }
+        }
+
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        function setupMobileMenu() {
+            elements.mobileMenuBtn.addEventListener('click', function() {
+                elements.mainNav.classList.toggle('open');
+            });
+        }
+
+        // ============================================
+        // TOAST
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = elements.toastContainer;
+            const className = type === 'success' ? 'toast-success' :
+                             type === 'error' ? 'toast-error' : 'toast-info';
+
+            container.innerHTML = `<div class="toast ${className}">${message}</div>`;
+
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        console.log('✅ Services Page Loaded');
+        console.log('📡 API URL:', CONFIG.API_BASE_URL);
+    </script>
+</body>
+</html>

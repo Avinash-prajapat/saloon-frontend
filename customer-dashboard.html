@@ -1,0 +1,1276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Dashboard - Premium Salon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ============================================
+           SIDEBAR - LEFT SIDE
+           ============================================ */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: #0f172a;
+            color: #94a3b8;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            padding: 20px 0;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+        }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar .logo {
+            padding: 0 24px 20px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 16px;
+        }
+
+        .sidebar .logo h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar .logo h2 i { color: #10b981; }
+        .sidebar .logo h2 span { color: #10b981; }
+        .sidebar .logo p {
+            font-size: 12px;
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        .sidebar .user-info {
+            padding: 0 24px 16px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .sidebar .user-info .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .sidebar .user-info .details .name {
+            color: white;
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .sidebar .user-info .details .role {
+            font-size: 12px;
+            color: #64748b;
+        }
+
+        .sidebar .nav-links {
+            list-style: none;
+            padding: 0 12px;
+        }
+
+        .sidebar .nav-links li {
+            margin-bottom: 4px;
+        }
+
+        .sidebar .nav-links li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .sidebar .nav-links li a:hover,
+        .sidebar .nav-links li a.active {
+            background: #1e293b;
+            color: white;
+        }
+
+        .sidebar .nav-links li a i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .sidebar .nav-divider {
+            height: 1px;
+            background: #1e293b;
+            margin: 12px 16px;
+        }
+
+        .sidebar .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: calc(100% - 24px);
+            margin: 0 12px;
+            font-family: inherit;
+        }
+
+        .sidebar .logout-btn:hover {
+            background: #1e293b;
+        }
+
+        .sidebar .logout-btn i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        /* ============================================
+           SIDEBAR OVERLAY
+           ============================================ */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        .sidebar-overlay.active {
+            display: block;
+        }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .main-content {
+            flex: 1;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.92);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #0f172a;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .menu-toggle:hover {
+            background: #f1f5f9;
+            color: #10b981;
+        }
+
+        .logo-header {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-header i { color: #10b981; font-size: 20px; }
+        .logo-header span { color: #10b981; }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .header-right .user-badge-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 4px 12px 4px 8px;
+            border-radius: 20px;
+        }
+
+        .header-right .user-badge-mini .avatar-mini {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .header-right .user-badge-mini .name-mini {
+            font-weight: 600;
+            font-size: 13px;
+            color: #0f172a;
+        }
+
+        /* ============================================
+           DASHBOARD
+           ============================================ */
+        .dashboard {
+            padding: 24px 20px 60px;
+        }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-header .greeting h1 {
+            font-size: 24px;
+            font-weight: 800;
+        }
+        .dashboard-header .greeting h1 span { color: #10b981; }
+        .dashboard-header .greeting p { color: #64748b; font-size: 14px; }
+
+        .quick-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-sm {
+            background: #10b981;
+            color: white;
+            padding: 8px 18px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-primary-sm:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+
+        .btn-outline-sm {
+            background: transparent;
+            color: #0f172a;
+            padding: 8px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-outline-sm:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        /* ============================================
+           STATS
+           ============================================ */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .stat-card .icon { font-size: 22px; margin-bottom: 2px; }
+        .stat-card .number { font-size: 24px; font-weight: 800; }
+        .stat-card .label { font-size: 12px; color: #64748b; }
+
+        .stat-card.total .icon { color: #3b82f6; }
+        .stat-card.total .number { color: #3b82f6; }
+        .stat-card.upcoming .icon { color: #f59e0b; }
+        .stat-card.upcoming .number { color: #f59e0b; }
+        .stat-card.completed .icon { color: #10b981; }
+        .stat-card.completed .number { color: #10b981; }
+        .stat-card.cancelled .icon { color: #ef4444; }
+        .stat-card.cancelled .number { color: #ef4444; }
+
+        /* ============================================
+           BOOKINGS
+           ============================================ */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .section-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .section-title .badge {
+            background: #e2e8f0;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        /* ============================================
+           BOOKING CARDS
+           ============================================ */
+        .booking-card {
+            background: white;
+            border-radius: 14px;
+            padding: 14px 18px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            transition: all 0.2s;
+            border-left: 4px solid #94a3b8;
+        }
+
+        .booking-card:hover {
+            border-color: #10b981;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .booking-card.status-pending { border-left-color: #f59e0b; }
+        .booking-card.status-confirmed { border-left-color: #3b82f6; }
+        .booking-card.status-arrived { border-left-color: #8b5cf6; }
+        .booking-card.status-completed { border-left-color: #10b981; }
+        .booking-card.status-cancelled { border-left-color: #ef4444; }
+        .booking-card.status-expired { border-left-color: #94a3b8; }
+
+        .booking-card .info {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .booking-card .info .service {
+            font-weight: 600;
+            font-size: 16px;
+        }
+
+        .booking-card .info .meta {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .booking-card .info .meta i {
+            margin-right: 4px;
+            width: 16px;
+        }
+
+        .booking-card .info .meta .time-ampm {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .booking-card .info .booking-id {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .booking-card .status-badge {
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status-pending-badge {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-confirmed-badge {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .status-arrived-badge {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .status-completed-badge {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-cancelled-badge {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .status-expired-badge {
+            background: #f1f5f9;
+            color: #94a3b8;
+        }
+
+        .booking-card .actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-sm-danger {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-sm-danger:hover {
+            background: #fecaca;
+        }
+
+        .btn-sm-outline {
+            background: transparent;
+            color: #10b981;
+            border: 1px solid #10b981;
+        }
+
+        .btn-sm-outline:hover {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-sm-disabled {
+            background: #f1f5f9;
+            color: #94a3b8;
+            cursor: default;
+        }
+
+        .btn-sm-warning {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        /* ============================================
+           EMPTY STATE
+           ============================================ */
+        .empty-state {
+            text-align: center;
+            padding: 50px 20px;
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .empty-state i {
+            font-size: 56px;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            font-size: 20px;
+            color: #0f172a;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+        }
+
+        /* ============================================
+           TOAST
+           ============================================ */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 14px 22px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 2000;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-width: 380px;
+            font-size: 14px;
+        }
+
+        .toast-success { background: #10b981; }
+        .toast-error { background: #ef4444; }
+        .toast-info { background: #3b82f6; }
+        .toast-warning { background: #f59e0b; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden { display: none !important; }
+
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            .dashboard-header .greeting h1 { font-size: 20px; }
+            .dashboard-header .greeting p { font-size: 13px; }
+
+            .quick-actions { width: 100%; }
+            .quick-actions .btn-primary-sm,
+            .quick-actions .btn-outline-sm {
+                flex: 1;
+                justify-content: center;
+                font-size: 12px;
+                padding: 8px 12px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .stat-card { padding: 12px; }
+            .stat-card .number { font-size: 20px; }
+            .stat-card .label { font-size: 11px; }
+
+            .booking-card {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 12px 14px;
+            }
+
+            .booking-card .info { width: 100%; min-width: unset; }
+            .booking-card .info .service { font-size: 15px; }
+            .booking-card .info .meta { font-size: 12px; }
+
+            .booking-card .actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .btn-sm { font-size: 11px; padding: 4px 10px; }
+
+            .section-title h2 { font-size: 17px; }
+
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
+
+            .header-inner { padding: 10px 14px; }
+            .logo-header { font-size: 16px; }
+            .header-right .user-badge-mini .name-mini { display: none; }
+            .header-right .user-badge-mini { padding: 4px 8px; }
+
+            .dashboard { padding: 16px 12px 40px; }
+
+            .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
+
+            .menu-toggle {
+                font-size: 18px;
+                padding: 6px;
+            }
+        }
+
+        /* Tablet */
+        @media (min-width: 481px) and (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card { padding: 14px; }
+            .stat-card .number { font-size: 22px; }
+
+            .booking-card { padding: 12px 16px; }
+            .booking-card .info .service { font-size: 15px; }
+
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
+
+            .dashboard { padding: 20px 16px 50px; }
+        }
+
+        /* Desktop */
+        @media (min-width: 1025px) {
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+
+            .stat-card .number { font-size: 28px; }
+
+            .booking-card { padding: 16px 20px; }
+            .booking-card .info .service { font-size: 17px; }
+
+            .sidebar { left: -280px; }
+            .sidebar.open { left: 0; }
+
+            .dashboard { padding: 24px 24px 60px; }
+
+            .menu-toggle {
+                font-size: 22px;
+                padding: 8px;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .stat-card .number { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================
+    SIDEBAR OVERLAY
+    ============================================ -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ============================================
+    SIDEBAR
+    ============================================ -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2><i class="fas fa-scissors"></i> Premium<span>Salon</span></h2>
+            <p>Customer Dashboard</p>
+        </div>
+
+        <div class="user-info">
+            <div class="avatar" id="sideAvatar">C</div>
+            <div class="details">
+                <div class="name" id="sideName">Customer</div>
+                <div class="role" id="sidePhone">-</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="customer-dashboard.html" class="active">
+                <i class="fas fa-home"></i> Dashboard
+            </a></li>
+            <li><a href="booking.html">
+                <i class="fas fa-calendar-plus"></i> Book Appointment
+            </a></li>
+            <li><a href="services.html">
+                <i class="fas fa-cut"></i> Services
+            </a></li>
+            <li><a href="profile.html">
+                <i class="fas fa-user"></i> Profile
+            </a></li>
+            <li><a href="index.html">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a></li>
+        </ul>
+
+        <div class="nav-divider"></div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+
+    <!-- ============================================
+    MAIN CONTENT
+    ============================================ -->
+    <div class="main-content">
+
+        <!-- ===== HEADER ===== -->
+        <header>
+            <div class="header-inner">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a href="index.html" class="logo-header">
+                        <i class="fas fa-scissors"></i> Premium<span>Salon</span>
+                    </a>
+                </div>
+                <div class="header-right">
+                    <div class="user-badge-mini">
+                        <div class="avatar-mini" id="headerAvatar">C</div>
+                        <span class="name-mini" id="headerName">Customer</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== DASHBOARD ===== -->
+        <section class="dashboard">
+            <div class="container" style="max-width:1200px; margin:0 auto;">
+
+                <!-- Dashboard Header -->
+                <div class="dashboard-header">
+                    <div class="greeting">
+                        <h1>Welcome back, <span id="userName">Customer</span> 👋</h1>
+                        <p>Manage your appointments and view booking history</p>
+                    </div>
+                    <div class="quick-actions">
+                        <a href="booking.html" class="btn-primary-sm">
+                            <i class="fas fa-plus"></i> Book Now
+                        </a>
+                        <a href="profile.html" class="btn-outline-sm">
+                            <i class="fas fa-user"></i> Profile
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats-grid" id="statsGrid">
+                    <div class="stat-card total">
+                        <div class="icon"><i class="fas fa-calendar-check"></i></div>
+                        <div class="number" id="totalBookings">0</div>
+                        <div class="label">Total Bookings</div>
+                    </div>
+                    <div class="stat-card upcoming">
+                        <div class="icon"><i class="fas fa-clock"></i></div>
+                        <div class="number" id="upcomingBookings">0</div>
+                        <div class="label">Upcoming</div>
+                    </div>
+                    <div class="stat-card completed">
+                        <div class="icon"><i class="fas fa-check-circle"></i></div>
+                        <div class="number" id="completedBookings">0</div>
+                        <div class="label">Completed</div>
+                    </div>
+                    <div class="stat-card cancelled">
+                        <div class="icon"><i class="fas fa-times-circle"></i></div>
+                        <div class="number" id="cancelledBookings">0</div>
+                        <div class="label">Cancelled / Expired</div>
+                    </div>
+                </div>
+
+                <!-- Bookings -->
+                <div class="section-title">
+                    <h2><i class="fas fa-list"></i> My Bookings</h2>
+                    <span class="badge" id="bookingCount">0</span>
+                </div>
+
+                <div id="bookingsContainer">
+                    <div style="text-align:center; padding:30px; color:#94a3b8;">
+                        <i class="fas fa-spinner fa-spin" style="font-size:28px; display:block; margin-bottom:10px;"></i>
+                        Loading your bookings...
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toastContainer"></div>
+
+    <!-- ============================================
+    JAVASCRIPT - COMPLETE CUSTOMER DASHBOARD
+    ============================================ -->
+    <script>
+        // ============================================
+        // CONFIG
+        // ============================================
+        const CONFIG = {
+            API_BASE_URL: 'http://localhost:5000',
+        };
+
+        // ============================================
+        // DOM REFS
+        // ============================================
+        const el = {
+            userName: document.getElementById('userName'),
+            headerName: document.getElementById('headerName'),
+            headerAvatar: document.getElementById('headerAvatar'),
+            sideName: document.getElementById('sideName'),
+            sidePhone: document.getElementById('sidePhone'),
+            sideAvatar: document.getElementById('sideAvatar'),
+            totalBookings: document.getElementById('totalBookings'),
+            upcomingBookings: document.getElementById('upcomingBookings'),
+            completedBookings: document.getElementById('completedBookings'),
+            cancelledBookings: document.getElementById('cancelledBookings'),
+            bookingCount: document.getElementById('bookingCount'),
+            bookingsContainer: document.getElementById('bookingsContainer'),
+            toastContainer: document.getElementById('toastContainer'),
+            sidebar: document.getElementById('sidebar'),
+            sidebarOverlay: document.getElementById('sidebarOverlay'),
+            menuToggle: document.getElementById('menuToggle'),
+        };
+
+        // ============================================
+        // STATE
+        // ============================================
+        let allBookings = [];
+        let user = {};
+
+        // ============================================
+        // SIDEBAR FUNCTIONS
+        // ============================================
+        function openSidebar() {
+            el.sidebar.classList.add('open');
+            el.sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            el.sidebar.classList.remove('open');
+            el.sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function toggleSidebar() {
+            if (el.sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (!token || !user.id) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            displayUserInfo(user);
+            loadBookings();
+
+            // 🔴 FIX: Sidebar events with proper event listeners
+            if (el.menuToggle) {
+                el.menuToggle.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    toggleSidebar();
+                });
+            }
+
+            // Close on overlay click
+            if (el.sidebarOverlay) {
+                el.sidebarOverlay.addEventListener('click', function() {
+                    closeSidebar();
+                });
+            }
+
+            // Close on Escape key
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && el.sidebar.classList.contains('open')) {
+                    closeSidebar();
+                }
+            });
+
+            // Close on content click (click anywhere on main content)
+            const mainContent = document.querySelector('.main-content');
+            if (mainContent) {
+                mainContent.addEventListener('click', function(e) {
+                    if (el.sidebar.classList.contains('open') && !e.target.closest('.sidebar') && !e.target.closest('.menu-toggle')) {
+                        closeSidebar();
+                    }
+                });
+            }
+
+            console.log('✅ Customer Dashboard Loaded');
+        });
+
+        // ============================================
+        // DISPLAY USER INFO
+        // ============================================
+        function displayUserInfo(user) {
+            const name = user.name || 'Customer';
+            const initial = name[0].toUpperCase();
+
+            el.userName.textContent = name;
+            el.headerName.textContent = name;
+            el.sideName.textContent = name;
+            el.sidePhone.textContent = user.phone || '';
+            el.headerAvatar.textContent = initial;
+            el.sideAvatar.textContent = initial;
+        }
+
+        // ============================================
+        // CHECK IF BOOKING IS EXPIRED
+        // ============================================
+        function isBookingExpired(booking) {
+            if (!booking.booking_date || !booking.slot_time) return false;
+
+            const today = new Date();
+            const bookingDate = new Date(booking.booking_date + 'T00:00:00');
+            const slotTime = booking.slot_time;
+
+            // If booking date is in the past
+            const todayDate = new Date();
+            todayDate.setHours(0, 0, 0, 0);
+            if (bookingDate < todayDate) {
+                return true;
+            }
+
+            // If booking date is today and time has passed
+            if (bookingDate.toDateString() === new Date().toDateString()) {
+                const now = new Date();
+                const [hours, minutes] = slotTime.split(':').map(Number);
+                const slotDateTime = new Date();
+                slotDateTime.setHours(hours, minutes, 0, 0);
+
+                // Add 15 minutes grace period
+                const gracePeriod = new Date(slotDateTime.getTime() + 15 * 60000);
+                if (now > gracePeriod) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // ============================================
+        // LOAD BOOKINGS
+        // ============================================
+        async function loadBookings() {
+            const token = localStorage.getItem('token');
+
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/customer/bookings`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.status === 401) {
+                    logout();
+                    return;
+                }
+
+                const bookings = await response.json();
+                allBookings = bookings || [];
+                renderBookings(allBookings);
+
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                el.bookingsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>Failed to Load</h3>
+                        <p>Please refresh and try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================
+        // RENDER BOOKINGS
+        // ============================================
+        function renderBookings(bookings) {
+            // Check and update expired bookings
+            let expiredCount = 0;
+            const updatedBookings = bookings.map(b => {
+                if (isBookingExpired(b) && b.status !== 'cancelled' && b.status !== 'completed') {
+                    expiredCount++;
+                    return { ...b, status: 'expired' };
+                }
+                return b;
+            });
+
+            // Update stats
+            const total = updatedBookings.length;
+            const upcoming = updatedBookings.filter(b => 
+                b.status === 'pending' || b.status === 'confirmed' || b.status === 'arrived'
+            ).length;
+            const completed = updatedBookings.filter(b => b.status === 'completed').length;
+            const cancelled = updatedBookings.filter(b => 
+                b.status === 'cancelled' || b.status === 'expired'
+            ).length;
+
+            el.totalBookings.textContent = total;
+            el.upcomingBookings.textContent = upcoming;
+            el.completedBookings.textContent = completed;
+            el.cancelledBookings.textContent = cancelled;
+            el.bookingCount.textContent = total;
+
+            if (updatedBookings.length === 0) {
+                el.bookingsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-plus"></i>
+                        <h3>No Bookings Yet</h3>
+                        <p>Book your first appointment now!</p>
+                        <a href="booking.html" class="btn-primary-sm" style="margin-top:16px; display:inline-flex;">
+                            <i class="fas fa-plus"></i> Book Now
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by date (newest first)
+            updatedBookings.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+            const statusMap = {
+                'pending': 'status-pending',
+                'confirmed': 'status-confirmed',
+                'arrived': 'status-arrived',
+                'completed': 'status-completed',
+                'cancelled': 'status-cancelled',
+                'expired': 'status-expired'
+            };
+
+            const badgeMap = {
+                'pending': 'status-pending-badge',
+                'confirmed': 'status-confirmed-badge',
+                'arrived': 'status-arrived-badge',
+                'completed': 'status-completed-badge',
+                'cancelled': 'status-cancelled-badge',
+                'expired': 'status-expired-badge'
+            };
+
+            // Show warning if any expired bookings
+            if (expiredCount > 0) {
+                showToast(`⚠️ ${expiredCount} booking(s) have expired. Please book again.`, 'warning');
+            }
+
+            el.bookingsContainer.innerHTML = updatedBookings.map(b => `
+                <div class="booking-card ${statusMap[b.status] || 'status-pending'}">
+                    <div class="info">
+                        <div class="service">${b.service?.name || 'Service'}</div>
+                        <div class="meta">
+                            <i class="fas fa-calendar-day"></i> ${formatDate(b.booking_date)}
+                            <i class="fas fa-clock" style="margin-left:10px;"></i> 
+                            <span class="time-ampm">${b.slot_time_ampm || b.slot_time || 'N/A'}</span>
+                            <i class="fas fa-rupee-sign" style="margin-left:10px;"></i> ₹${b.total_amount || 0}
+                            ${b.status === 'expired' ? '<span style="margin-left:10px; color:#ef4444; font-weight:600;">⏰ Expired</span>' : ''}
+                        </div>
+                        <div class="booking-id">
+                            <i class="fas fa-hashtag"></i> ${b.booking_id || 'N/A'}
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                        <span class="status-badge ${badgeMap[b.status] || 'status-pending-badge'}">
+                            ${b.status === 'expired' ? 'Expired' : (b.status || 'Pending')}
+                        </span>
+                        ${b.status !== 'cancelled' && b.status !== 'completed' && b.status !== 'expired' ? `
+                            <button class="btn-sm btn-sm-danger" onclick="cancelBooking('${b.booking_id}')">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                            <button class="btn-sm btn-sm-outline" onclick="rescheduleBooking('${b.booking_id}')">
+                                <i class="fas fa-edit"></i> Reschedule
+                            </button>
+                        ` : ''}
+                        ${b.status === 'expired' ? `
+                            <button class="btn-sm btn-sm-warning" onclick="rescheduleBooking('${b.booking_id}')">
+                                <i class="fas fa-redo"></i> Book Again
+                            </button>
+                        ` : ''}
+                        ${b.status === 'cancelled' ? `
+                            <span class="btn-sm btn-sm-disabled">
+                                <i class="fas fa-times-circle"></i> Cancelled
+                            </span>
+                        ` : ''}
+                        ${b.status === 'completed' ? `
+                            <span class="btn-sm btn-sm-disabled">
+                                <i class="fas fa-check-circle"></i> Completed
+                            </span>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // CANCEL BOOKING
+        // ============================================
+        async function cancelBooking(bookingId) {
+            if (!confirm('Are you sure you want to cancel this booking?')) return;
+
+            const token = localStorage.getItem('token');
+
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/booking/${bookingId}/cancel`, {
+                    method: 'PUT',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showToast('✅ Booking cancelled successfully', 'success');
+                    loadBookings();
+                } else {
+                    showToast('❌ ' + (result.error || 'Failed to cancel'), 'error');
+                }
+
+            } catch (error) {
+                console.error('Cancel error:', error);
+                showToast('❌ Network error. Please try again.', 'error');
+            }
+        }
+
+        // ============================================
+        // RESCHEDULE BOOKING
+        // ============================================
+        function rescheduleBooking(bookingId) {
+            window.location.href = `booking.html?reschedule=${bookingId}`;
+        }
+
+        // ============================================
+        // FORMAT DATE
+        // ============================================
+        function formatDate(dateStr) {
+            if (!dateStr) return 'N/A';
+            const d = new Date(dateStr + 'T00:00:00');
+            return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        // ============================================
+        // LOGOUT
+        // ============================================
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // ============================================
+        // TOAST
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = el.toastContainer;
+            const className = type === 'success' ? 'toast-success' :
+                             type === 'error' ? 'toast-error' :
+                             type === 'warning' ? 'toast-warning' : 'toast-info';
+
+            container.innerHTML = `<div class="toast ${className}">${message}</div>`;
+
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        console.log('✅ Customer Dashboard Loaded');
+        console.log('📡 API URL:', CONFIG.API_BASE_URL);
+    </script>
+</body>
+</html>

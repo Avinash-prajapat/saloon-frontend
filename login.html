@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Login - Premium Salon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f8fafc;
+            color: #0f172a;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* ===== HEADER ===== */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.92);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: #10b981;
+            font-size: 28px;
+        }
+
+        .logo span { color: #10b981; }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        nav a {
+            font-size: 15px;
+            font-weight: 500;
+            color: #475569;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #10b981;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #10b981;
+            border-radius: 4px;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #0f172a;
+            cursor: pointer;
+        }
+
+        /* ===== LOGIN PAGE ===== */
+        .login-page {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .login-card {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 420px;
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.05);
+        }
+
+        .login-card .icon {
+            text-align: center;
+            font-size: 48px;
+            color: #10b981;
+            margin-bottom: 8px;
+        }
+
+        .login-card h1 {
+            text-align: center;
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .login-card .subtitle {
+            text-align: center;
+            color: #64748b;
+            font-size: 15px;
+            margin-bottom: 28px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: #0f172a;
+        }
+
+        .form-group .input-wrap {
+            position: relative;
+        }
+
+        .form-group .input-wrap i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            font-size: 16px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 12px 12px 44px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #10b981;
+            background: white;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: #ef4444;
+        }
+
+        .form-group .input-wrap .toggle-pwd {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #94a3b8;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .form-group .input-wrap .toggle-pwd:hover {
+            color: #0f172a;
+        }
+
+        .form-error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .form-options label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #64748b;
+            cursor: pointer;
+        }
+
+        .form-options label input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #10b981;
+            cursor: pointer;
+        }
+
+        .form-options a {
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .form-options a:hover {
+            text-decoration: underline;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 14px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-primary:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: #0f172a;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 20px 0;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .signup-link a {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .signup-link a:hover {
+            text-decoration: underline;
+        }
+
+        .demo-box {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: #f1f5f9;
+            border-radius: 10px;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .demo-box .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 3px 0;
+        }
+
+        .demo-box .row strong {
+            color: #0f172a;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-width: 400px;
+        }
+
+        .toast-success { background: #10b981; }
+        .toast-error { background: #ef4444; }
+        .toast-info { background: #3b82f6; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hidden { display: none !important; }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                flex-direction: column;
+                gap: 12px;
+                padding: 16px 0;
+                width: 100%;
+            }
+
+            nav.open {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .login-card {
+                padding: 28px 20px;
+            }
+
+            .login-card h1 {
+                font-size: 24px;
+            }
+
+            .form-options {
+                flex-direction: column;
+                gap: 10px;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 20px 16px;
+            }
+
+            .demo-box .row {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-scissors"></i> Premium<span>Salon</span>
+                </a>
+                <nav id="mainNav">
+                    <a href="index.html">Home</a>
+                    <a href="services.html">Services</a>
+                    <a href="booking.html">Book Now</a>
+                    <a href="login.html" class="active">Login</a>
+                </nav>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== LOGIN PAGE ===== -->
+    <section class="login-page">
+        <div class="login-card">
+            <div class="icon">
+                <i class="fas fa-scissors"></i>
+            </div>
+            <h1>Welcome Back</h1>
+            <p class="subtitle">Login to manage your bookings</p>
+
+            <!-- Alert -->
+            <div id="alertContainer"></div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="phone">Phone Number</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-phone"></i>
+                        <input type="tel" id="phone" placeholder="Enter 10-digit phone number" maxlength="10" required autofocus>
+                    </div>
+                    <div class="form-error" id="phoneError">Please enter a valid 10-digit number</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <button type="button" class="toggle-pwd" onclick="togglePassword()">
+                            <i class="fas fa-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                    <div class="form-error" id="passwordError">Please enter your password</div>
+                </div>
+
+                <div class="form-options">
+                    <label>
+                        <input type="checkbox" id="rememberMe"> Remember me
+                    </label>
+                    <a href="#">Forgot password?</a>
+                </div>
+
+                <button type="submit" class="btn-primary" id="loginBtn">
+                    <span id="loginBtnText"><i class="fas fa-sign-in-alt"></i> Login</span>
+                </button>
+            </form>
+
+            <div class="divider">or</div>
+
+            <a href="signup.html" class="btn-secondary">
+                <i class="fas fa-user-plus"></i> Create New Account
+            </a>
+
+            <div class="signup-link">
+                Don't have an account? <a href="signup.html">Sign up</a>
+            </div>
+
+            <!-- Demo Credentials -->
+            <div class="demo-box">
+                <div style="font-weight:600; margin-bottom:6px; color:#0f172a;">📋 Demo Credentials</div>
+                <div class="row">
+                    <span>Customer:</span>
+                    <span><strong>9876543210</strong> / <strong>123456</strong></span>
+                </div>
+                <div class="row">
+                    <span>Admin:</span>
+                    <span><strong>9876543211</strong> / <strong>admin123</strong></span>
+                </div>
+                <div class="row">
+                    <span>Staff:</span>
+                    <span><strong>9876543212</strong> / <strong>staff123</strong></span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer style="background:#0f172a; color:#94a3b8; padding:24px 0 16px; margin-top:auto;">
+        <div class="container">
+            <div style="text-align:center; font-size:14px;">
+                &copy; 2026 PremiumSalon. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toastContainer"></div>
+
+    <!-- ============================================
+    JAVASCRIPT - COMPLETE LOGIN LOGIC
+    ============================================ -->
+    <script>
+        // ============================================
+        // CONFIG
+        // ============================================
+        const CONFIG = {
+            API_BASE_URL: 'http://localhost:5000',
+        };
+
+        // ============================================
+        // DOM REFS
+        // ============================================
+        const el = {
+            phone: document.getElementById('phone'),
+            password: document.getElementById('password'),
+            rememberMe: document.getElementById('rememberMe'),
+            loginBtn: document.getElementById('loginBtn'),
+            loginBtnText: document.getElementById('loginBtnText'),
+            alertContainer: document.getElementById('alertContainer'),
+            toastContainer: document.getElementById('toastContainer'),
+            mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+            mainNav: document.getElementById('mainNav'),
+            phoneError: document.getElementById('phoneError'),
+            passwordError: document.getElementById('passwordError'),
+        };
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check if already logged in
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (token && user.id) {
+                const role = user.role || 'customer';
+                const dashboard = role === 'admin' ? 'admin-dashboard.html' :
+                                 role === 'staff' ? 'staff-dashboard.html' :
+                                 'customer-dashboard.html';
+                window.location.href = dashboard;
+                return;
+            }
+
+            // Load saved phone
+            const savedPhone = localStorage.getItem('savedPhone');
+            if (savedPhone) {
+                el.phone.value = savedPhone;
+                el.rememberMe.checked = true;
+            }
+
+            setupValidation();
+            setupMobileMenu();
+            console.log('✅ Login Page Loaded');
+        });
+
+        // ============================================
+        // VALIDATION
+        // ============================================
+        function setupValidation() {
+            el.phone.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '').slice(0, 10);
+                validatePhone();
+            });
+
+            el.password.addEventListener('input', function() {
+                if (this.value.length >= 4) {
+                    el.passwordError.classList.remove('show');
+                    this.classList.remove('error');
+                }
+            });
+        }
+
+        function validatePhone() {
+            const phone = el.phone.value;
+            const isValid = phone.length === 10 && /^[0-9]{10}$/.test(phone);
+
+            if (phone.length > 0 && !isValid) {
+                el.phoneError.classList.add('show');
+                el.phone.classList.add('error');
+                return false;
+            } else {
+                el.phoneError.classList.remove('show');
+                el.phone.classList.remove('error');
+                return true;
+            }
+        }
+
+        // ============================================
+        // TOGGLE PASSWORD
+        // ============================================
+        function togglePassword() {
+            const input = el.password;
+            const icon = document.getElementById('toggleIcon');
+
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        // ============================================
+        // HANDLE LOGIN
+        // ============================================
+        async function handleLogin(event) {
+            event.preventDefault();
+
+            const phone = el.phone.value.trim();
+            const password = el.password.value.trim();
+
+            // Validate
+            if (!validatePhone()) {
+                el.phone.focus();
+                return;
+            }
+
+            if (password.length < 4) {
+                el.passwordError.classList.add('show');
+                el.password.classList.add('error');
+                el.password.focus();
+                return;
+            }
+
+            // Show loading
+            el.loginBtn.disabled = true;
+            el.loginBtnText.innerHTML = '<span class="loading-spinner"></span> Logging in...';
+
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ phone, password })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Save user data
+                    localStorage.setItem('token', result.access_token);
+                    localStorage.setItem('user', JSON.stringify(result.user));
+
+                    if (el.rememberMe.checked) {
+                        localStorage.setItem('savedPhone', phone);
+                    } else {
+                        localStorage.removeItem('savedPhone');
+                    }
+
+                    showToast('✅ Login successful!', 'success');
+
+                    // Redirect based on role
+                    setTimeout(() => {
+                        const role = result.user.role || 'customer';
+                        const dashboard = role === 'admin' ? 'admin-dashboard.html' :
+                                         role === 'staff' ? 'staff-dashboard.html' :
+                                         'customer-dashboard.html';
+                        window.location.href = dashboard;
+                    }, 800);
+
+                } else {
+                    showToast('❌ ' + (result.error || 'Invalid credentials'), 'error');
+                    el.loginBtn.disabled = false;
+                    el.loginBtnText.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                }
+
+            } catch (error) {
+                console.error('Login error:', error);
+                showToast('❌ Network error. Please check your connection.', 'error');
+                el.loginBtn.disabled = false;
+                el.loginBtnText.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+            }
+        }
+
+        // ============================================
+        // SHOW ALERT
+        // ============================================
+        function showAlert(message, type = 'info') {
+            const container = el.alertContainer;
+            const className = type === 'success' ? 'toast-success' :
+                             type === 'error' ? 'toast-error' : 'toast-info';
+
+            container.innerHTML = `<div class="toast ${className}" style="position:relative; bottom:auto; right:auto; margin-bottom:16px;">${message}</div>`;
+
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        // ============================================
+        // TOAST
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = el.toastContainer;
+            const className = type === 'success' ? 'toast-success' :
+                             type === 'error' ? 'toast-error' : 'toast-info';
+
+            container.innerHTML = `<div class="toast ${className}">${message}</div>`;
+
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 5000);
+        }
+
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        function setupMobileMenu() {
+            el.mobileMenuBtn.addEventListener('click', function() {
+                el.mainNav.classList.toggle('open');
+            });
+        }
+
+        // ============================================
+        // KEYBOARD SHORTCUT
+        // ============================================
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                const form = document.getElementById('loginForm');
+                const active = document.activeElement;
+                if (form && active && (active.id === 'phone' || active.id === 'password')) {
+                    form.dispatchEvent(new Event('submit'));
+                }
+            }
+        });
+
+        console.log('✅ Login Page Loaded');
+        console.log('📡 API URL:', CONFIG.API_BASE_URL);
+    </script>
+</body>
+</html>

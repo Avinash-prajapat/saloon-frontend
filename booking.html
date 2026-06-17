@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Book Appointment - Premium Salon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* ===== HEADER ===== */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.92);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 0;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            color: #10b981;
+            font-size: 28px;
+        }
+
+        .logo span { color: #10b981; }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+        }
+
+        nav a {
+            font-size: 15px;
+            font-weight: 500;
+            color: #475569;
+            transition: color 0.2s;
+            position: relative;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #10b981;
+        }
+
+        nav a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #10b981;
+            border-radius: 4px;
+        }
+
+        .btn-nav {
+            background: #10b981;
+            color: white !important;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn-nav:hover {
+            background: #059669 !important;
+            color: white !important;
+        }
+
+        .btn-nav-outline {
+            border: 2px solid #10b981;
+            color: #10b981 !important;
+            padding: 8px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .btn-nav-outline:hover {
+            background: #10b981;
+            color: white !important;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 24px;
+            color: #0f172a;
+            cursor: pointer;
+        }
+
+        /* ===== BOOKING PAGE ===== */
+        .page-header {
+            padding: 32px 0 16px;
+        }
+
+        .page-header h1 {
+            font-size: 32px;
+            font-weight: 800;
+        }
+
+        .page-header p {
+            color: #64748b;
+            margin-top: 2px;
+        }
+
+        /* ===== STEPS ===== */
+        .steps {
+            display: flex;
+            gap: 8px;
+            margin: 24px 0 32px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #94a3b8;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .step .num {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .step.active .num {
+            background: #10b981;
+            color: white;
+        }
+
+        .step.active {
+            color: #0f172a;
+        }
+
+        .step.completed .num {
+            background: #10b981;
+            color: white;
+        }
+
+        .step.completed {
+            color: #10b981;
+        }
+
+        .step-line {
+            width: 40px;
+            height: 2px;
+            background: #e2e8f0;
+            align-self: center;
+        }
+
+        .step-line.completed {
+            background: #10b981;
+        }
+
+        /* ===== FORM SECTIONS ===== */
+        .form-section {
+            display: none;
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            border: 1px solid #e2e8f0;
+            max-width: 700px;
+            margin: 0 auto;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .form-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-section h2 {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .form-section .subtitle {
+            color: #64748b;
+            margin-bottom: 24px;
+        }
+
+        /* ===== SERVICES GRID ===== */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .service-option {
+            padding: 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fafafa;
+        }
+
+        .service-option:hover {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .service-option.selected {
+            border-color: #10b981;
+            background: #ecfdf5;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15);
+        }
+
+        .service-option .icon {
+            font-size: 28px;
+            color: #10b981;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .service-option .name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .service-option .price {
+            color: #10b981;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .service-option .duration {
+            color: #94a3b8;
+            font-size: 12px;
+        }
+
+        /* ===== DATE & SLOTS ===== */
+        .date-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            background: #f8fafc;
+            transition: border-color 0.2s;
+            margin-bottom: 16px;
+        }
+
+        .date-input:focus {
+            outline: none;
+            border-color: #10b981;
+            background: white;
+        }
+
+        .slots-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .slot-btn {
+            padding: 10px 4px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: white;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.2s;
+            font-family: inherit;
+            text-align: center;
+        }
+
+        .slot-btn:hover:not(.booked):not(.disabled) {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+
+        .slot-btn.selected {
+            border-color: #10b981;
+            background: #10b981;
+            color: white;
+        }
+
+        .slot-btn.booked {
+            background: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        .slot-btn.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            background: #f1f5f9;
+        }
+
+        .slot-btn .ampm {
+            font-size: 10px;
+            display: block;
+            color: #94a3b8;
+            font-weight: 400;
+        }
+
+        .slot-btn.selected .ampm {
+            color: rgba(255,255,255,0.8);
+        }
+
+        .slot-btn.booked .ampm {
+            color: #cbd5e1;
+        }
+
+        .slot-info {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 8px;
+        }
+
+        /* ===== FORM FIELDS ===== */
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 14px;
+            margin-bottom: 4px;
+            color: #0f172a;
+        }
+
+        .form-group label .required {
+            color: #ef4444;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-family: inherit;
+            transition: border-color 0.2s;
+            background: #f8fafc;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #10b981;
+            background: white;
+        }
+
+        .form-group input.error {
+            border-color: #ef4444;
+        }
+
+        .form-error {
+            color: #ef4444;
+            font-size: 13px;
+            margin-top: 4px;
+            display: none;
+        }
+
+        .form-error.show {
+            display: block;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        /* ===== SUMMARY ===== */
+        .summary-box {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 16px 0;
+        }
+
+        .summary-box .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .summary-box .row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-box .total {
+            font-size: 22px;
+            font-weight: 700;
+            color: #10b981;
+        }
+
+        /* ===== PAYMENT OPTIONS ===== */
+        .payment-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 16px 0;
+        }
+
+        .payment-option {
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: #fafafa;
+        }
+
+        .payment-option:hover {
+            border-color: #10b981;
+        }
+
+        .payment-option.selected {
+            border-color: #10b981;
+            background: #ecfdf5;
+        }
+
+        .payment-option i {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .payment-option.selected i {
+            color: #10b981;
+        }
+
+        .payment-option .label {
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .payment-option .sub {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 32px;
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary:hover {
+            background: #059669;
+        }
+
+        .btn-primary:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            padding: 12px 24px;
+            background: transparent;
+            color: #0f172a;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .btn-secondary:hover {
+            border-color: #10b981;
+            color: #10b981;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .btn-group .btn-secondary {
+            flex: 0 0 auto;
+        }
+
+        .btn-group .btn-primary {
+            flex: 1;
+        }
+
+        /* ===== SUCCESS ===== */
+        .success-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .success-section .icon {
+            font-size: 64px;
+            color: #10b981;
+            margin-bottom: 16px;
+        }
+
+        .success-section h2 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .success-section p {
+            color: #64748b;
+            margin: 8px 0 16px;
+        }
+
+        .success-details {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: left;
+            max-width: 400px;
+            margin: 0 auto 20px;
+        }
+
+        .success-details .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .success-details .row:last-child {
+            border-bottom: none;
+        }
+
+        .success-details .time-ampm {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-width: 400px;
+        }
+
+        .toast-success { background: #10b981; }
+        .toast-error { background: #ef4444; }
+        .toast-info { background: #3b82f6; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden { display: none !important; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            nav {
+                display: none;
+                flex-direction: column;
+                gap: 12px;
+                padding: 16px 0;
+                width: 100%;
+            }
+
+            nav.open {
+                display: flex;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .steps {
+                flex-wrap: wrap;
+                gap: 4px;
+            }
+
+            .step-line {
+                width: 20px;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn-group .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+
+            .slots-grid {
+                grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+            }
+
+            .payment-options {
+                grid-template-columns: 1fr;
+            }
+
+            .page-header h1 {
+                font-size: 26px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .slots-grid {
+                grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+            }
+
+            .slot-btn {
+                font-size: 11px;
+                padding: 8px 2px;
+            }
+
+            .step {
+                font-size: 12px;
+            }
+
+            .step .num {
+                width: 26px;
+                height: 26px;
+                font-size: 12px;
+            }
+
+            .step-line {
+                width: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-scissors"></i> Premium<span>Salon</span>
+                </a>
+                <nav id="mainNav">
+                    <a href="index.html">Home</a>
+                    <a href="services.html">Services</a>
+                    <a href="booking.html" class="active">Book Now</a>
+                    <a href="customer-dashboard.html" id="dashboardLink" class="hidden">Dashboard</a>
+                    <a href="login.html" id="authLink">Login</a>
+                </nav>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== BOOKING PAGE ===== -->
+    <section class="page-header">
+        <div class="container">
+            <h1>Book Your Appointment</h1>
+            <p>Select service, choose time, and confirm your booking</p>
+        </div>
+    </section>
+
+    <section style="padding-bottom:60px;">
+        <div class="container">
+
+            <!-- Steps -->
+            <div class="steps">
+                <div class="step active" id="step1">
+                    <span class="num">1</span>
+                    <span>Service</span>
+                </div>
+                <div class="step-line" id="line1"></div>
+                <div class="step" id="step2">
+                    <span class="num">2</span>
+                    <span>Date & Time</span>
+                </div>
+                <div class="step-line" id="line2"></div>
+                <div class="step" id="step3">
+                    <span class="num">3</span>
+                    <span>Details</span>
+                </div>
+                <div class="step-line" id="line3"></div>
+                <div class="step" id="step4">
+                    <span class="num">4</span>
+                    <span>Confirm</span>
+                </div>
+            </div>
+
+            <!-- ===== STEP 1: SERVICE ===== -->
+            <div class="form-section active" id="step1Section">
+                <h2>Choose a Service</h2>
+                <p class="subtitle">Select the service you'd like to book</p>
+                <div id="servicesContainer">
+                    <div style="text-align:center; padding:20px; color:#94a3b8;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading services...
+                    </div>
+                </div>
+                <button class="btn-primary" id="step1Next" disabled>
+                    Next <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+
+            <!-- ===== STEP 2: DATE & TIME ===== -->
+            <div class="form-section" id="step2Section">
+                <h2>Choose Date & Time</h2>
+                <p class="subtitle">Select your preferred date and time slot</p>
+
+                <div class="form-group">
+                    <label>Select Date <span class="required">*</span></label>
+                    <input type="date" class="date-input" id="bookingDate" min="">
+                </div>
+
+                <div class="form-group">
+                    <label>Available Time Slots</label>
+                    <div id="slotsContainer">
+                        <div style="text-align:center; padding:16px; color:#94a3b8;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading slots...
+                        </div>
+                    </div>
+                    <div class="slot-info" id="slotInfo"></div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" id="step2Back">← Back</button>
+                    <button class="btn-primary" id="step2Next" disabled>
+                        Next <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== STEP 3: DETAILS ===== -->
+            <div class="form-section" id="step3Section">
+                <h2>Your Details</h2>
+                <p class="subtitle">Confirm your booking details</p>
+
+                <!-- Summary -->
+                <div class="summary-box">
+                    <div class="row">
+                        <span>Service</span>
+                        <span id="summaryService">-</span>
+                    </div>
+                    <div class="row">
+                        <span>Date</span>
+                        <span id="summaryDate">-</span>
+                    </div>
+                    <div class="row">
+                        <span>Time</span>
+                        <span id="summaryTime">-</span>
+                    </div>
+                    <div class="row" style="border-top:2px solid #d1d5db; padding-top:10px; margin-top:6px;">
+                        <span style="font-weight:700; font-size:18px;">Total</span>
+                        <span class="total" id="summaryTotal">₹0</span>
+                    </div>
+                </div>
+
+                <!-- Customer Details -->
+                <div class="form-group">
+                    <label>Full Name <span class="required">*</span></label>
+                    <input type="text" id="customerName" placeholder="Enter your full name">
+                    <div class="form-error" id="nameError">Please enter your name</div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Phone Number <span class="required">*</span></label>
+                        <input type="tel" id="customerPhone" placeholder="10-digit phone" maxlength="10">
+                        <div class="form-error" id="phoneError">Enter a valid 10-digit number</div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="customerEmail" placeholder="your@email.com">
+                    </div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn-secondary" id="step3Back">← Back</button>
+                    <button class="btn-primary" id="confirmBooking">
+                        <i class="fas fa-check"></i> Confirm Booking
+                    </button>
+                </div>
+            </div>
+
+            <!-- ===== STEP 4: SUCCESS ===== -->
+            <div class="form-section" id="step4Section">
+                <div class="success-section">
+                    <div class="icon"><i class="fas fa-check-circle"></i></div>
+                    <h2>🎉 Booking Confirmed!</h2>
+                    <p>Your appointment has been booked successfully.</p>
+                    <div class="success-details">
+                        <div class="row">
+                            <span>Booking ID</span>
+                            <span id="successBookingId">-</span>
+                        </div>
+                        <div class="row">
+                            <span>Service</span>
+                            <span id="successService">-</span>
+                        </div>
+                        <div class="row">
+                            <span>Date</span>
+                            <span id="successDate">-</span>
+                        </div>
+                        <div class="row">
+                            <span>Time</span>
+                            <span id="successTime">-</span>
+                        </div>
+                        <div class="row">
+                            <span>Amount</span>
+                            <span id="successAmount">-</span>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+                        <a href="customer-dashboard.html" class="btn-primary" style="width:auto; padding:12px 28px;">
+                            <i class="fas fa-user"></i> My Bookings
+                        </a>
+                        <a href="booking.html" class="btn-secondary" style="width:auto; padding:12px 28px;">
+                            <i class="fas fa-plus"></i> Book Another
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer style="background:#0f172a; color:#94a3b8; padding:32px 0 20px; margin-top:20px;">
+        <div class="container">
+            <div style="text-align:center; font-size:14px; border-top:1px solid #1e293b; padding-top:20px;">
+                &copy; 2026 PremiumSalon. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toastContainer"></div>
+
+    <!-- ============================================
+    JAVASCRIPT - COMPLETE BOOKING LOGIC
+    ============================================ -->
+    <script>
+        // ============================================
+        // CONFIG
+        // ============================================
+        const CONFIG = {
+            API_BASE_URL: 'http://localhost:5000',
+        };
+
+        // ============================================
+        // STATE
+        // ============================================
+        let state = {
+            step: 1,
+            services: [],
+            selectedService: null,
+            selectedSlot: null,
+            selectedDate: null,
+            bookingId: null,
+            customerName: '',
+            customerPhone: '',
+            customerEmail: '',
+            isReschedule: false,
+            rescheduleBookingId: null,
+        };
+
+        // ============================================
+        // DOM REFS
+        // ============================================
+        const el = {
+            servicesContainer: document.getElementById('servicesContainer'),
+            slotsContainer: document.getElementById('slotsContainer'),
+            slotInfo: document.getElementById('slotInfo'),
+            bookingDate: document.getElementById('bookingDate'),
+            customerName: document.getElementById('customerName'),
+            customerPhone: document.getElementById('customerPhone'),
+            customerEmail: document.getElementById('customerEmail'),
+            summaryService: document.getElementById('summaryService'),
+            summaryDate: document.getElementById('summaryDate'),
+            summaryTime: document.getElementById('summaryTime'),
+            summaryTotal: document.getElementById('summaryTotal'),
+            successBookingId: document.getElementById('successBookingId'),
+            successService: document.getElementById('successService'),
+            successDate: document.getElementById('successDate'),
+            successTime: document.getElementById('successTime'),
+            successAmount: document.getElementById('successAmount'),
+            step1Next: document.getElementById('step1Next'),
+            step2Back: document.getElementById('step2Back'),
+            step2Next: document.getElementById('step2Next'),
+            step3Back: document.getElementById('step3Back'),
+            confirmBooking: document.getElementById('confirmBooking'),
+            toastContainer: document.getElementById('toastContainer'),
+            authLink: document.getElementById('authLink'),
+            dashboardLink: document.getElementById('dashboardLink'),
+            mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+            mainNav: document.getElementById('mainNav'),
+            nameError: document.getElementById('nameError'),
+            phoneError: document.getElementById('phoneError'),
+        };
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            setupMobileMenu();
+            loadServices();
+            setupDatePicker();
+            setupValidation();
+            checkReschedule();
+            console.log('✅ Booking Page Loaded');
+        });
+
+        // ============================================
+        // CHECK AUTH
+        // ============================================
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (token && user.id) {
+                el.authLink.textContent = 'Dashboard';
+                el.authLink.href = user.role === 'admin' ? 'admin-dashboard.html' :
+                                   user.role === 'staff' ? 'staff-dashboard.html' :
+                                   'customer-dashboard.html';
+                el.authLink.className = 'btn-nav';
+                if (user.name) el.customerName.value = user.name;
+                if (user.phone) el.customerPhone.value = user.phone;
+                if (user.email) el.customerEmail.value = user.email;
+            } else {
+                el.authLink.textContent = 'Login';
+                el.authLink.href = 'login.html';
+                el.authLink.className = 'btn-nav-outline';
+            }
+        }
+
+        // ============================================
+        // CHECK RESCHEDULE
+        // ============================================
+        function checkReschedule() {
+            const params = new URLSearchParams(window.location.search);
+            const bookingId = params.get('reschedule');
+            if (bookingId) {
+                state.isReschedule = true;
+                state.rescheduleBookingId = bookingId;
+                loadBookingForReschedule(bookingId);
+            }
+        }
+
+        async function loadBookingForReschedule(bookingId) {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/booking/${bookingId}`);
+                const booking = await response.json();
+
+                if (booking.id) {
+                    // Pre-select service
+                    const service = state.services.find(s => s.id === booking.service_id);
+                    if (service) {
+                        state.selectedService = service;
+                        selectService(service.id);
+                    }
+
+                    // Pre-select date
+                    el.bookingDate.value = booking.booking_date;
+                    state.selectedDate = booking.booking_date;
+                    await loadSlots(booking.booking_date);
+
+                    // Pre-select slot
+                    const slotId = booking.slot_id;
+                    setTimeout(() => {
+                        document.querySelectorAll('.slot-btn').forEach(btn => {
+                            if (btn.dataset.id === slotId) {
+                                btn.click();
+                            }
+                        });
+                    }, 500);
+
+                    // Pre-fill customer details
+                    el.customerName.value = booking.customer_name;
+                    el.customerPhone.value = booking.customer_phone;
+
+                    showToast('📝 Rescheduling booking ' + bookingId, 'info');
+                }
+            } catch (error) {
+                console.error('Error loading booking for reschedule:', error);
+            }
+        }
+
+        // ============================================
+        // LOAD SERVICES
+        // ============================================
+        async function loadServices() {
+            try {
+                const res = await fetch(`${CONFIG.API_BASE_URL}/api/services`);
+                const data = await res.json();
+
+                if (!data || data.length === 0) {
+                    el.servicesContainer.innerHTML = `<p style="text-align:center; color:#94a3b8;">No services available</p>`;
+                    return;
+                }
+
+                state.services = data;
+                const icons = ['fa-cut', 'fa-trim', 'fa-paint-brush', 'fa-razor', 'fa-hand-sparkles'];
+
+                const params = new URLSearchParams(window.location.search);
+                const preselectedId = params.get('service');
+
+                el.servicesContainer.innerHTML = data.map((s, i) => `
+                    <div class="service-option ${preselectedId === s.id ? 'selected' : ''}" 
+                         data-id="${s.id}" onclick="selectService('${s.id}')">
+                        <span class="icon"><i class="fas ${icons[i % icons.length]}"></i></span>
+                        <div class="name">${s.name}</div>
+                        <div class="price">₹${s.price}</div>
+                        <div class="duration"><i class="far fa-clock"></i> ${s.duration_minutes} min</div>
+                    </div>
+                `).join('');
+
+                if (preselectedId) {
+                    const service = data.find(s => s.id === preselectedId);
+                    if (service) {
+                        state.selectedService = service;
+                        el.step1Next.disabled = false;
+                    }
+                }
+
+            } catch (error) {
+                console.error('Error loading services:', error);
+                el.servicesContainer.innerHTML = `
+                    <p style="text-align:center; color:#ef4444;">⚠️ Failed to load services. Please refresh.</p>
+                `;
+            }
+        }
+
+        // ============================================
+        // SELECT SERVICE
+        // ============================================
+        function selectService(serviceId) {
+            state.selectedService = state.services.find(s => s.id === serviceId);
+            document.querySelectorAll('.service-option').forEach(el => {
+                el.classList.toggle('selected', el.dataset.id === serviceId);
+            });
+            el.step1Next.disabled = false;
+            showToast(`✓ ${state.selectedService.name} selected`, 'success');
+        }
+
+        // ============================================
+        // SETUP DATE PICKER
+        // ============================================
+        function setupDatePicker() {
+            const today = new Date();
+            const minDate = today.toISOString().split('T')[0];
+            el.bookingDate.min = minDate;
+            el.bookingDate.value = minDate;
+            state.selectedDate = minDate;
+
+            el.bookingDate.addEventListener('change', function() {
+                state.selectedDate = this.value;
+                state.selectedSlot = null;
+                el.step2Next.disabled = true;
+                loadSlots(this.value);
+            });
+
+            loadSlots(minDate);
+        }
+
+        // ============================================
+        // LOAD SLOTS - WITH AM/PM
+        // ============================================
+        async function loadSlots(date) {
+            if (!date) return;
+
+            el.slotsContainer.innerHTML = `
+                <div style="text-align:center; padding:16px; color:#94a3b8;">
+                    <i class="fas fa-spinner fa-spin"></i> Loading slots...
+                </div>
+            `;
+            el.slotInfo.textContent = '';
+
+            try {
+                const res = await fetch(`${CONFIG.API_BASE_URL}/api/slots?date=${date}`);
+                const slots = await res.json();
+
+                if (!slots || slots.length === 0) {
+                    el.slotsContainer.innerHTML = `
+                        <p style="text-align:center; color:#94a3b8;">No slots available for this date</p>
+                    `;
+                    return;
+                }
+
+                const available = slots.filter(s => s.available);
+
+                if (available.length === 0) {
+                    el.slotsContainer.innerHTML = `
+                        <p style="text-align:center; color:#ef4444;">⚠️ All slots are booked for this date. Please select another date.</p>
+                    `;
+                    return;
+                }
+
+                el.slotsContainer.innerHTML = `
+                    <div class="slots-grid">
+                        ${slots.map(s => `
+                            <button class="slot-btn ${s.available ? '' : 'booked'}" 
+                                    data-id="${s.id}" 
+                                    data-time="${s.time}"
+                                    onclick="${s.available ? `selectSlot('${s.id}', '${s.time}', '${s.time_ampm || s.time}')` : ''}"
+                                    ${s.available ? '' : 'disabled'}>
+                                ${s.time}
+                                <span class="ampm">${s.time_ampm || ''}</span>
+                            </button>
+                        `).join('')}
+                    </div>
+                `;
+
+                el.slotInfo.textContent = `${available.length} slots available`;
+
+            } catch (error) {
+                console.error('Error loading slots:', error);
+                el.slotsContainer.innerHTML = `
+                    <p style="text-align:center; color:#ef4444;">⚠️ Failed to load slots</p>
+                `;
+            }
+        }
+
+        // ============================================
+        // SELECT SLOT
+        // ============================================
+        function selectSlot(slotId, slotTime, slotAmpm) {
+            state.selectedSlot = { id: slotId, time: slotTime, ampm: slotAmpm };
+            document.querySelectorAll('.slot-btn').forEach(el => {
+                el.classList.toggle('selected', el.dataset.id === slotId);
+            });
+            el.step2Next.disabled = false;
+            showToast(`✓ ${slotTime} ${slotAmpm} selected`, 'success');
+        }
+
+        // ============================================
+        // VALIDATION
+        // ============================================
+        function setupValidation() {
+            el.customerName.addEventListener('input', validateName);
+            el.customerPhone.addEventListener('input', validatePhone);
+        }
+
+        function validateName() {
+            const name = el.customerName.value.trim();
+            if (name.length < 2) {
+                el.nameError.classList.add('show');
+                el.customerName.classList.add('error');
+                return false;
+            }
+            el.nameError.classList.remove('show');
+            el.customerName.classList.remove('error');
+            return true;
+        }
+
+        function validatePhone() {
+            const phone = el.customerPhone.value.replace(/\D/g, '').slice(0, 10);
+            el.customerPhone.value = phone;
+            if (phone.length === 10 && /^[0-9]{10}$/.test(phone)) {
+                el.phoneError.classList.remove('show');
+                el.customerPhone.classList.remove('error');
+                return true;
+            }
+            if (phone.length > 0) {
+                el.phoneError.classList.add('show');
+                el.customerPhone.classList.add('error');
+            }
+            return false;
+        }
+
+        // ============================================
+        // STEP NAVIGATION
+        // ============================================
+        function goToStep(step) {
+            state.step = step;
+            document.querySelectorAll('.form-section').forEach(el => el.classList.remove('active'));
+
+            const sections = ['step1Section', 'step2Section', 'step3Section', 'step4Section'];
+            document.getElementById(sections[step - 1]).classList.add('active');
+
+            for (let i = 1; i <= 4; i++) {
+                const stepEl = document.getElementById('step' + i);
+                const lineEl = document.getElementById('line' + (i - 1));
+                stepEl.classList.remove('active', 'completed');
+                if (lineEl) lineEl.classList.remove('completed');
+
+                if (i < step) {
+                    stepEl.classList.add('completed');
+                    if (lineEl) lineEl.classList.add('completed');
+                }
+                if (i === step) {
+                    stepEl.classList.add('active');
+                }
+            }
+
+            if (step === 3) updateSummary();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ============================================
+        // UPDATE SUMMARY
+        // ============================================
+        function updateSummary() {
+            if (!state.selectedService || !state.selectedSlot || !state.selectedDate) return;
+            el.summaryService.textContent = state.selectedService.name;
+            el.summaryDate.textContent = formatDate(state.selectedDate);
+            el.summaryTime.textContent = `${state.selectedSlot.time} ${state.selectedSlot.ampm || ''}`;
+            el.summaryTotal.textContent = `₹${state.selectedService.price}`;
+        }
+
+        // ============================================
+        // FORMAT DATE
+        // ============================================
+        function formatDate(dateStr) {
+            const d = new Date(dateStr + 'T00:00:00');
+            return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+        }
+
+        // ============================================
+        // CONFIRM BOOKING
+        // ============================================
+        async function confirmBooking() {
+            if (!validateName() || !validatePhone()) {
+                showToast('Please fill all required fields correctly', 'error');
+                return;
+            }
+
+            const btn = el.confirmBooking;
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
+
+            const name = el.customerName.value.trim();
+            const phone = el.customerPhone.value.trim();
+            const email = el.customerEmail.value.trim();
+
+            const bookingData = {
+                customer_name: name,
+                phone: phone,
+                email: email,
+                service_id: state.selectedService.id,
+                slot_id: state.selectedSlot.id,
+                booking_date: state.selectedDate,
+                amount: state.selectedService.price
+            };
+
+            try {
+                let url = `${CONFIG.API_BASE_URL}/api/booking/create`;
+                let method = 'POST';
+
+                // If reschedule, use different endpoint
+                if (state.isReschedule && state.rescheduleBookingId) {
+                    url = `${CONFIG.API_BASE_URL}/api/booking/${state.rescheduleBookingId}/reschedule`;
+                    method = 'PUT';
+                }
+
+                const res = await fetch(url, {
+                    method: method,
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(bookingData)
+                });
+
+                const result = await res.json();
+
+                if (result.success) {
+                    state.bookingId = result.booking_id || state.rescheduleBookingId;
+                    showToast(state.isReschedule ? '✅ Booking rescheduled!' : '✅ Booking confirmed!', 'success');
+                    showSuccess(result.booking);
+                } else {
+                    showToast('❌ ' + (result.error || 'Booking failed'), 'error');
+                }
+
+            } catch (error) {
+                console.error('Booking error:', error);
+                showToast('❌ Network error. Please try again.', 'error');
+            }
+
+            btn.disabled = false;
+            btn.innerHTML = '<i class="fas fa-check"></i> Confirm Booking';
+        }
+
+        // ============================================
+        // SHOW SUCCESS
+        // ============================================
+        function showSuccess(booking) {
+            el.successBookingId.textContent = state.bookingId || booking?.booking_id || 'N/A';
+            el.successService.textContent = state.selectedService.name;
+            el.successDate.textContent = formatDate(state.selectedDate);
+            el.successTime.textContent = `${state.selectedSlot.time} ${state.selectedSlot.ampm || ''}`;
+            el.successAmount.textContent = `₹${state.selectedService.price}`;
+            goToStep(4);
+        }
+
+        // ============================================
+        // TOAST
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = el.toastContainer;
+            const className = type === 'success' ? 'toast-success' :
+                             type === 'error' ? 'toast-error' : 'toast-info';
+            container.innerHTML = `<div class="toast ${className}">${message}</div>`;
+            setTimeout(() => container.innerHTML = '', 5000);
+        }
+
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        function setupMobileMenu() {
+            el.mobileMenuBtn.addEventListener('click', function() {
+                el.mainNav.classList.toggle('open');
+            });
+        }
+
+        // ============================================
+        // EVENT LISTENERS
+        // ============================================
+        el.step1Next.addEventListener('click', function() {
+            if (state.selectedService) goToStep(2);
+        });
+
+        el.step2Back.addEventListener('click', function() {
+            goToStep(1);
+        });
+
+        el.step2Next.addEventListener('click', function() {
+            if (state.selectedSlot) goToStep(3);
+        });
+
+        el.step3Back.addEventListener('click', function() {
+            goToStep(2);
+        });
+
+        el.confirmBooking.addEventListener('click', confirmBooking);
+
+        console.log('✅ Booking Page Loaded');
+        console.log('📡 API URL:', CONFIG.API_BASE_URL);
+    </script>
+</body>
+</html>

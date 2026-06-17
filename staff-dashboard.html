@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Staff Dashboard - Premium Salon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+
+        /* ===== HEADER ===== */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.92);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo i { color: #10b981; font-size: 24px; }
+        .logo span { color: #10b981; }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        nav a {
+            font-size: 14px;
+            font-weight: 500;
+            color: #475569;
+            transition: color 0.2s;
+        }
+
+        nav a:hover { color: #10b981; }
+
+        .staff-badge {
+            background: #8b5cf6;
+            color: white;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+
+        .btn-logout {
+            background: #ef4444;
+            color: white !important;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+        }
+
+        .btn-logout:hover { background: #dc2626 !important; color: white !important; }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #0f172a;
+            cursor: pointer;
+        }
+
+        /* ===== DASHBOARD ===== */
+        .dashboard { padding: 24px 0 60px; }
+
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .dashboard-header .greeting h1 {
+            font-size: 26px;
+            font-weight: 800;
+        }
+        .dashboard-header .greeting p { color: #64748b; font-size: 14px; }
+
+        .dashboard-header .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: white;
+            padding: 6px 16px 6px 12px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .dashboard-header .user-badge .avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: #8b5cf6;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .dashboard-header .user-badge .info .name { font-weight: 600; font-size: 14px; }
+        .dashboard-header .user-badge .info .role { font-size: 12px; color: #94a3b8; }
+
+        /* ===== DATE SELECTOR ===== */
+        .date-selector {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 12px 18px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+        }
+
+        .date-selector label {
+            font-weight: 600;
+            font-size: 13px;
+            color: #0f172a;
+        }
+
+        .date-selector input[type="date"] {
+            padding: 7px 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            font-family: inherit;
+            background: #f8fafc;
+            transition: border-color 0.2s;
+        }
+
+        .date-selector input[type="date"]:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+        .date-selector .today-btn {
+            background: #10b981;
+            color: white;
+            padding: 7px 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-family: inherit;
+        }
+
+        .date-selector .today-btn:hover { background: #059669; }
+
+        .date-selector .date-display {
+            color: #64748b;
+            font-size: 13px;
+            margin-left: auto;
+        }
+
+        /* ===== STATS ===== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+            transition: all 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .stat-card .icon { font-size: 22px; margin-bottom: 2px; }
+        .stat-card .number { font-size: 24px; font-weight: 800; }
+        .stat-card .label { font-size: 12px; color: #64748b; }
+
+        .stat-card.pending .icon { color: #f59e0b; }
+        .stat-card.pending .number { color: #f59e0b; }
+        .stat-card.arrived .icon { color: #3b82f6; }
+        .stat-card.arrived .number { color: #3b82f6; }
+        .stat-card.completed .icon { color: #10b981; }
+        .stat-card.completed .number { color: #10b981; }
+        .stat-card.cancelled .icon { color: #ef4444; }
+        .stat-card.cancelled .number { color: #ef4444; }
+
+        /* ===== BOOKINGS ===== */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .section-title h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .section-title .badge {
+            background: #e2e8f0;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #475569;
+        }
+
+        /* ===== BOOKING CARDS ===== */
+        .booking-card {
+            background: white;
+            border-radius: 14px;
+            padding: 14px 18px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            transition: all 0.2s;
+            border-left: 4px solid #94a3b8;
+        }
+
+        .booking-card:hover {
+            border-color: #10b981;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        }
+
+        .booking-card.status-pending { border-left-color: #f59e0b; }
+        .booking-card.status-arrived { border-left-color: #3b82f6; }
+        .booking-card.status-completed { border-left-color: #10b981; }
+        .booking-card.status-cancelled { border-left-color: #ef4444; }
+
+        .booking-card .info {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .booking-card .info .time {
+            font-size: 18px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .booking-card .info .time .ampm {
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+        }
+
+        .booking-card .info .customer {
+            font-weight: 600;
+            font-size: 15px;
+        }
+
+        .booking-card .info .meta {
+            font-size: 13px;
+            color: #64748b;
+        }
+
+        .booking-card .info .meta i {
+            margin-right: 4px;
+            width: 16px;
+        }
+
+        .booking-card .status-badge {
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: capitalize;
+        }
+
+        .status-pending-badge {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .status-arrived-badge {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .status-completed-badge {
+            background: #d1fae5;
+            color: #059669;
+        }
+
+        .status-cancelled-badge {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .booking-card .actions {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .btn-sm {
+            padding: 5px 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-sm-arrived {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-sm-arrived:hover {
+            background: #2563eb;
+        }
+
+        .btn-sm-complete {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-sm-complete:hover {
+            background: #059669;
+        }
+
+        .btn-sm-cancel {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-sm-cancel:hover {
+            background: #dc2626;
+        }
+
+        .btn-sm-done {
+            background: #d1fae5;
+            color: #059669;
+            cursor: default;
+        }
+
+        .btn-sm-cancelled {
+            background: #fee2e2;
+            color: #dc2626;
+            cursor: default;
+        }
+
+        .btn-sm:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            background: white;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .empty-state i {
+            font-size: 48px;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+        }
+
+        .empty-state h3 {
+            font-size: 18px;
+            color: #0f172a;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 14px 22px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 999;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-width: 380px;
+            font-size: 14px;
+        }
+
+        .toast-success { background: #10b981; }
+        .toast-error { background: #ef4444; }
+        .toast-info { background: #3b82f6; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .hidden { display: none !important; }
+
+        /* ============================================
+           RESPONSIVE - Mobile First
+           ============================================ */
+
+        /* Mobile (default) */
+        @media (max-width: 480px) {
+            .container { padding: 0 12px; }
+
+            .dashboard-header .greeting h1 { font-size: 20px; }
+            .dashboard-header .user-badge { padding: 4px 12px 4px 10px; }
+            .dashboard-header .user-badge .avatar { width: 32px; height: 32px; font-size: 14px; }
+            .dashboard-header .user-badge .info .name { font-size: 13px; }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+            }
+
+            .stat-card { padding: 12px; }
+            .stat-card .number { font-size: 20px; }
+            .stat-card .label { font-size: 11px; }
+
+            .date-selector {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 8px;
+                padding: 12px;
+            }
+
+            .date-selector .date-display { margin-left: 0; text-align: center; }
+
+            .booking-card {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 12px 14px;
+            }
+
+            .booking-card .info { width: 100%; min-width: unset; }
+            .booking-card .info .time { font-size: 16px; }
+            .booking-card .info .customer { font-size: 14px; }
+            .booking-card .info .meta { font-size: 12px; }
+
+            .booking-card .actions {
+                width: 100%;
+                justify-content: flex-start;
+            }
+
+            .btn-sm { font-size: 11px; padding: 4px 10px; }
+
+            .section-title h2 { font-size: 17px; }
+
+            .mobile-menu-btn { display: block; }
+
+            nav {
+                display: none;
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px 0;
+                width: 100%;
+            }
+
+            nav.open { display: flex; }
+            nav a { font-size: 14px; }
+
+            .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
+        }
+
+        /* Tablet */
+        @media (min-width: 481px) and (max-width: 1024px) {
+            .container { padding: 0 16px; }
+
+            .dashboard-header .greeting h1 { font-size: 24px; }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+
+            .stat-card { padding: 14px; }
+            .stat-card .number { font-size: 22px; }
+
+            .booking-card {
+                padding: 12px 16px;
+            }
+
+            .booking-card .info .time { font-size: 17px; }
+
+            .date-selector {
+                gap: 10px;
+                padding: 10px 16px;
+            }
+
+            .date-selector input[type="date"] { font-size: 13px; }
+            .date-selector .today-btn { font-size: 13px; }
+            .date-selector .date-display { font-size: 13px; }
+        }
+
+        /* Desktop */
+        @media (min-width: 1025px) {
+            .container { padding: 0 24px; }
+
+            .dashboard-header .greeting h1 { font-size: 28px; }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 16px;
+            }
+
+            .stat-card .number { font-size: 28px; }
+
+            .booking-card {
+                padding: 16px 20px;
+            }
+
+            .booking-card .info .time { font-size: 20px; }
+
+            .date-selector {
+                padding: 14px 20px;
+            }
+
+            .date-selector input[type="date"] { font-size: 14px; }
+            .date-selector .today-btn { font-size: 14px; }
+            .date-selector .date-display { font-size: 14px; }
+        }
+
+        /* Large Desktop */
+        @media (min-width: 1400px) {
+            .container { max-width: 1300px; }
+
+            .stats-grid {
+                grid-template-columns: repeat(4, 1fr);
+                gap: 20px;
+            }
+
+            .stat-card .number { font-size: 32px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== HEADER ===== -->
+    <header>
+        <div class="container">
+            <div class="header-inner">
+                <a href="index.html" class="logo">
+                    <i class="fas fa-scissors"></i> Premium<span>Salon</span>
+                </a>
+                <nav id="mainNav">
+                    <a href="index.html">Home</a>
+                    <a href="staff-dashboard.html" class="active">Dashboard <span class="staff-badge">Staff</span></a>
+                    <button class="btn-logout" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </nav>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== DASHBOARD ===== -->
+    <section class="dashboard">
+        <div class="container">
+
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div class="greeting">
+                    <h1>👨‍💼 Staff Dashboard</h1>
+                    <p>Manage online bookings and customer appointments</p>
+                </div>
+                <div class="user-badge">
+                    <div class="avatar" id="userAvatar">S</div>
+                    <div class="info">
+                        <div class="name" id="userName">Staff Member</div>
+                        <div class="role">Online Bookings</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Date Selector -->
+            <div class="date-selector">
+                <label><i class="fas fa-calendar-day"></i> Select Date:</label>
+                <input type="date" id="bookingDate">
+                <button class="today-btn" onclick="setToday()">📅 Today</button>
+                <span class="date-display" id="dateDisplay"></span>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card pending">
+                    <div class="icon"><i class="fas fa-clock"></i></div>
+                    <div class="number" id="pendingCount">0</div>
+                    <div class="label">Pending</div>
+                </div>
+                <div class="stat-card arrived">
+                    <div class="icon"><i class="fas fa-user-check"></i></div>
+                    <div class="number" id="arrivedCount">0</div>
+                    <div class="label">Arrived</div>
+                </div>
+                <div class="stat-card completed">
+                    <div class="icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="number" id="completedCount">0</div>
+                    <div class="label">Completed</div>
+                </div>
+                <div class="stat-card cancelled">
+                    <div class="icon"><i class="fas fa-times-circle"></i></div>
+                    <div class="number" id="cancelledCount">0</div>
+                    <div class="label">Cancelled</div>
+                </div>
+            </div>
+
+            <!-- Bookings -->
+            <div class="section-title">
+                <h2><i class="fas fa-list"></i> Today's Bookings</h2>
+                <span class="badge" id="bookingCount">0</span>
+            </div>
+
+            <div id="bookingsContainer">
+                <div style="text-align:center; padding:30px; color:#94a3b8;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:28px; display:block; margin-bottom:10px;"></i>
+                    Loading bookings...
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toastContainer"></div>
+
+    <!-- ============================================
+    JAVASCRIPT - COMPLETE STAFF DASHBOARD
+    ============================================ -->
+    <script>
+        // ============================================
+        // CONFIG
+        // ============================================
+        const CONFIG = {
+            API_BASE_URL: 'http://localhost:5000',
+        };
+
+        // ============================================
+        // DOM REFS
+        // ============================================
+        const el = {
+            userName: document.getElementById('userName'),
+            userAvatar: document.getElementById('userAvatar'),
+            bookingDate: document.getElementById('bookingDate'),
+            dateDisplay: document.getElementById('dateDisplay'),
+            bookingsContainer: document.getElementById('bookingsContainer'),
+            pendingCount: document.getElementById('pendingCount'),
+            arrivedCount: document.getElementById('arrivedCount'),
+            completedCount: document.getElementById('completedCount'),
+            cancelledCount: document.getElementById('cancelledCount'),
+            bookingCount: document.getElementById('bookingCount'),
+            toastContainer: document.getElementById('toastContainer'),
+            mobileMenuBtn: document.getElementById('mobileMenuBtn'),
+            mainNav: document.getElementById('mainNav'),
+        };
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (!token || !user.id || user.role !== 'staff') {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            displayUserInfo(user);
+            setToday();
+            setupDateChange();
+            setupMobileMenu();
+            console.log('✅ Staff Dashboard Loaded');
+        });
+
+        // ============================================
+        // DISPLAY USER INFO
+        // ============================================
+        function displayUserInfo(user) {
+            el.userName.textContent = user.name || 'Staff Member';
+            el.userAvatar.textContent = (user.name || 'S')[0].toUpperCase();
+        }
+
+        // ============================================
+        // SET TODAY
+        // ============================================
+        function setToday() {
+            const today = new Date();
+            const dateStr = today.toISOString().split('T')[0];
+            el.bookingDate.value = dateStr;
+            updateDateDisplay(dateStr);
+            loadBookings(dateStr);
+        }
+
+        // ============================================
+        // SETUP DATE CHANGE
+        // ============================================
+        function setupDateChange() {
+            el.bookingDate.addEventListener('change', function() {
+                const date = this.value;
+                if (date) {
+                    updateDateDisplay(date);
+                    loadBookings(date);
+                }
+            });
+        }
+
+        // ============================================
+        // UPDATE DATE DISPLAY
+        // ============================================
+        function updateDateDisplay(dateStr) {
+            const d = new Date(dateStr + 'T00:00:00');
+            const options = { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' };
+            el.dateDisplay.textContent = '📅 ' + d.toLocaleDateString('en-IN', options);
+        }
+
+        // ============================================
+        // LOAD BOOKINGS
+        // ============================================
+        async function loadBookings(date) {
+            const token = localStorage.getItem('token');
+
+            el.bookingsContainer.innerHTML = `
+                <div style="text-align:center; padding:30px; color:#94a3b8;">
+                    <i class="fas fa-spinner fa-spin" style="font-size:28px; display:block; margin-bottom:10px;"></i>
+                    Loading bookings...
+                </div>
+            `;
+
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/staff/bookings?date=${date}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.status === 401) {
+                    logout();
+                    return;
+                }
+
+                const result = await response.json();
+                renderBookings(result);
+
+            } catch (error) {
+                console.error('Error loading bookings:', error);
+                el.bookingsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>Failed to Load</h3>
+                        <p>Please refresh and try again.</p>
+                    </div>
+                `;
+            }
+        }
+
+        // ============================================
+        // RENDER BOOKINGS
+        // ============================================
+        function renderBookings(result) {
+            const bookings = result.bookings || [];
+            const summary = result.summary || {};
+
+            // Update stats
+            el.pendingCount.textContent = summary.pending || 0;
+            el.arrivedCount.textContent = summary.arrived || 0;
+            el.completedCount.textContent = summary.completed || 0;
+            el.cancelledCount.textContent = summary.cancelled || 0;
+            el.bookingCount.textContent = bookings.length;
+
+            if (bookings.length === 0) {
+                el.bookingsContainer.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>No Bookings</h3>
+                        <p>No online bookings for this date.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Sort by time
+            bookings.sort((a, b) => (a.time || '').localeCompare(b.time || ''));
+
+            const statusMap = {
+                'pending': 'status-pending',
+                'arrived': 'status-arrived',
+                'completed': 'status-completed',
+                'cancelled': 'status-cancelled'
+            };
+
+            const badgeMap = {
+                'pending': 'status-pending-badge',
+                'arrived': 'status-arrived-badge',
+                'completed': 'status-completed-badge',
+                'cancelled': 'status-cancelled-badge'
+            };
+
+            el.bookingsContainer.innerHTML = bookings.map(b => `
+                <div class="booking-card ${statusMap[b.status] || 'status-pending'}">
+                    <div class="info">
+                        <div class="time">
+                            ${b.time || 'N/A'}
+                            <span class="ampm">${b.time_ampm || ''}</span>
+                        </div>
+                        <div class="customer">${b.customer_name || 'Unknown'}</div>
+                        <div class="meta">
+                            <i class="fas fa-cut"></i> ${b.service || 'Service'}
+                            <i class="fas fa-phone" style="margin-left:10px;"></i> ${b.phone || 'N/A'}
+                            <i class="fas fa-hashtag" style="margin-left:10px;"></i> ${b.booking_id || 'N/A'}
+                        </div>
+                    </div>
+                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                        <span class="status-badge ${badgeMap[b.status] || 'status-pending-badge'}">
+                            ${b.status || 'Pending'}
+                        </span>
+                        ${b.status === 'pending' ? `
+                            <button class="btn-sm btn-sm-arrived" onclick="updateStatus('${b.booking_id}', 'arrived')">
+                                <i class="fas fa-user-check"></i> Arrived
+                            </button>
+                            <button class="btn-sm btn-sm-cancel" onclick="updateStatus('${b.booking_id}', 'cancelled')">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        ` : ''}
+                        ${b.status === 'arrived' ? `
+                            <button class="btn-sm btn-sm-complete" onclick="updateStatus('${b.booking_id}', 'completed')">
+                                <i class="fas fa-check"></i> Complete
+                            </button>
+                            <button class="btn-sm btn-sm-cancel" onclick="updateStatus('${b.booking_id}', 'cancelled')">
+                                <i class="fas fa-times"></i> Cancel
+                            </button>
+                        ` : ''}
+                        ${b.status === 'completed' ? `
+                            <span class="btn-sm btn-sm-done">
+                                <i class="fas fa-check-circle"></i> Done
+                            </span>
+                        ` : ''}
+                        ${b.status === 'cancelled' ? `
+                            <span class="btn-sm btn-sm-cancelled">
+                                <i class="fas fa-times-circle"></i> Cancelled
+                            </span>
+                        ` : ''}
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ============================================
+        // UPDATE STATUS
+        // ============================================
+        async function updateStatus(bookingId, newStatus) {
+            const messages = {
+                'arrived': 'Mark this customer as arrived?',
+                'completed': 'Mark this service as completed?',
+                'cancelled': 'Cancel this booking?'
+            };
+
+            if (!confirm(messages[newStatus] || 'Update status?')) return;
+
+            const token = localStorage.getItem('token');
+
+            // Show loading on all buttons (disable them)
+            document.querySelectorAll('.btn-sm').forEach(btn => btn.disabled = true);
+
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/staff/booking/${bookingId}/status`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ status: newStatus })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    const msgs = {
+                        'arrived': '✅ Customer marked as arrived!',
+                        'completed': '✅ Service completed!',
+                        'cancelled': '✅ Booking cancelled!'
+                    };
+                    showToast(msgs[newStatus] || '✅ Status updated!', 'success');
+                    loadBookings(el.bookingDate.value);
+                } else {
+                    showToast('❌ ' + (result.error || 'Failed to update'), 'error');
+                }
+
+            } catch (error) {
+                console.error('Update error:', error);
+                showToast('❌ Network error. Please try again.', 'error');
+            }
+
+            // Re-enable buttons
+            document.querySelectorAll('.btn-sm').forEach(btn => btn.disabled = false);
+        }
+
+        // ============================================
+        // LOGOUT
+        // ============================================
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // ============================================
+        // TOAST
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = el.toastContainer;
+            const className = type === 'success' ? 'toast-success' :
+                             type === 'error' ? 'toast-error' : 'toast-info';
+
+            container.innerHTML = `<div class="toast ${className}">${message}</div>`;
+
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        function setupMobileMenu() {
+            el.mobileMenuBtn.addEventListener('click', function() {
+                el.mainNav.classList.toggle('open');
+            });
+        }
+
+        console.log('✅ Staff Dashboard Loaded');
+        console.log('📡 API URL:', CONFIG.API_BASE_URL);
+    </script>
+</body>
+</html>
