@@ -15,10 +15,156 @@
             color: #0f172a;
             line-height: 1.6;
             min-height: 100vh;
+            display: flex;
         }
 
         a { text-decoration: none; color: inherit; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* ============================================
+           SIDEBAR
+           ============================================ */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: #0f172a;
+            color: #94a3b8;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            padding: 20px 0;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+        }
+
+        .sidebar.open { left: 0; }
+
+        .sidebar .logo {
+            padding: 0 24px 20px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 16px;
+        }
+
+        .sidebar .logo h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar .logo h2 i { color: #10b981; }
+        .sidebar .logo h2 span { color: #10b981; }
+        .sidebar .logo p { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+        .sidebar .user-info {
+            padding: 0 24px 16px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .sidebar .user-info .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #ef4444;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .sidebar .user-info .details .name { color: white; font-weight: 600; font-size: 15px; }
+        .sidebar .user-info .details .role { font-size: 12px; color: #64748b; }
+
+        .sidebar .nav-links {
+            list-style: none;
+            padding: 0 12px;
+        }
+
+        .sidebar .nav-links li { margin-bottom: 4px; }
+
+        .sidebar .nav-links li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .sidebar .nav-links li a:hover,
+        .sidebar .nav-links li a.active {
+            background: #1e293b;
+            color: white;
+        }
+
+        .sidebar .nav-links li a i { width: 20px; text-align: center; font-size: 16px; }
+
+        .sidebar .nav-divider {
+            height: 1px;
+            background: #1e293b;
+            margin: 12px 16px;
+        }
+
+        .sidebar .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: calc(100% - 24px);
+            margin: 0 12px;
+            font-family: inherit;
+        }
+
+        .sidebar .logout-btn:hover { background: #1e293b; }
+        .sidebar .logout-btn i { width: 20px; text-align: center; font-size: 16px; }
+
+        /* ============================================
+           SIDEBAR OVERLAY
+           ============================================ */
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        .sidebar-overlay.active { display: block; }
+
+        /* ============================================
+           MAIN CONTENT
+           ============================================ */
+        .main-content {
+            flex: 1;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            width: 100%;
+        }
 
         /* ===== HEADER ===== */
         header {
@@ -35,112 +181,56 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 0;
+            padding: 12px 20px;
         }
 
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .logo i { color: #10b981; font-size: 28px; }
-        .logo span { color: #10b981; }
-
-        nav {
-            display: flex;
-            align-items: center;
-            gap: 32px;
-        }
-
-        nav a {
-            font-size: 15px;
-            font-weight: 500;
-            color: #475569;
-            transition: color 0.2s;
-            position: relative;
-        }
-
-        nav a:hover, nav a.active { color: #10b981; }
-        nav a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: #10b981;
-            border-radius: 4px;
-        }
-
-        .admin-badge {
-            background: #ef4444;
-            color: white;
-            padding: 4px 14px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: 600;
-            margin-left: 8px;
-        }
-
-        .btn-logout {
-            background: #ef4444;
-            color: white !important;
-            padding: 8px 18px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: background 0.2s;
-            border: none;
-            cursor: pointer;
-            font-size: 14px;
-            font-family: inherit;
-        }
-
-        .btn-logout:hover { background: #dc2626 !important; color: white !important; }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
-            color: #0f172a;
-            cursor: pointer;
-        }
-
-        /* ===== DASHBOARD ===== */
-        .dashboard { padding: 32px 0 60px; }
-
-        .dashboard-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .dashboard-header .greeting h1 {
-            font-size: 28px;
-            font-weight: 800;
-        }
-        .dashboard-header .greeting p { color: #64748b; }
-
-        .dashboard-header .user-badge {
+        .header-left {
             display: flex;
             align-items: center;
             gap: 14px;
-            background: white;
-            padding: 8px 20px 8px 16px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
         }
 
-        .dashboard-header .user-badge .avatar {
-            width: 44px;
-            height: 44px;
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #0f172a;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .menu-toggle:hover { background: #f1f5f9; color: #10b981; }
+
+        .logo-header {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-header i { color: #10b981; font-size: 20px; }
+        .logo-header span { color: #10b981; }
+
+        .header-right .admin-badge-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #fef2f2;
+            padding: 4px 12px 4px 8px;
+            border-radius: 20px;
+            border: 1px solid #fecaca;
+        }
+
+        .header-right .admin-badge-mini .avatar-mini {
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background: #ef4444;
             color: white;
@@ -148,55 +238,40 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 18px;
+            font-size: 13px;
         }
 
-        .dashboard-header .user-badge .info .name { font-weight: 600; font-size: 15px; }
-        .dashboard-header .user-badge .info .role { font-size: 13px; color: #94a3b8; }
-
-        /* ===== TABS ===== */
-        .tab-nav {
-            display: flex;
-            gap: 6px;
-            background: white;
-            padding: 6px;
-            border-radius: 14px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-        }
-
-        .tab-btn {
-            padding: 10px 22px;
-            border: none;
-            border-radius: 10px;
-            font-size: 14px;
+        .header-right .admin-badge-mini .name-mini {
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: transparent;
-            color: #64748b;
-            font-family: inherit;
+            font-size: 13px;
+            color: #0f172a;
         }
 
-        .tab-btn:hover { background: #f1f5f9; }
-        .tab-btn.active { background: #10b981; color: white; }
-        .tab-btn i { margin-right: 8px; }
+        /* ===== DASHBOARD ===== */
+        .dashboard { padding: 24px 20px 60px; }
 
-        .tab-content { display: none; animation: fadeIn 0.3s ease; }
-        .tab-content.active { display: block; }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(8px); }
-            to { opacity: 1; transform: translateY(0); }
+        .dashboard-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
         }
+
+        .dashboard-header h1 {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .dashboard-header p { color: #64748b; font-size: 14px; }
 
         /* ===== STATS ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
             gap: 16px;
-            margin-bottom: 32px;
+            margin-bottom: 24px;
         }
 
         .stat-card {
@@ -204,8 +279,10 @@
             padding: 20px;
             border-radius: 14px;
             border: 1px solid #e2e8f0;
-            text-align: center;
             transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
 
         .stat-card:hover {
@@ -213,72 +290,158 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        .stat-card .icon { font-size: 28px; margin-bottom: 4px; }
-        .stat-card .number { font-size: 28px; font-weight: 800; }
-        .stat-card .label { font-size: 13px; color: #64748b; }
+        .stat-card .icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
 
-        .stat-card.revenue .icon { color: #10b981; }
-        .stat-card.revenue .number { color: #10b981; }
-        .stat-card.bookings .icon { color: #3b82f6; }
-        .stat-card.bookings .number { color: #3b82f6; }
-        .stat-card.customers .icon { color: #f59e0b; }
-        .stat-card.customers .number { color: #f59e0b; }
-        .stat-card.services .icon { color: #8b5cf6; }
-        .stat-card.services .number { color: #8b5cf6; }
+        .stat-card .icon.revenue { background: #d1fae5; color: #10b981; }
+        .stat-card .icon.bookings { background: #dbeafe; color: #3b82f6; }
+        .stat-card .icon.customers { background: #fef3c7; color: #f59e0b; }
+        .stat-card .icon.services { background: #ede9fe; color: #8b5cf6; }
+
+        .stat-card .info .number {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0f172a;
+        }
+
+        .stat-card .info .label {
+            font-size: 13px;
+            color: #64748b;
+        }
 
         /* ===== SECTION TITLE ===== */
         .section-title {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 10px;
         }
 
-        .section-title h2 { font-size: 22px; font-weight: 700; }
+        .section-title h2 { font-size: 20px; font-weight: 700; }
 
-        .section-title .badge {
-            background: #e2e8f0;
-            padding: 2px 12px;
-            border-radius: 20px;
-            font-size: 13px;
+        /* ===== REVENUE FILTER ===== */
+        .revenue-filter {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            background: white;
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            align-items: center;
+        }
+
+        .revenue-filter label {
             font-weight: 600;
-            color: #475569;
+            font-size: 13px;
+            color: #0f172a;
         }
 
-        .btn-add {
+        .revenue-filter input[type="time"],
+        .revenue-filter input[type="date"] {
+            padding: 8px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: inherit;
+            background: #f8fafc;
+            transition: border-color 0.2s;
+        }
+
+        .revenue-filter input[type="time"]:focus,
+        .revenue-filter input[type="date"]:focus {
+            outline: none;
+            border-color: #10b981;
+        }
+
+        .revenue-filter .btn-apply {
             background: #10b981;
             color: white;
-            padding: 10px 24px;
+            padding: 8px 20px;
             border: none;
             border-radius: 10px;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             cursor: pointer;
             transition: all 0.2s;
             font-family: inherit;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
         }
 
-        .btn-add:hover {
+        .revenue-filter .btn-apply:hover {
             background: #059669;
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
         }
 
+        .revenue-filter .btn-clear {
+            background: #f1f5f9;
+            color: #0f172a;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .revenue-filter .btn-clear:hover { background: #e2e8f0; }
+
+        .revenue-filter .filter-result {
+            margin-left: auto;
+            font-weight: 600;
+            font-size: 14px;
+            color: #10b981;
+        }
+
+        /* ===== REVENUE GRID ===== */
+        .revenue-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 14px;
+            margin-bottom: 20px;
+        }
+
+        .revenue-card {
+            background: white;
+            padding: 16px 20px;
+            border-radius: 14px;
+            border: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .revenue-card .amount {
+            font-size: 22px;
+            font-weight: 800;
+            color: #10b981;
+        }
+
+        .revenue-card .label {
+            font-size: 12px;
+            color: #64748b;
+        }
+
         /* ===== SERVICES ===== */
         .service-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 14px;
         }
 
         .service-card {
             background: white;
-            padding: 18px 20px;
+            padding: 16px 18px;
             border-radius: 14px;
             border: 1px solid #e2e8f0;
             display: flex;
@@ -292,17 +455,17 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
-        .service-card .info .name { font-weight: 600; font-size: 16px; }
-        .service-card .info .price { color: #10b981; font-weight: 700; font-size: 18px; }
-        .service-card .info .duration { font-size: 13px; color: #94a3b8; }
+        .service-card .info .name { font-weight: 600; font-size: 15px; }
+        .service-card .info .price { color: #10b981; font-weight: 700; font-size: 17px; }
+        .service-card .info .duration { font-size: 12px; color: #94a3b8; }
 
         .service-card .info .status {
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
             padding: 2px 10px;
             border-radius: 12px;
             display: inline-block;
-            margin-top: 4px;
+            margin-top: 3px;
         }
 
         .service-card .info .status.active {
@@ -315,13 +478,13 @@
             color: #dc2626;
         }
 
-        .service-card .actions { display: flex; gap: 8px; }
+        .service-card .actions { display: flex; gap: 6px; }
 
         .btn-sm {
-            padding: 6px 12px;
+            padding: 5px 10px;
             border: none;
             border-radius: 8px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -332,6 +495,28 @@
         .btn-sm-edit:hover { background: #bfdbfe; }
         .btn-sm-delete { background: #fee2e2; color: #dc2626; }
         .btn-sm-delete:hover { background: #fecaca; }
+
+        .btn-add {
+            background: #10b981;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-add:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
 
         /* ===== MODAL ===== */
         .modal-overlay {
@@ -353,8 +538,8 @@
         .modal {
             background: white;
             border-radius: 20px;
-            padding: 32px;
-            max-width: 460px;
+            padding: 30px;
+            max-width: 440px;
             width: 92%;
             max-height: 90vh;
             overflow-y: auto;
@@ -366,14 +551,14 @@
             to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
-        .modal h2 { font-size: 24px; font-weight: 700; margin-bottom: 4px; }
-        .modal .subtitle { color: #64748b; margin-bottom: 20px; }
+        .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+        .modal .subtitle { color: #64748b; margin-bottom: 18px; }
 
-        .modal .form-group { margin-bottom: 16px; }
+        .modal .form-group { margin-bottom: 14px; }
         .modal .form-group label {
             display: block;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 4px;
             color: #0f172a;
         }
@@ -384,7 +569,7 @@
             padding: 10px 14px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-family: inherit;
             transition: all 0.2s;
             background: #f8fafc;
@@ -397,22 +582,22 @@
             background: white;
         }
 
-        .modal .form-group textarea { resize: vertical; min-height: 60px; }
+        .modal .form-group textarea { resize: vertical; min-height: 50px; }
 
         .modal .form-row {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             justify-content: flex-end;
-            margin-top: 20px;
+            margin-top: 18px;
         }
 
         .modal .form-row .btn-secondary {
-            padding: 10px 24px;
+            padding: 10px 20px;
             background: #f1f5f9;
             color: #0f172a;
             border: none;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
@@ -422,12 +607,12 @@
         .modal .form-row .btn-secondary:hover { background: #e2e8f0; }
 
         .modal .form-row .btn-primary {
-            padding: 10px 24px;
+            padding: 10px 20px;
             background: #10b981;
             color: white;
             border: none;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -437,81 +622,58 @@
         .modal .form-row .btn-primary:hover { background: #059669; }
         .modal .form-row .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
 
-        /* ===== REVENUE ===== */
-        .revenue-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-            gap: 16px;
-            margin-bottom: 24px;
-        }
-
-        .revenue-card {
-            background: white;
-            padding: 16px 20px;
-            border-radius: 14px;
-            border: 1px solid #e2e8f0;
-            text-align: center;
-        }
-
-        .revenue-card .amount {
-            font-size: 24px;
-            font-weight: 800;
-            color: #10b981;
-        }
-
-        .revenue-card .label { font-size: 13px; color: #64748b; }
-
-        /* ===== RECENT BOOKINGS ===== */
+        /* ===== BOOKINGS ===== */
         .recent-booking {
             background: white;
-            padding: 12px 18px;
+            padding: 10px 16px;
             border-radius: 10px;
             border: 1px solid #e2e8f0;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .recent-booking .customer { font-weight: 600; }
-        .recent-booking .service { color: #64748b; font-size: 14px; }
-        .recent-booking .amount { font-weight: 700; color: #10b981; }
+        .recent-booking .customer { font-weight: 600; font-size: 14px; }
+        .recent-booking .service { color: #64748b; font-size: 13px; }
+        .recent-booking .amount { font-weight: 700; color: #10b981; font-size: 14px; }
 
         .recent-booking .status-badge {
-            padding: 2px 12px;
+            padding: 2px 10px;
             border-radius: 12px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 600;
         }
 
         /* ===== EMPTY STATE ===== */
         .empty-state {
             text-align: center;
-            padding: 40px 20px;
+            padding: 35px 20px;
             background: white;
             border-radius: 14px;
             border: 1px solid #e2e8f0;
         }
 
-        .empty-state i { font-size: 48px; color: #cbd5e1; margin-bottom: 12px; }
-        .empty-state h3 { font-size: 18px; color: #0f172a; }
-        .empty-state p { color: #94a3b8; }
+        .empty-state i { font-size: 44px; color: #cbd5e1; margin-bottom: 10px; }
+        .empty-state h3 { font-size: 17px; color: #0f172a; }
+        .empty-state p { color: #94a3b8; font-size: 14px; }
 
         /* ===== TOAST ===== */
         .toast {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            padding: 16px 24px;
+            bottom: 20px;
+            right: 20px;
+            padding: 14px 22px;
             border-radius: 12px;
             color: white;
             font-weight: 500;
-            z-index: 999;
+            z-index: 2000;
             animation: slideUp 0.3s ease;
             box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            max-width: 400px;
+            max-width: 380px;
+            font-size: 14px;
         }
 
         .toast-success { background: #10b981; }
@@ -525,8 +687,8 @@
 
         .loading-spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border: 3px solid rgba(255,255,255,0.3);
             border-top: 3px solid white;
             border-radius: 50%;
@@ -534,201 +696,282 @@
         }
 
         @keyframes spin { to { transform: rotate(360deg); } }
-        .hidden { display: none !important; }
 
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            nav {
-                display: none;
-                flex-direction: column;
-                gap: 12px;
-                padding: 16px 0;
-                width: 100%;
-            }
-            nav.open { display: flex; }
-            .mobile-menu-btn { display: block; }
+        /* ============================================
+           RESPONSIVE
+           ============================================ */
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .stat-card { padding: 14px; }
+            .stat-card .icon { width: 40px; height: 40px; font-size: 18px; }
+            .stat-card .info .number { font-size: 20px; }
 
-            .dashboard-header { flex-direction: column; align-items: flex-start; }
-            .dashboard-header .user-badge { width: 100%; }
-            .tab-nav { flex-direction: column; }
-            .tab-btn { width: 100%; text-align: left; }
-            .stats-grid { grid-template-columns: 1fr 1fr; }
-            .service-grid { grid-template-columns: 1fr; }
-            .section-title { flex-direction: column; align-items: flex-start; }
-            .section-title .btn-add { width: 100%; justify-content: center; }
+            .revenue-filter { flex-direction: column; align-items: stretch; }
+            .revenue-filter .filter-result { margin-left: 0; text-align: center; }
+
             .revenue-grid { grid-template-columns: 1fr 1fr; }
+            .service-grid { grid-template-columns: 1fr; }
+
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
+
+            .header-inner { padding: 10px 14px; }
+            .logo-header { font-size: 16px; }
+            .header-right .admin-badge-mini .name-mini { display: none; }
+
+            .dashboard { padding: 16px 12px 40px; }
+            .dashboard-header h1 { font-size: 20px; }
+
+            .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
+
+            .menu-toggle { font-size: 18px; padding: 6px; }
         }
 
-        @media (max-width: 480px) {
-            .stats-grid { grid-template-columns: 1fr; }
-            .revenue-grid { grid-template-columns: 1fr; }
-            .modal { padding: 24px 20px; }
+        @media (min-width: 481px) and (max-width: 1024px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+            .revenue-grid { grid-template-columns: repeat(2, 1fr); }
+            .service-grid { grid-template-columns: 1fr 1fr; }
+
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
+        }
+
+        @media (min-width: 1025px) {
+            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+            .revenue-grid { grid-template-columns: repeat(4, 1fr); }
+            .service-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+
+            .sidebar { left: -280px; }
+            .sidebar.open { left: 0; }
+
+            .menu-toggle { font-size: 22px; padding: 8px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
-    <header>
-        <div class="container">
-            <div class="header-inner">
-                <a href="index.html" class="logo">
-                    <i class="fas fa-scissors"></i> Premium<span>Salon</span>
-                </a>
-                <nav id="mainNav">
-                    <a href="index.html">Home</a>
-                    <a href="admin-dashboard.html" class="active">Admin <span class="admin-badge">Admin</span></a>
-                    <button class="btn-logout" onclick="logout()">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </nav>
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
-                    <i class="fas fa-bars"></i>
-                </button>
+    <!-- ============================================
+    SIDEBAR OVERLAY
+    ============================================ -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- ============================================
+    SIDEBAR - ONLY NAVIGATION
+    ============================================ -->
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2><i class="fas fa-scissors"></i> Premium<span>Salon</span></h2>
+            <p>Admin Panel</p>
+        </div>
+
+        <div class="user-info">
+            <div class="avatar" id="sideAvatar">A</div>
+            <div class="details">
+                <div class="name" id="sideName">Admin</div>
+                <div class="role">Administrator</div>
             </div>
         </div>
-    </header>
 
-    <!-- ===== DASHBOARD ===== -->
-    <section class="dashboard">
-        <div class="container">
+        <ul class="nav-links">
+            <li><a href="admin-dashboard.html" class="active" data-tab="dashboard">
+                <i class="fas fa-home"></i> Dashboard
+            </a></li>
+            <li><a href="#" data-tab="services" onclick="switchTab('services')">
+                <i class="fas fa-cut"></i> Services
+            </a></li>
+            <li><a href="#" data-tab="revenue" onclick="switchTab('revenue')">
+                <i class="fas fa-rupee-sign"></i> Revenue
+            </a></li>
+            <li><a href="#" data-tab="bookings" onclick="switchTab('bookings')">
+                <i class="fas fa-calendar-check"></i> Bookings
+            </a></li>
+            <li><a href="index.html">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a></li>
+        </ul>
 
-            <!-- Dashboard Header -->
-            <div class="dashboard-header">
-                <div class="greeting">
-                    <h1>Admin Panel ⚙️</h1>
-                    <p>Manage services, view revenue, and monitor bookings</p>
+        <div class="nav-divider"></div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+
+    <!-- ============================================
+    MAIN CONTENT
+    ============================================ -->
+    <div class="main-content">
+
+        <!-- ===== HEADER ===== -->
+        <header>
+            <div class="header-inner">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a href="index.html" class="logo-header">
+                        <i class="fas fa-scissors"></i> Premium<span>Salon</span>
+                    </a>
                 </div>
-                <div class="user-badge">
-                    <div class="avatar" id="userAvatar">A</div>
-                    <div class="info">
-                        <div class="name" id="userName">Admin</div>
-                        <div class="role">Administrator</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tabs -->
-            <div class="tab-nav">
-                <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">
-                    <i class="fas fa-chart-pie"></i> Dashboard
-                </button>
-                <button class="tab-btn" data-tab="services" onclick="switchTab('services')">
-                    <i class="fas fa-cut"></i> Services
-                </button>
-                <button class="tab-btn" data-tab="revenue" onclick="switchTab('revenue')">
-                    <i class="fas fa-rupee-sign"></i> Revenue
-                </button>
-                <button class="tab-btn" data-tab="bookings" onclick="switchTab('bookings')">
-                    <i class="fas fa-calendar-check"></i> Bookings
-                </button>
-            </div>
-
-            <!-- ===== TAB: DASHBOARD ===== -->
-            <div class="tab-content active" id="tab-dashboard">
-                <div class="stats-grid">
-                    <div class="stat-card revenue">
-                        <div class="icon"><i class="fas fa-rupee-sign"></i></div>
-                        <div class="number" id="totalRevenue">₹0</div>
-                        <div class="label">Total Revenue</div>
-                    </div>
-                    <div class="stat-card bookings">
-                        <div class="icon"><i class="fas fa-calendar-check"></i></div>
-                        <div class="number" id="totalBookings">0</div>
-                        <div class="label">Total Bookings</div>
-                    </div>
-                    <div class="stat-card customers">
-                        <div class="icon"><i class="fas fa-users"></i></div>
-                        <div class="number" id="totalCustomers">0</div>
-                        <div class="label">Total Customers</div>
-                    </div>
-                    <div class="stat-card services">
-                        <div class="icon"><i class="fas fa-cut"></i></div>
-                        <div class="number" id="totalServices">0</div>
-                        <div class="label">Total Services</div>
-                    </div>
-                </div>
-
-                <div class="section-title">
-                    <h2><i class="fas fa-clock"></i> Recent Bookings</h2>
-                </div>
-                <div id="recentBookings">
-                    <div style="text-align:center; padding:20px; color:#94a3b8;">
-                        <i class="fas fa-spinner fa-spin"></i> Loading...
+                <div class="header-right">
+                    <div class="admin-badge-mini">
+                        <div class="avatar-mini" id="headerAvatar">A</div>
+                        <span class="name-mini" id="headerName">Admin</span>
                     </div>
                 </div>
             </div>
+        </header>
 
-            <!-- ===== TAB: SERVICES ===== -->
-            <div class="tab-content" id="tab-services">
-                <div class="section-title">
-                    <h2><i class="fas fa-cut"></i> Manage Services</h2>
-                    <span class="badge" id="serviceCount">0</span>
+        <!-- ===== DASHBOARD ===== -->
+        <section class="dashboard">
+            <div class="container" style="max-width:1200px; margin:0 auto;">
+
+                <!-- Dashboard Header -->
+                <div class="dashboard-header">
+                    <div>
+                        <h1>Admin Panel ⚙️</h1>
+                        <p>Manage services, view revenue, and monitor bookings</p>
+                    </div>
                     <button class="btn-add" onclick="openAddServiceModal()">
                         <i class="fas fa-plus"></i> Add Service
                     </button>
                 </div>
-                <div class="service-grid" id="servicesContainer">
-                    <div style="grid-column:1/-1; text-align:center; padding:20px; color:#94a3b8;">
-                        <i class="fas fa-spinner fa-spin"></i> Loading services...
-                    </div>
-                </div>
-            </div>
 
-            <!-- ===== TAB: REVENUE ===== -->
-            <div class="tab-content" id="tab-revenue">
-                <div class="section-title">
-                    <h2><i class="fas fa-rupee-sign"></i> Revenue Report</h2>
+                <!-- Stats Grid - Directly on Dashboard -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="icon revenue"><i class="fas fa-rupee-sign"></i></div>
+                        <div class="info">
+                            <div class="number" id="totalRevenue">₹0</div>
+                            <div class="label">Total Revenue</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon bookings"><i class="fas fa-calendar-check"></i></div>
+                        <div class="info">
+                            <div class="number" id="totalBookings">0</div>
+                            <div class="label">Total Bookings</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon customers"><i class="fas fa-users"></i></div>
+                        <div class="info">
+                            <div class="number" id="totalCustomers">0</div>
+                            <div class="label">Total Customers</div>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="icon services"><i class="fas fa-cut"></i></div>
+                        <div class="info">
+                            <div class="number" id="totalServices">0</div>
+                            <div class="label">Total Services</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="revenue-grid">
-                    <div class="revenue-card">
-                        <div class="amount" id="todayRevenue">₹0</div>
-                        <div class="label">Today</div>
-                    </div>
-                    <div class="revenue-card">
-                        <div class="amount" id="weekRevenue">₹0</div>
-                        <div class="label">This Week</div>
-                    </div>
-                    <div class="revenue-card">
-                        <div class="amount" id="monthRevenue">₹0</div>
-                        <div class="label">This Month</div>
-                    </div>
-                    <div class="revenue-card">
-                        <div class="amount" id="allTimeRevenue">₹0</div>
-                        <div class="label">All Time</div>
-                    </div>
-                </div>
-                <div id="revenueBookings">
-                    <div style="text-align:center; padding:20px; color:#94a3b8;">
-                        <i class="fas fa-spinner fa-spin"></i> Loading revenue data...
-                    </div>
-                </div>
-            </div>
 
-            <!-- ===== TAB: BOOKINGS ===== -->
-            <div class="tab-content" id="tab-bookings">
-                <div class="section-title">
-                    <h2><i class="fas fa-calendar-check"></i> All Bookings</h2>
-                    <span class="badge" id="allBookingsCount">0</span>
-                </div>
-                <div style="display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;">
-                    <input type="date" id="filterDate" style="padding:8px 14px; border:2px solid #e2e8f0; border-radius:10px; font-family:inherit; background:#f8fafc;">
-                    <button class="btn-add" style="padding:8px 20px; background:#3b82f6;" onclick="filterBookings()">
-                        <i class="fas fa-filter"></i> Filter
-                    </button>
-                    <button class="btn-add" style="padding:8px 20px; background:#64748b;" onclick="clearFilter()">
-                        <i class="fas fa-times"></i> Clear
-                    </button>
-                </div>
-                <div id="allBookingsContainer">
-                    <div style="text-align:center; padding:20px; color:#94a3b8;">
-                        <i class="fas fa-spinner fa-spin"></i> Loading bookings...
+                <!-- ===== TAB: SERVICES (Hidden by default, shown via sidebar) ===== -->
+                <div class="tab-content" id="tab-services" style="display:none;">
+                    <div class="section-title">
+                        <h2><i class="fas fa-cut"></i> Manage Services</h2>
+                        <span class="badge" id="serviceCount" style="background:#e2e8f0; padding:2px 10px; border-radius:20px; font-size:12px; font-weight:600; color:#475569;">0</span>
+                    </div>
+                    <div class="service-grid" id="servicesContainer">
+                        <div style="grid-column:1/-1; text-align:center; padding:20px; color:#94a3b8;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading services...
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
-    </section>
+                <!-- ===== TAB: REVENUE (Hidden by default, shown via sidebar) ===== -->
+                <div class="tab-content" id="tab-revenue" style="display:none;">
+                    <div class="section-title">
+                        <h2><i class="fas fa-rupee-sign"></i> Revenue Report</h2>
+                    </div>
+
+                    <!-- Revenue Filter with Time -->
+                    <div class="revenue-filter">
+                        <label><i class="fas fa-calendar"></i> Date:</label>
+                        <input type="date" id="filterDateRev">
+                        
+                        <label><i class="fas fa-clock"></i> From:</label>
+                        <input type="time" id="filterTimeFrom" value="00:00">
+                        
+                        <label>To:</label>
+                        <input type="time" id="filterTimeTo" value="23:59">
+                        
+                        <button class="btn-apply" onclick="applyRevenueFilter()">
+                            <i class="fas fa-search"></i> Apply
+                        </button>
+                        <button class="btn-clear" onclick="clearRevenueFilter()">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                        <span class="filter-result" id="filterResult">Showing: All Time</span>
+                    </div>
+
+                    <div class="revenue-grid">
+                        <div class="revenue-card">
+                            <div class="amount" id="todayRevenue">₹0</div>
+                            <div class="label">Today</div>
+                        </div>
+                        <div class="revenue-card">
+                            <div class="amount" id="filteredRevenue">₹0</div>
+                            <div class="label">Filtered Period</div>
+                        </div>
+                        <div class="revenue-card">
+                            <div class="amount" id="totalRevenueAll">₹0</div>
+                            <div class="label">All Time</div>
+                        </div>
+                        <div class="revenue-card">
+                            <div class="amount" id="bookingCountAll">0</div>
+                            <div class="label">Total Bookings</div>
+                        </div>
+                    </div>
+
+                    <div id="revenueBookings">
+                        <div style="text-align:center; padding:20px; color:#94a3b8;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading revenue data...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== TAB: BOOKINGS (Hidden by default, shown via sidebar) ===== -->
+                <div class="tab-content" id="tab-bookings" style="display:none;">
+                    <div class="section-title">
+                        <h2><i class="fas fa-calendar-check"></i> All Bookings</h2>
+                        <span class="badge" id="allBookingsCount" style="background:#e2e8f0; padding:2px 10px; border-radius:20px; font-size:12px; font-weight:600; color:#475569;">0</span>
+                    </div>
+                    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px;">
+                        <input type="date" id="filterDate" style="padding:8px 14px; border:2px solid #e2e8f0; border-radius:10px; font-family:inherit; background:#f8fafc;">
+                        <button class="btn-add" style="padding:8px 18px; background:#3b82f6;" onclick="filterBookings()">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <button class="btn-add" style="padding:8px 18px; background:#64748b;" onclick="clearFilter()">
+                            <i class="fas fa-times"></i> Clear
+                        </button>
+                    </div>
+                    <div id="allBookingsContainer">
+                        <div style="text-align:center; padding:20px; color:#94a3b8;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading bookings...
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== RECENT BOOKINGS (Always visible on Dashboard) ===== -->
+                <div id="recentSection">
+                    <div class="section-title">
+                        <h2><i class="fas fa-clock"></i> Recent Bookings</h2>
+                    </div>
+                    <div id="recentBookings">
+                        <div style="text-align:center; padding:20px; color:#94a3b8;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading...
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
 
     <!-- ===== MODAL ===== -->
     <div class="modal-overlay" id="serviceModal">
@@ -779,8 +1022,10 @@
         // DOM REFS
         // ============================================
         const el = {
-            userName: document.getElementById('userName'),
-            userAvatar: document.getElementById('userAvatar'),
+            headerName: document.getElementById('headerName'),
+            headerAvatar: document.getElementById('headerAvatar'),
+            sideName: document.getElementById('sideName'),
+            sideAvatar: document.getElementById('sideAvatar'),
             totalRevenue: document.getElementById('totalRevenue'),
             totalBookings: document.getElementById('totalBookings'),
             totalCustomers: document.getElementById('totalCustomers'),
@@ -792,13 +1037,18 @@
             allBookingsCount: document.getElementById('allBookingsCount'),
             revenueBookings: document.getElementById('revenueBookings'),
             todayRevenue: document.getElementById('todayRevenue'),
-            weekRevenue: document.getElementById('weekRevenue'),
-            monthRevenue: document.getElementById('monthRevenue'),
-            allTimeRevenue: document.getElementById('allTimeRevenue'),
+            filteredRevenue: document.getElementById('filteredRevenue'),
+            totalRevenueAll: document.getElementById('totalRevenueAll'),
+            bookingCountAll: document.getElementById('bookingCountAll'),
+            filterDateRev: document.getElementById('filterDateRev'),
+            filterTimeFrom: document.getElementById('filterTimeFrom'),
+            filterTimeTo: document.getElementById('filterTimeTo'),
+            filterResult: document.getElementById('filterResult'),
             filterDate: document.getElementById('filterDate'),
             toastContainer: document.getElementById('toastContainer'),
-            mobileMenuBtn: document.getElementById('mobileMenuBtn'),
-            mainNav: document.getElementById('mainNav'),
+            sidebar: document.getElementById('sidebar'),
+            sidebarOverlay: document.getElementById('sidebarOverlay'),
+            menuToggle: document.getElementById('menuToggle'),
             serviceModal: document.getElementById('serviceModal'),
             modalTitle: document.getElementById('modalTitle'),
             modalSubtitle: document.getElementById('modalSubtitle'),
@@ -808,6 +1058,7 @@
             servicePrice: document.getElementById('servicePrice'),
             serviceDuration: document.getElementById('serviceDuration'),
             modalSaveBtn: document.getElementById('modalSaveBtn'),
+            recentSection: document.getElementById('recentSection'),
         };
 
         // ============================================
@@ -815,6 +1066,32 @@
         // ============================================
         let allServices = [];
         let allBookings = [];
+        let filteredBookings = [];
+        let revenueData = {};
+        let currentTab = 'dashboard';
+
+        // ============================================
+        // SIDEBAR FUNCTIONS
+        // ============================================
+        function openSidebar() {
+            el.sidebar.classList.add('open');
+            el.sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            el.sidebar.classList.remove('open');
+            el.sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function toggleSidebar() {
+            if (el.sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
 
         // ============================================
         // INIT
@@ -833,13 +1110,33 @@
             loadServices();
             loadRecentBookings();
             loadRevenue();
-            loadAllBookings();
 
             const today = new Date().toISOString().split('T')[0];
             el.filterDate.value = today;
+            el.filterDateRev.value = today;
 
-            setupMobileMenu();
+            // Sidebar events
+            el.menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSidebar();
+            });
+
+            el.sidebarOverlay.addEventListener('click', closeSidebar);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && el.sidebar.classList.contains('open')) {
+                    closeSidebar();
+                }
+            });
+
+            document.querySelector('.main-content').addEventListener('click', function(e) {
+                if (el.sidebar.classList.contains('open') && !e.target.closest('.sidebar') && !e.target.closest('.menu-toggle')) {
+                    closeSidebar();
+                }
+            });
+
             setupModalClose();
+            loadAllBookings();
             console.log('✅ Admin Dashboard Loaded');
         });
 
@@ -847,25 +1144,50 @@
         // DISPLAY USER INFO
         // ============================================
         function displayUserInfo(user) {
-            el.userName.textContent = user.name || 'Admin';
-            el.userAvatar.textContent = (user.name || 'A')[0].toUpperCase();
+            const name = user.name || 'Admin';
+            const initial = name[0].toUpperCase();
+
+            el.headerName.textContent = name;
+            el.sideName.textContent = name;
+            el.headerAvatar.textContent = initial;
+            el.sideAvatar.textContent = initial;
         }
 
         // ============================================
         // TAB SWITCHING
         // ============================================
         function switchTab(tab) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.tab === tab);
+            currentTab = tab;
+
+            // Update sidebar active link
+            document.querySelectorAll('.sidebar .nav-links li a').forEach(link => {
+                link.classList.toggle('active', link.dataset.tab === tab);
             });
 
+            // Hide all tabs
             document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.toggle('active', content.id === 'tab-' + tab);
+                content.style.display = 'none';
             });
 
+            // Show selected tab
+            const targetTab = document.getElementById('tab-' + tab);
+            if (targetTab) {
+                targetTab.style.display = 'block';
+            }
+
+            // Show/hide recent bookings section
+            if (tab === 'dashboard') {
+                el.recentSection.style.display = 'block';
+            } else {
+                el.recentSection.style.display = 'none';
+            }
+
+            // Load data
             if (tab === 'services') loadServices();
             if (tab === 'revenue') loadRevenue();
             if (tab === 'bookings') loadAllBookings(el.filterDate.value);
+
+            closeSidebar();
         }
 
         // ============================================
@@ -875,30 +1197,22 @@
             const token = localStorage.getItem('token');
 
             try {
-                // Services
                 const servicesRes = await fetch(`${CONFIG.API_BASE_URL}/api/services`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const services = await servicesRes.json();
                 el.totalServices.textContent = services.length || 0;
 
-                // Revenue
                 const revenueRes = await fetch(`${CONFIG.API_BASE_URL}/api/admin/revenue`, {
                     headers: { 'Authorization': `Bearer ${token}` }
                 });
                 const revenue = await revenueRes.json();
                 el.totalBookings.textContent = revenue.total_bookings || 0;
                 el.totalRevenue.textContent = '₹' + (revenue.total_revenue || 0);
-
-                // Customers count
-                const usersRes = await fetch(`${CONFIG.API_BASE_URL}/api/auth/me`, {
-                    headers: { 'Authorization': `Bearer ${token}` }
-                });
-                // For demo, we'll use a simple count
                 el.totalCustomers.textContent = '5';
 
             } catch (error) {
-                console.error('Error loading dashboard stats:', error);
+                console.error('Error loading stats:', error);
             }
         }
 
@@ -1139,14 +1453,14 @@
                         <div>
                             <span class="customer">${b.customer_name || 'Unknown'}</span>
                             <span class="service">${b.service || 'Service'}</span>
-                            <span style="color:#94a3b8; font-size:13px; margin-left:8px;">${b.time_ampm || b.time || 'N/A'}</span>
+                            <span style="color:#94a3b8; font-size:12px; margin-left:6px;">${b.time_ampm || b.time || 'N/A'}</span>
                         </div>
-                        <div style="display:flex; align-items:center; gap:12px;">
+                        <div style="display:flex; align-items:center; gap:8px;">
                             <span class="amount">₹${b.amount || 0}</span>
                             <span class="status-badge" 
                                   style="background:${b.status === 'completed' ? '#d1fae5' : b.status === 'pending' ? '#fef3c7' : '#dbeafe'}; 
                                          color:${b.status === 'completed' ? '#059669' : b.status === 'pending' ? '#d97706' : '#2563eb'};
-                                         padding:2px 12px; border-radius:12px; font-size:12px; font-weight:600;">
+                                         padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600;">
                                 ${b.status || 'Pending'}
                             </span>
                         </div>
@@ -1179,9 +1493,9 @@
                 const allData = await allRes.json();
 
                 const total = allData.total_revenue || 0;
-                el.weekRevenue.textContent = '₹' + total;
-                el.monthRevenue.textContent = '₹' + total;
-                el.allTimeRevenue.textContent = '₹' + total;
+                el.totalRevenueAll.textContent = '₹' + total;
+                el.filteredRevenue.textContent = '₹' + total;
+                el.bookingCountAll.textContent = allData.total_bookings || 0;
 
                 const bookings = allData.bookings || [];
                 const completed = bookings.filter(b => b.status === 'completed').slice(0, 10);
@@ -1211,6 +1525,119 @@
             } catch (error) {
                 console.error('Error loading revenue:', error);
             }
+        }
+
+        // ============================================
+        // REVENUE FILTER WITH TIME - NEW FEATURE
+        // ============================================
+        async function applyRevenueFilter() {
+            const date = el.filterDateRev.value;
+            const timeFrom = el.filterTimeFrom.value;
+            const timeTo = el.filterTimeTo.value;
+
+            if (!date) {
+                showToast('Please select a date', 'error');
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+
+            try {
+                // Get all bookings for the date
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/staff/bookings?date=${date}`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                const result = await response.json();
+                const bookings = result.bookings || [];
+
+                // Filter by time range
+                const filtered = bookings.filter(b => {
+                    if (!b.time) return false;
+                    const bookingTime = b.time;
+                    return bookingTime >= timeFrom && bookingTime <= timeTo;
+                });
+
+                // Calculate revenue
+                let totalRevenue = 0;
+                let completedCount = 0;
+                filtered.forEach(b => {
+                    if (b.status === 'completed' && b.amount) {
+                        totalRevenue += parseFloat(b.amount);
+                        completedCount++;
+                    }
+                });
+
+                // Update UI
+                el.filteredRevenue.textContent = '₹' + totalRevenue;
+                el.filterResult.textContent = `Showing: ${timeFrom} to ${timeTo} on ${formatDateDisplay(date)}`;
+
+                // Show filtered bookings
+                if (filtered.length === 0) {
+                    el.revenueBookings.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-search"></i>
+                            <h3>No Bookings Found</h3>
+                            <p>No bookings in the selected time range.</p>
+                        </div>
+                    `;
+                } else {
+                    el.revenueBookings.innerHTML = filtered.slice(0, 20).map(b => `
+                        <div class="recent-booking">
+                            <div>
+                                <span class="customer">${b.customer_name || 'Unknown'}</span>
+                                <span class="service">${b.service || 'Service'}</span>
+                                <span style="color:#94a3b8; font-size:12px; margin-left:6px;">${b.time || ''}</span>
+                            </div>
+                            <div style="display:flex; align-items:center; gap:8px;">
+                                <span class="amount">₹${b.amount || 0}</span>
+                                <span class="status-badge" 
+                                      style="background:${b.status === 'completed' ? '#d1fae5' : b.status === 'pending' ? '#fef3c7' : '#dbeafe'}; 
+                                             color:${b.status === 'completed' ? '#059669' : b.status === 'pending' ? '#d97706' : '#2563eb'};
+                                             padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600;">
+                                    ${b.status || 'Pending'}
+                                </span>
+                            </div>
+                        </div>
+                    `).join('');
+
+                    if (filtered.length > 20) {
+                        el.revenueBookings.innerHTML += `
+                            <div style="text-align:center; padding:10px; color:#94a3b8; font-size:13px;">
+                                + ${filtered.length - 20} more bookings
+                            </div>
+                        `;
+                    }
+                }
+
+                showToast(`✅ Found ${filtered.length} bookings with revenue ₹${totalRevenue}`, 'success');
+
+            } catch (error) {
+                console.error('Filter error:', error);
+                showToast('❌ Failed to filter revenue data', 'error');
+            }
+        }
+
+        // ============================================
+        // CLEAR REVENUE FILTER
+        // ============================================
+        function clearRevenueFilter() {
+            const today = new Date().toISOString().split('T')[0];
+            el.filterDateRev.value = today;
+            el.filterTimeFrom.value = '00:00';
+            el.filterTimeTo.value = '23:59';
+            el.filterResult.textContent = 'Showing: All Time';
+            loadRevenue();
+            showToast('✅ Filter cleared', 'info');
+        }
+
+        // ============================================
+        // FORMAT DATE DISPLAY
+        // ============================================
+        function formatDateDisplay(dateStr) {
+            if (!dateStr) return 'N/A';
+            const d = new Date(dateStr + 'T00:00:00');
+            return d.toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
         }
 
         // ============================================
@@ -1255,15 +1682,15 @@
                         <div>
                             <span class="customer">${b.customer_name || 'Unknown'}</span>
                             <span class="service">${b.service || 'Service'}</span>
-                            <span style="color:#94a3b8; font-size:13px; margin-left:8px;">${b.time_ampm || b.time || 'N/A'}</span>
-                            <span style="color:#94a3b8; font-size:12px; margin-left:8px;">${b.phone || ''}</span>
+                            <span style="color:#94a3b8; font-size:12px; margin-left:6px;">${b.time_ampm || b.time || 'N/A'}</span>
+                            <span style="color:#94a3b8; font-size:11px; margin-left:6px;">${b.phone || ''}</span>
                         </div>
-                        <div style="display:flex; align-items:center; gap:10px;">
+                        <div style="display:flex; align-items:center; gap:6px;">
                             <span class="amount">₹${b.amount || 0}</span>
                             <span class="status-badge" 
                                   style="background:${b.status === 'completed' ? '#d1fae5' : b.status === 'pending' ? '#fef3c7' : b.status === 'cancelled' ? '#fee2e2' : '#dbeafe'}; 
                                          color:${b.status === 'completed' ? '#059669' : b.status === 'pending' ? '#d97706' : b.status === 'cancelled' ? '#dc2626' : '#2563eb'};
-                                         padding:2px 12px; border-radius:12px; font-size:12px; font-weight:600;">
+                                         padding:2px 10px; border-radius:12px; font-size:11px; font-weight:600;">
                                 ${b.status || 'Pending'}
                             </span>
                         </div>
@@ -1317,16 +1744,7 @@
 
             setTimeout(() => {
                 container.innerHTML = '';
-            }, 5000);
-        }
-
-        // ============================================
-        // MOBILE MENU
-        // ============================================
-        function setupMobileMenu() {
-            el.mobileMenuBtn.addEventListener('click', function() {
-                el.mainNav.classList.toggle('open');
-            });
+            }, 4000);
         }
 
         console.log('✅ Admin Dashboard Loaded');
