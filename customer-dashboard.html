@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>My Dashboard - Premium Salon</title>
+    <link rel="icon" type="image/png" href="image.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>
@@ -156,6 +157,8 @@
             transition: margin-left 0.3s ease;
             min-height: 100vh;
             width: 100%;
+            display: flex;
+            flex-direction: column;
         }
 
         /* ===== HEADER ===== */
@@ -254,7 +257,6 @@
             font-size: 24px;
             font-weight: 800;
         }
-
         .dashboard-header .greeting h1 span { color: #10b981; }
 
         .dashboard-header .greeting p { color: #64748b; font-size: 14px; }
@@ -873,60 +875,6 @@
         }
 
         // ============================================
-        // INIT
-        // ============================================
-        document.addEventListener('DOMContentLoaded', function() {
-            const token = localStorage.getItem('token');
-            user = JSON.parse(localStorage.getItem('user') || '{}');
-
-            if (!token || !user.id) {
-                window.location.href = 'login.html';
-                return;
-            }
-
-            displayUserInfo(user);
-            loadBookings();
-
-            // Sidebar events
-            el.menuToggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                toggleSidebar();
-            });
-
-            el.sidebarOverlay.addEventListener('click', closeSidebar);
-
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && el.sidebar.classList.contains('open')) {
-                    closeSidebar();
-                }
-            });
-
-            document.querySelector('.main-content').addEventListener('click', function(e) {
-                if (el.sidebar.classList.contains('open') && !e.target.closest('.sidebar') && !e.target.closest(
-                        '.menu-toggle')) {
-                    closeSidebar();
-                }
-            });
-
-            console.log('✅ Customer Dashboard Loaded');
-        });
-
-        // ============================================
-        // DISPLAY USER INFO
-        // ============================================
-        function displayUserInfo(user) {
-            const name = user.name || 'Customer';
-            const initial = name[0].toUpperCase();
-
-            el.userName.textContent = name;
-            el.headerName.textContent = name;
-            el.sideName.textContent = name;
-            el.sidePhone.textContent = user.phone || '';
-            el.headerAvatar.textContent = initial;
-            el.sideAvatar.textContent = initial;
-        }
-
-        // ============================================
         // CHECK IF BOOKING IS EXPIRED
         // ============================================
         function isBookingExpired(booking) {
@@ -937,10 +885,12 @@
             const todayDate = new Date();
             todayDate.setHours(0, 0, 0, 0);
 
+            // If booking date is in the past
             if (bookingDate < todayDate) {
                 return true;
             }
 
+            // If booking date is today and time has passed (with 15 min grace)
             if (bookingDate.toDateString() === new Date().toDateString()) {
                 const [hours, minutes] = booking.slot_time.split(':').map(Number);
                 const slotDateTime = new Date();
@@ -1007,6 +957,15 @@
 
                 const bookings = await response.json();
                 allBookings = bookings || [];
+
+                // ✅ Check and mark expired bookings
+                allBookings = allBookings.map(b => {
+                    if (isBookingExpired(b) && b.status !== 'cancelled' && b.status !== 'completed') {
+                        return { ...b, status: 'expired' };
+                    }
+                    return b;
+                });
+
                 filteredBookings = [...allBookings];
 
                 // ✅ DATE WISE SORTING - Latest date first (17 Jun → 16 Jun → 15 Jun)
@@ -1123,10 +1082,17 @@
                 'expired': 'status-expired-badge'
             };
 
+            // ✅ Check for expired bookings and show warning
+            const expiredCount = allBookings.filter(b => b.status === 'expired').length;
+            if (expiredCount > 0 && !window.expiredNotified) {
+                showToast(`⚠️ ${expiredCount} booking(s) have expired. Please book again.`, 'warning');
+                window.expiredNotified = true;
+                setTimeout(() => { window.expiredNotified = false; }, 30000);
+            }
+
             el.bookingsContainer.innerHTML = bookings.map(b => {
                 const countdown = getCountdown(b);
-                const isExpired = isBookingExpired(b) && b.status !== 'cancelled' && b.status !==
-                'completed';
+                const isExpired = b.status === 'expired';
 
                 return `
                             <div class="booking-card ${statusMap[b.status] || 'status-pending'}">
@@ -1140,6 +1106,7 @@
                                         <span class="payment-status ${b.payment_status === 'paid' ? 'payment-paid' : 'payment-pending'}" style="margin-left:8px;">
                                             ${b.payment_status === 'paid' ? '✅ Paid' : '⏳ Pending'}
                                         </span>
+                                        ${isExpired ? '<span style="margin-left:8px; color:#ef4444; font-weight:600; font-size:12px;">⏰ Expired</span>' : ''}
                                     </div>
                                     <div class="booking-id">
                                         <i class="fas fa-hashtag"></i> ${b.booking_id || 'N/A'}
@@ -1159,6 +1126,11 @@
                                             <i class="fas fa-edit"></i> Reschedule
                                         </button>
                                     ` : ''}
+                                    ${b.status === 'expired' ? `
+                                        <button class="btn-sm btn-sm-outline" onclick="rescheduleBooking('${b.booking_id}')">
+                                            <i class="fas fa-redo"></i> Book Again
+                                        </button>
+                                    ` : ''}
                                     ${b.status === 'completed' ? `
                                         <button class="btn-sm btn-sm-success" onclick="rateBooking('${b.booking_id}')">
                                             <i class="fas fa-star"></i> Rate
@@ -1167,11 +1139,6 @@
                                     ${b.status === 'cancelled' ? `
                                         <span class="btn-sm btn-sm-disabled">
                                             <i class="fas fa-times-circle"></i> Cancelled
-                                        </span>
-                                    ` : ''}
-                                    ${b.status === 'expired' ? `
-                                        <span class="btn-sm btn-sm-disabled">
-                                            <i class="fas fa-hourglass-end"></i> Expired
                                         </span>
                                     ` : ''}
                                 </div>
@@ -1223,7 +1190,6 @@
             const rating = prompt('Rate your experience (1-5 stars):', '5');
             if (rating && rating >= 1 && rating <= 5) {
                 showToast(`⭐ Rated ${rating} stars! Thank you for your feedback.`, 'success');
-                // In production, you would send this to API
             } else if (rating !== null) {
                 showToast('Please enter a rating between 1 and 5', 'warning');
             }
@@ -1263,8 +1229,66 @@
             }, 4000);
         }
 
-        console.log('✅ Customer Dashboard Loaded');
-        console.log('📡 API URL:', CONFIG.API_BASE_URL);
+        // ============================================
+        // MOBILE MENU
+        // ============================================
+        function setupMobileMenu() {
+            el.menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSidebar();
+            });
+
+            el.sidebarOverlay.addEventListener('click', closeSidebar);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && el.sidebar.classList.contains('open')) {
+                    closeSidebar();
+                }
+            });
+
+            document.querySelector('.main-content').addEventListener('click', function(e) {
+                if (el.sidebar.classList.contains('open') &&
+                    !e.target.closest('.sidebar') &&
+                    !e.target.closest('.menu-toggle')) {
+                    closeSidebar();
+                }
+            });
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (!token || !user.id) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            displayUserInfo(user);
+            loadBookings();
+            setupMobileMenu();
+
+            console.log('✅ Customer Dashboard Loaded');
+            console.log('📡 API URL:', CONFIG.API_BASE_URL);
+        });
+
+        // ============================================
+        // DISPLAY USER INFO
+        // ============================================
+        function displayUserInfo(user) {
+            const name = user.name || 'Customer';
+            const initial = name[0].toUpperCase();
+
+            el.userName.textContent = name;
+            el.headerName.textContent = name;
+            el.sideName.textContent = name;
+            el.sidePhone.textContent = user.phone || '';
+            el.headerAvatar.textContent = initial;
+            el.sideAvatar.textContent = initial;
+        }
     </script>
 </body>
 </html>
