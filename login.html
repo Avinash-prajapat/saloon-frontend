@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Login - Premium Salon</title>
+    <link rel="icon" type="image/png" href="image.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>
@@ -20,9 +21,7 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ============================================
-           SIDEBAR - SAME AS OTHER PAGES
-           ============================================ */
+        /* ===== SIDEBAR ===== */
         .sidebar {
             position: fixed;
             top: 0;
@@ -117,27 +116,6 @@
             margin: 12px 16px;
         }
 
-        .sidebar .logout-btn {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            border-radius: 10px;
-            color: #ef4444;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            background: none;
-            width: calc(100% - 24px);
-            margin: 0 12px;
-            font-family: inherit;
-        }
-
-        .sidebar .logout-btn:hover { background: #1e293b; }
-        .sidebar .logout-btn i { width: 20px; text-align: center; font-size: 16px; }
-
         .sidebar-overlay {
             position: fixed;
             top: 0;
@@ -152,9 +130,7 @@
 
         .sidebar-overlay.active { display: block; }
 
-        /* ============================================
-           MAIN CONTENT
-           ============================================ */
+        /* ===== MAIN CONTENT ===== */
         .main-content {
             flex: 1;
             margin-left: 0;
@@ -165,9 +141,7 @@
             flex-direction: column;
         }
 
-        /* ============================================
-           HEADER
-           ============================================ */
+        /* ===== HEADER ===== */
         header {
             background: #ffffff;
             border-bottom: 1px solid #e2e8f0;
@@ -219,9 +193,7 @@
         .logo-header i { color: #10b981; font-size: 20px; }
         .logo-header span { color: #10b981; }
 
-        /* ============================================
-           LOGIN PAGE
-           ============================================ */
+        /* ===== LOGIN PAGE ===== */
         .login-wrapper {
             flex: 1;
             display: flex;
@@ -476,6 +448,7 @@
         .toast-success { background: #10b981; }
         .toast-error { background: #ef4444; }
         .toast-info { background: #3b82f6; }
+        .toast-warning { background: #f59e0b; }
 
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -494,9 +467,7 @@
 
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
+        /* ===== RESPONSIVE ===== */
 
         /* Mobile */
         @media (max-width: 480px) {
@@ -564,15 +535,13 @@
 </head>
 <body>
 
-    <!-- ============================================
-    SIDEBAR
-    ============================================ -->
+    <!-- ===== SIDEBAR ===== -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="sidebar" id="sidebar">
         <div class="logo">
             <h2><i class="fas fa-scissors"></i> Premium<span>Salon</span></h2>
-            <p>Welcome</p>
+            <p>Welcome Back</p>
         </div>
 
         <div class="user-info">
@@ -598,9 +567,7 @@
         </div>
     </div>
 
-    <!-- ============================================
-    MAIN CONTENT
-    ============================================ -->
+    <!-- ===== MAIN CONTENT ===== -->
     <div class="main-content">
 
         <!-- ===== HEADER ===== -->
@@ -673,6 +640,11 @@
                 <div class="signup-link">
                     Don't have an account? <a href="signup.html">Sign up</a>
                 </div>
+
+                <!-- 🔐 Redirect Info (if redirected from booking) -->
+                <div id="redirectInfo" style="display:none; margin-top:16px; padding:12px 16px; background:#fef3c7; border-radius:10px; font-size:13px; color:#d97706; text-align:center;">
+                    <i class="fas fa-info-circle"></i> Please login to complete your booking
+                </div>
             </div>
         </div>
 
@@ -708,6 +680,7 @@
             menuToggle: document.getElementById('menuToggle'),
             phoneError: document.getElementById('phoneError'),
             passwordError: document.getElementById('passwordError'),
+            redirectInfo: document.getElementById('redirectInfo'),
         };
 
         // ============================================
@@ -755,6 +728,13 @@
             if (savedPhone) {
                 el.phone.value = savedPhone;
                 el.rememberMe.checked = true;
+            }
+
+            // ✅ Check if redirected from booking
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('redirect') === 'booking') {
+                el.redirectInfo.style.display = 'block';
+                showToast('⚠️ Please login to complete your booking', 'warning');
             }
 
             setupValidation();
@@ -837,7 +817,7 @@
         }
 
         // ============================================
-        // HANDLE LOGIN - REAL API
+        // HANDLE LOGIN - WITH REDIRECT SUPPORT
         // ============================================
         async function handleLogin(event) {
             event.preventDefault();
@@ -884,13 +864,26 @@
 
                     showToast('✅ Login successful!', 'success');
 
-                    // Redirect based on role
+                    // ✅ Check for redirect parameter
+                    const params = new URLSearchParams(window.location.search);
+                    const redirect = params.get('redirect');
+
                     setTimeout(() => {
-                        const role = result.user.role || 'customer';
-                        const dashboard = role === 'admin' ? 'admin-dashboard.html' :
-                            role === 'staff' ? 'staff-dashboard.html' :
-                            'customer-dashboard.html';
-                        window.location.href = dashboard;
+                        if (redirect === 'booking') {
+                            // Check if booking data exists
+                            const bookingData = localStorage.getItem('booking_data');
+                            if (bookingData) {
+                                window.location.href = 'booking.html?restore=1';
+                            } else {
+                                window.location.href = 'booking.html';
+                            }
+                        } else {
+                            const role = result.user.role || 'customer';
+                            const dashboard = role === 'admin' ? 'admin-dashboard.html' :
+                                role === 'staff' ? 'staff-dashboard.html' :
+                                'customer-dashboard.html';
+                            window.location.href = dashboard;
+                        }
                     }, 800);
 
                 } else {
@@ -913,7 +906,8 @@
         function showToast(message, type = 'info') {
             const container = el.toastContainer;
             const className = type === 'success' ? 'toast-success' :
-                type === 'error' ? 'toast-error' : 'toast-info';
+                type === 'error' ? 'toast-error' :
+                type === 'warning' ? 'toast-warning' : 'toast-info';
 
             container.innerHTML = `<div class="toast ${className}">${message}</div>`;
 
