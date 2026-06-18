@@ -20,9 +20,7 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* ============================================
-           SIDEBAR - LEFT SIDE
-           ============================================ */
+        /* ===== SIDEBAR ===== */
         .sidebar {
             position: fixed;
             top: 0;
@@ -38,9 +36,7 @@
             box-shadow: 4px 0 20px rgba(0,0,0,0.2);
         }
 
-        .sidebar.open {
-            left: 0;
-        }
+        .sidebar.open { left: 0; }
 
         .sidebar .logo {
             padding: 0 24px 20px;
@@ -59,11 +55,7 @@
 
         .sidebar .logo h2 i { color: #10b981; }
         .sidebar .logo h2 span { color: #10b981; }
-        .sidebar .logo p {
-            font-size: 12px;
-            color: #64748b;
-            margin-top: 2px;
-        }
+        .sidebar .logo p { font-size: 12px; color: #64748b; margin-top: 2px; }
 
         .sidebar .user-info {
             padding: 0 24px 16px;
@@ -87,25 +79,15 @@
             font-size: 20px;
         }
 
-        .sidebar .user-info .details .name {
-            color: white;
-            font-weight: 600;
-            font-size: 15px;
-        }
-
-        .sidebar .user-info .details .role {
-            font-size: 12px;
-            color: #64748b;
-        }
+        .sidebar .user-info .details .name { color: white; font-weight: 600; font-size: 15px; }
+        .sidebar .user-info .details .role { font-size: 12px; color: #64748b; }
 
         .sidebar .nav-links {
             list-style: none;
             padding: 0 12px;
         }
 
-        .sidebar .nav-links li {
-            margin-bottom: 4px;
-        }
+        .sidebar .nav-links li { margin-bottom: 4px; }
 
         .sidebar .nav-links li a {
             display: flex;
@@ -125,11 +107,7 @@
             color: white;
         }
 
-        .sidebar .nav-links li a i {
-            width: 20px;
-            text-align: center;
-            font-size: 16px;
-        }
+        .sidebar .nav-links li a i { width: 20px; text-align: center; font-size: 16px; }
 
         .sidebar .nav-divider {
             height: 1px;
@@ -155,19 +133,9 @@
             font-family: inherit;
         }
 
-        .sidebar .logout-btn:hover {
-            background: #1e293b;
-        }
+        .sidebar .logout-btn:hover { background: #1e293b; }
+        .sidebar .logout-btn i { width: 20px; text-align: center; font-size: 16px; }
 
-        .sidebar .logout-btn i {
-            width: 20px;
-            text-align: center;
-            font-size: 16px;
-        }
-
-        /* ============================================
-           SIDEBAR OVERLAY
-           ============================================ */
         .sidebar-overlay {
             position: fixed;
             top: 0;
@@ -180,13 +148,8 @@
             backdrop-filter: blur(4px);
         }
 
-        .sidebar-overlay.active {
-            display: block;
-        }
+        .sidebar-overlay.active { display: block; }
 
-        /* ============================================
-           MAIN CONTENT
-           ============================================ */
         .main-content {
             flex: 1;
             margin-left: 0;
@@ -233,10 +196,7 @@
             transition: all 0.2s;
         }
 
-        .menu-toggle:hover {
-            background: #f1f5f9;
-            color: #10b981;
-        }
+        .menu-toggle:hover { background: #f1f5f9; color: #10b981; }
 
         .logo-header {
             font-size: 18px;
@@ -249,12 +209,6 @@
 
         .logo-header i { color: #10b981; font-size: 20px; }
         .logo-header span { color: #10b981; }
-
-        .header-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
 
         .header-right .user-badge-mini {
             display: flex;
@@ -284,12 +238,8 @@
             color: #0f172a;
         }
 
-        /* ============================================
-           DASHBOARD
-           ============================================ */
-        .dashboard {
-            padding: 24px 20px 60px;
-        }
+        /* ===== DASHBOARD ===== */
+        .dashboard { padding: 24px 20px 60px; }
 
         .dashboard-header {
             display: flex;
@@ -304,7 +254,9 @@
             font-size: 24px;
             font-weight: 800;
         }
+
         .dashboard-header .greeting h1 span { color: #10b981; }
+
         .dashboard-header .greeting p { color: #64748b; font-size: 14px; }
 
         .quick-actions {
@@ -356,9 +308,7 @@
             color: #10b981;
         }
 
-        /* ============================================
-           STATS
-           ============================================ */
+        /* ===== STATS ===== */
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
@@ -393,9 +343,49 @@
         .stat-card.cancelled .icon { color: #ef4444; }
         .stat-card.cancelled .number { color: #ef4444; }
 
-        /* ============================================
-           BOOKINGS
-           ============================================ */
+        /* ===== FILTER TABS ===== */
+        .filter-tabs {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+            background: white;
+            padding: 6px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .filter-tab {
+            padding: 6px 16px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: transparent;
+            color: #64748b;
+            font-family: inherit;
+        }
+
+        .filter-tab:hover { background: #f1f5f9; }
+        .filter-tab.active { background: #10b981; color: white; }
+
+        .filter-tab .count {
+            background: #e2e8f0;
+            color: #475569;
+            padding: 0 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-left: 4px;
+        }
+
+        .filter-tab.active .count {
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        /* ===== BOOKINGS ===== */
         .section-title {
             display: flex;
             justify-content: space-between;
@@ -405,10 +395,7 @@
             gap: 8px;
         }
 
-        .section-title h2 {
-            font-size: 20px;
-            font-weight: 700;
-        }
+        .section-title h2 { font-size: 20px; font-weight: 700; }
 
         .section-title .badge {
             background: #e2e8f0;
@@ -419,9 +406,7 @@
             color: #475569;
         }
 
-        /* ============================================
-           BOOKING CARDS
-           ============================================ */
+        /* ===== BOOKING CARDS ===== */
         .booking-card {
             background: white;
             border-radius: 14px;
@@ -447,7 +432,7 @@
         .booking-card.status-arrived { border-left-color: #8b5cf6; }
         .booking-card.status-completed { border-left-color: #10b981; }
         .booking-card.status-cancelled { border-left-color: #ef4444; }
-        .booking-card.status-expired { border-left-color: #94a3b8; }
+        .booking-card.status-expired { border-left-color: #94a3b8; opacity: 0.6; }
 
         .booking-card .info {
             flex: 1;
@@ -480,6 +465,17 @@
             margin-top: 2px;
         }
 
+        .booking-card .info .countdown {
+            font-size: 12px;
+            color: #10b981;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .booking-card .info .countdown.warning {
+            color: #ef4444;
+        }
+
         .booking-card .status-badge {
             padding: 3px 12px;
             border-radius: 20px;
@@ -488,35 +484,12 @@
             text-transform: capitalize;
         }
 
-        .status-pending-badge {
-            background: #fef3c7;
-            color: #d97706;
-        }
-
-        .status-confirmed-badge {
-            background: #dbeafe;
-            color: #2563eb;
-        }
-
-        .status-arrived-badge {
-            background: #ede9fe;
-            color: #7c3aed;
-        }
-
-        .status-completed-badge {
-            background: #d1fae5;
-            color: #059669;
-        }
-
-        .status-cancelled-badge {
-            background: #fee2e2;
-            color: #dc2626;
-        }
-
-        .status-expired-badge {
-            background: #f1f5f9;
-            color: #94a3b8;
-        }
+        .status-pending-badge { background: #fef3c7; color: #d97706; }
+        .status-confirmed-badge { background: #dbeafe; color: #2563eb; }
+        .status-arrived-badge { background: #ede9fe; color: #7c3aed; }
+        .status-completed-badge { background: #d1fae5; color: #059669; }
+        .status-cancelled-badge { background: #fee2e2; color: #dc2626; }
+        .status-expired-badge { background: #f1f5f9; color: #94a3b8; }
 
         .booking-card .actions {
             display: flex;
@@ -538,40 +511,24 @@
             gap: 4px;
         }
 
-        .btn-sm-danger {
-            background: #fee2e2;
-            color: #dc2626;
+        .btn-sm-danger { background: #fee2e2; color: #dc2626; }
+        .btn-sm-danger:hover { background: #fecaca; }
+        .btn-sm-outline { background: transparent; color: #10b981; border: 1px solid #10b981; }
+        .btn-sm-outline:hover { background: #10b981; color: white; }
+        .btn-sm-success { background: #d1fae5; color: #059669; }
+        .btn-sm-success:hover { background: #a7f3d0; }
+        .btn-sm-disabled { background: #f1f5f9; color: #94a3b8; cursor: default; }
+
+        .payment-status {
+            font-size: 11px;
+            font-weight: 600;
+            padding: 2px 10px;
+            border-radius: 12px;
         }
 
-        .btn-sm-danger:hover {
-            background: #fecaca;
-        }
+        .payment-paid { background: #d1fae5; color: #059669; }
+        .payment-pending { background: #fef3c7; color: #d97706; }
 
-        .btn-sm-outline {
-            background: transparent;
-            color: #10b981;
-            border: 1px solid #10b981;
-        }
-
-        .btn-sm-outline:hover {
-            background: #10b981;
-            color: white;
-        }
-
-        .btn-sm-disabled {
-            background: #f1f5f9;
-            color: #94a3b8;
-            cursor: default;
-        }
-
-        .btn-sm-warning {
-            background: #fef3c7;
-            color: #d97706;
-        }
-
-        /* ============================================
-           EMPTY STATE
-           ============================================ */
         .empty-state {
             text-align: center;
             padding: 50px 20px;
@@ -580,24 +537,11 @@
             border: 1px solid #e2e8f0;
         }
 
-        .empty-state i {
-            font-size: 56px;
-            color: #cbd5e1;
-            margin-bottom: 12px;
-        }
+        .empty-state i { font-size: 56px; color: #cbd5e1; margin-bottom: 12px; }
+        .empty-state h3 { font-size: 20px; color: #0f172a; }
+        .empty-state p { color: #94a3b8; }
 
-        .empty-state h3 {
-            font-size: 20px;
-            color: #0f172a;
-        }
-
-        .empty-state p {
-            color: #94a3b8;
-        }
-
-        /* ============================================
-           TOAST
-           ============================================ */
+        /* ===== TOAST ===== */
         .toast {
             position: fixed;
             bottom: 20px;
@@ -633,20 +577,13 @@
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .hidden { display: none !important; }
 
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
-
-        /* Mobile */
+        /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
             .dashboard-header .greeting h1 { font-size: 20px; }
-            .dashboard-header .greeting p { font-size: 13px; }
 
             .quick-actions { width: 100%; }
             .quick-actions .btn-primary-sm,
@@ -657,11 +594,7 @@
                 padding: 8px 12px;
             }
 
-            .stats-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 8px;
-            }
-
+            .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
             .stat-card { padding: 12px; }
             .stat-card .number { font-size: 20px; }
             .stat-card .label { font-size: 11px; }
@@ -685,31 +618,25 @@
 
             .section-title h2 { font-size: 17px; }
 
+            .filter-tabs { gap: 4px; padding: 4px; }
+            .filter-tab { font-size: 12px; padding: 4px 12px; }
+
             .sidebar { width: 260px; left: -260px; }
             .sidebar.open { left: 0; }
 
             .header-inner { padding: 10px 14px; }
             .logo-header { font-size: 16px; }
             .header-right .user-badge-mini .name-mini { display: none; }
-            .header-right .user-badge-mini { padding: 4px 8px; }
 
             .dashboard { padding: 16px 12px 40px; }
 
             .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
 
-            .menu-toggle {
-                font-size: 18px;
-                padding: 6px;
-            }
+            .menu-toggle { font-size: 18px; padding: 6px; }
         }
 
-        /* Tablet */
         @media (min-width: 481px) and (max-width: 1024px) {
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 10px;
-            }
-
+            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
             .stat-card { padding: 14px; }
             .stat-card .number { font-size: 22px; }
 
@@ -718,17 +645,10 @@
 
             .sidebar { width: 260px; left: -260px; }
             .sidebar.open { left: 0; }
-
-            .dashboard { padding: 20px 16px 50px; }
         }
 
-        /* Desktop */
         @media (min-width: 1025px) {
-            .stats-grid {
-                grid-template-columns: repeat(4, 1fr);
-                gap: 16px;
-            }
-
+            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
             .stat-card .number { font-size: 28px; }
 
             .booking-card { padding: 16px 20px; }
@@ -737,12 +657,7 @@
             .sidebar { left: -280px; }
             .sidebar.open { left: 0; }
 
-            .dashboard { padding: 24px 24px 60px; }
-
-            .menu-toggle {
-                font-size: 22px;
-                padding: 8px;
-            }
+            .menu-toggle { font-size: 22px; padding: 8px; }
         }
 
         @media (min-width: 1400px) {
@@ -752,14 +667,9 @@
 </head>
 <body>
 
-    <!-- ============================================
-    SIDEBAR OVERLAY
-    ============================================ -->
+    <!-- ===== SIDEBAR ===== -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- ============================================
-    SIDEBAR
-    ============================================ -->
     <div class="sidebar" id="sidebar">
         <div class="logo">
             <h2><i class="fas fa-scissors"></i> Premium<span>Salon</span></h2>
@@ -775,21 +685,11 @@
         </div>
 
         <ul class="nav-links">
-            <li><a href="customer-dashboard.html" class="active">
-                <i class="fas fa-home"></i> Dashboard
-            </a></li>
-            <li><a href="booking.html">
-                <i class="fas fa-calendar-plus"></i> Book Appointment
-            </a></li>
-            <li><a href="services.html">
-                <i class="fas fa-cut"></i> Services
-            </a></li>
-            <li><a href="profile.html">
-                <i class="fas fa-user"></i> Profile
-            </a></li>
-            <li><a href="index.html">
-                <i class="fas fa-arrow-left"></i> Back to Home
-            </a></li>
+            <li><a href="customer-dashboard.html" class="active"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="booking.html"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+            <li><a href="services.html"><i class="fas fa-cut"></i> Services</a></li>
+            <li><a href="profile.html"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></li>
         </ul>
 
         <div class="nav-divider"></div>
@@ -799,9 +699,7 @@
         </button>
     </div>
 
-    <!-- ============================================
-    MAIN CONTENT
-    ============================================ -->
+    <!-- ===== MAIN CONTENT ===== -->
     <div class="main-content">
 
         <!-- ===== HEADER ===== -->
@@ -868,6 +766,22 @@
                     </div>
                 </div>
 
+                <!-- Filter Tabs -->
+                <div class="filter-tabs" id="filterTabs">
+                    <button class="filter-tab active" data-filter="all" onclick="filterBookings('all')">
+                        All <span class="count" id="allCount">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="upcoming" onclick="filterBookings('upcoming')">
+                        Upcoming <span class="count" id="upcomingCount">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="completed" onclick="filterBookings('completed')">
+                        Completed <span class="count" id="completedCountFilter">0</span>
+                    </button>
+                    <button class="filter-tab" data-filter="cancelled" onclick="filterBookings('cancelled')">
+                        Cancelled <span class="count" id="cancelledCountFilter">0</span>
+                    </button>
+                </div>
+
                 <!-- Bookings -->
                 <div class="section-title">
                     <h2><i class="fas fa-list"></i> My Bookings</h2>
@@ -897,7 +811,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            API_BASE_URL: 'http://localhost:5000',
+            API_BASE_URL: 'https://avinashKumar8235.pythonanywhere.com',
         };
 
         // ============================================
@@ -915,17 +829,24 @@
             completedBookings: document.getElementById('completedBookings'),
             cancelledBookings: document.getElementById('cancelledBookings'),
             bookingCount: document.getElementById('bookingCount'),
+            allCount: document.getElementById('allCount'),
+            upcomingCount: document.getElementById('upcomingCount'),
+            completedCountFilter: document.getElementById('completedCountFilter'),
+            cancelledCountFilter: document.getElementById('cancelledCountFilter'),
             bookingsContainer: document.getElementById('bookingsContainer'),
             toastContainer: document.getElementById('toastContainer'),
             sidebar: document.getElementById('sidebar'),
             sidebarOverlay: document.getElementById('sidebarOverlay'),
             menuToggle: document.getElementById('menuToggle'),
+            filterTabs: document.getElementById('filterTabs'),
         };
 
         // ============================================
         // STATE
         // ============================================
         let allBookings = [];
+        let filteredBookings = [];
+        let currentFilter = 'all';
         let user = {};
 
         // ============================================
@@ -966,37 +887,26 @@
             displayUserInfo(user);
             loadBookings();
 
-            // 🔴 FIX: Sidebar events with proper event listeners
-            if (el.menuToggle) {
-                el.menuToggle.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    toggleSidebar();
-                });
-            }
+            // Sidebar events
+            el.menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSidebar();
+            });
 
-            // Close on overlay click
-            if (el.sidebarOverlay) {
-                el.sidebarOverlay.addEventListener('click', function() {
-                    closeSidebar();
-                });
-            }
+            el.sidebarOverlay.addEventListener('click', closeSidebar);
 
-            // Close on Escape key
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'Escape' && el.sidebar.classList.contains('open')) {
                     closeSidebar();
                 }
             });
 
-            // Close on content click (click anywhere on main content)
-            const mainContent = document.querySelector('.main-content');
-            if (mainContent) {
-                mainContent.addEventListener('click', function(e) {
-                    if (el.sidebar.classList.contains('open') && !e.target.closest('.sidebar') && !e.target.closest('.menu-toggle')) {
-                        closeSidebar();
-                    }
-                });
-            }
+            document.querySelector('.main-content').addEventListener('click', function(e) {
+                if (el.sidebar.classList.contains('open') && !e.target.closest('.sidebar') && !e.target.closest(
+                        '.menu-toggle')) {
+                    closeSidebar();
+                }
+            });
 
             console.log('✅ Customer Dashboard Loaded');
         });
@@ -1022,25 +932,19 @@
         function isBookingExpired(booking) {
             if (!booking.booking_date || !booking.slot_time) return false;
 
-            const today = new Date();
+            const now = new Date();
             const bookingDate = new Date(booking.booking_date + 'T00:00:00');
-            const slotTime = booking.slot_time;
-
-            // If booking date is in the past
             const todayDate = new Date();
             todayDate.setHours(0, 0, 0, 0);
+
             if (bookingDate < todayDate) {
                 return true;
             }
 
-            // If booking date is today and time has passed
             if (bookingDate.toDateString() === new Date().toDateString()) {
-                const now = new Date();
-                const [hours, minutes] = slotTime.split(':').map(Number);
+                const [hours, minutes] = booking.slot_time.split(':').map(Number);
                 const slotDateTime = new Date();
                 slotDateTime.setHours(hours, minutes, 0, 0);
-
-                // Add 15 minutes grace period
                 const gracePeriod = new Date(slotDateTime.getTime() + 15 * 60000);
                 if (now > gracePeriod) {
                     return true;
@@ -1048,6 +952,41 @@
             }
 
             return false;
+        }
+
+        // ============================================
+        // GET COUNTDOWN
+        // ============================================
+        function getCountdown(booking) {
+            if (!booking.booking_date || !booking.slot_time) return '';
+            if (booking.status === 'completed' || booking.status === 'cancelled' || booking.status === 'expired')
+                return '';
+
+            const now = new Date();
+            const bookingDate = new Date(booking.booking_date + 'T00:00:00');
+            const [hours, minutes] = booking.slot_time.split(':').map(Number);
+            const slotDateTime = new Date();
+            slotDateTime.setHours(hours, minutes, 0, 0);
+
+            if (bookingDate.toDateString() !== new Date().toDateString()) {
+                const diffTime = bookingDate - now;
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                if (diffDays > 0) {
+                    return `📅 ${diffDays} day${diffDays > 1 ? 's' : ''} left`;
+                }
+                return '';
+            }
+
+            const diffMs = slotDateTime - now;
+            if (diffMs <= 0) return '';
+
+            const diffMins = Math.floor(diffMs / (1000 * 60));
+            if (diffMins < 60) {
+                return `⏰ ${diffMins} min left`;
+            }
+            const diffHours = Math.floor(diffMins / 60);
+            const remMins = diffMins % 60;
+            return `⏰ ${diffHours}h ${remMins}m left`;
         }
 
         // ============================================
@@ -1068,41 +1007,75 @@
 
                 const bookings = await response.json();
                 allBookings = bookings || [];
-                renderBookings(allBookings);
+                filteredBookings = [...allBookings];
+
+                // ✅ DATE WISE SORTING - Latest date first (17 Jun → 16 Jun → 15 Jun)
+                filteredBookings.sort((a, b) => {
+                    const dateA = new Date(a.booking_date + 'T' + (a.slot_time || '00:00'));
+                    const dateB = new Date(b.booking_date + 'T' + (b.slot_time || '00:00'));
+                    return dateB - dateA;
+                });
+
+                renderBookings(filteredBookings);
 
             } catch (error) {
                 console.error('Error loading bookings:', error);
                 el.bookingsContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-exclamation-circle"></i>
-                        <h3>Failed to Load</h3>
-                        <p>Please refresh and try again.</p>
-                    </div>
-                `;
+                            <div class="empty-state">
+                                <i class="fas fa-exclamation-circle"></i>
+                                <h3>Failed to Load</h3>
+                                <p>Please refresh and try again.</p>
+                            </div>
+                        `;
             }
+        }
+
+        // ============================================
+        // FILTER BOOKINGS
+        // ============================================
+        function filterBookings(filter) {
+            currentFilter = filter;
+
+            // Update active tab
+            document.querySelectorAll('.filter-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.filter === filter);
+            });
+
+            if (filter === 'all') {
+                filteredBookings = [...allBookings];
+            } else if (filter === 'upcoming') {
+                filteredBookings = allBookings.filter(b =>
+                    b.status === 'pending' || b.status === 'confirmed' || b.status === 'arrived'
+                );
+            } else if (filter === 'completed') {
+                filteredBookings = allBookings.filter(b => b.status === 'completed');
+            } else if (filter === 'cancelled') {
+                filteredBookings = allBookings.filter(b =>
+                    b.status === 'cancelled' || b.status === 'expired'
+                );
+            }
+
+            // ✅ DATE WISE SORTING on filtered data
+            filteredBookings.sort((a, b) => {
+                const dateA = new Date(a.booking_date + 'T' + (a.slot_time || '00:00'));
+                const dateB = new Date(b.booking_date + 'T' + (b.slot_time || '00:00'));
+                return dateB - dateA;
+            });
+
+            renderBookings(filteredBookings);
         }
 
         // ============================================
         // RENDER BOOKINGS
         // ============================================
         function renderBookings(bookings) {
-            // Check and update expired bookings
-            let expiredCount = 0;
-            const updatedBookings = bookings.map(b => {
-                if (isBookingExpired(b) && b.status !== 'cancelled' && b.status !== 'completed') {
-                    expiredCount++;
-                    return { ...b, status: 'expired' };
-                }
-                return b;
-            });
-
             // Update stats
-            const total = updatedBookings.length;
-            const upcoming = updatedBookings.filter(b => 
+            const total = allBookings.length;
+            const upcoming = allBookings.filter(b =>
                 b.status === 'pending' || b.status === 'confirmed' || b.status === 'arrived'
             ).length;
-            const completed = updatedBookings.filter(b => b.status === 'completed').length;
-            const cancelled = updatedBookings.filter(b => 
+            const completed = allBookings.filter(b => b.status === 'completed').length;
+            const cancelled = allBookings.filter(b =>
                 b.status === 'cancelled' || b.status === 'expired'
             ).length;
 
@@ -1110,24 +1083,27 @@
             el.upcomingBookings.textContent = upcoming;
             el.completedBookings.textContent = completed;
             el.cancelledBookings.textContent = cancelled;
-            el.bookingCount.textContent = total;
+            el.bookingCount.textContent = bookings.length;
 
-            if (updatedBookings.length === 0) {
+            // Update filter counts
+            el.allCount.textContent = total;
+            el.upcomingCount.textContent = upcoming;
+            el.completedCountFilter.textContent = completed;
+            el.cancelledCountFilter.textContent = cancelled;
+
+            if (bookings.length === 0) {
                 el.bookingsContainer.innerHTML = `
-                    <div class="empty-state">
-                        <i class="fas fa-calendar-plus"></i>
-                        <h3>No Bookings Yet</h3>
-                        <p>Book your first appointment now!</p>
-                        <a href="booking.html" class="btn-primary-sm" style="margin-top:16px; display:inline-flex;">
-                            <i class="fas fa-plus"></i> Book Now
-                        </a>
-                    </div>
-                `;
+                            <div class="empty-state">
+                                <i class="fas fa-calendar-plus"></i>
+                                <h3>No Bookings Found</h3>
+                                <p>${currentFilter === 'all' ? 'Book your first appointment now!' : `No ${currentFilter} bookings found.`}</p>
+                                <a href="booking.html" class="btn-primary-sm" style="margin-top:16px; display:inline-flex;">
+                                    <i class="fas fa-plus"></i> Book Now
+                                </a>
+                            </div>
+                        `;
                 return;
             }
-
-            // Sort by date (newest first)
-            updatedBookings.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
             const statusMap = {
                 'pending': 'status-pending',
@@ -1147,56 +1123,61 @@
                 'expired': 'status-expired-badge'
             };
 
-            // Show warning if any expired bookings
-            if (expiredCount > 0) {
-                showToast(`⚠️ ${expiredCount} booking(s) have expired. Please book again.`, 'warning');
-            }
+            el.bookingsContainer.innerHTML = bookings.map(b => {
+                const countdown = getCountdown(b);
+                const isExpired = isBookingExpired(b) && b.status !== 'cancelled' && b.status !==
+                'completed';
 
-            el.bookingsContainer.innerHTML = updatedBookings.map(b => `
-                <div class="booking-card ${statusMap[b.status] || 'status-pending'}">
-                    <div class="info">
-                        <div class="service">${b.service?.name || 'Service'}</div>
-                        <div class="meta">
-                            <i class="fas fa-calendar-day"></i> ${formatDate(b.booking_date)}
-                            <i class="fas fa-clock" style="margin-left:10px;"></i> 
-                            <span class="time-ampm">${b.slot_time_ampm || b.slot_time || 'N/A'}</span>
-                            <i class="fas fa-rupee-sign" style="margin-left:10px;"></i> ₹${b.total_amount || 0}
-                            ${b.status === 'expired' ? '<span style="margin-left:10px; color:#ef4444; font-weight:600;">⏰ Expired</span>' : ''}
-                        </div>
-                        <div class="booking-id">
-                            <i class="fas fa-hashtag"></i> ${b.booking_id || 'N/A'}
-                        </div>
-                    </div>
-                    <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                        <span class="status-badge ${badgeMap[b.status] || 'status-pending-badge'}">
-                            ${b.status === 'expired' ? 'Expired' : (b.status || 'Pending')}
-                        </span>
-                        ${b.status !== 'cancelled' && b.status !== 'completed' && b.status !== 'expired' ? `
-                            <button class="btn-sm btn-sm-danger" onclick="cancelBooking('${b.booking_id}')">
-                                <i class="fas fa-times"></i> Cancel
-                            </button>
-                            <button class="btn-sm btn-sm-outline" onclick="rescheduleBooking('${b.booking_id}')">
-                                <i class="fas fa-edit"></i> Reschedule
-                            </button>
-                        ` : ''}
-                        ${b.status === 'expired' ? `
-                            <button class="btn-sm btn-sm-warning" onclick="rescheduleBooking('${b.booking_id}')">
-                                <i class="fas fa-redo"></i> Book Again
-                            </button>
-                        ` : ''}
-                        ${b.status === 'cancelled' ? `
-                            <span class="btn-sm btn-sm-disabled">
-                                <i class="fas fa-times-circle"></i> Cancelled
-                            </span>
-                        ` : ''}
-                        ${b.status === 'completed' ? `
-                            <span class="btn-sm btn-sm-disabled">
-                                <i class="fas fa-check-circle"></i> Completed
-                            </span>
-                        ` : ''}
-                    </div>
-                </div>
-            `).join('');
+                return `
+                            <div class="booking-card ${statusMap[b.status] || 'status-pending'}">
+                                <div class="info">
+                                    <div class="service">${b.service?.name || 'Service'}</div>
+                                    <div class="meta">
+                                        <i class="fas fa-calendar-day"></i> ${formatDate(b.booking_date)}
+                                        <i class="fas fa-clock" style="margin-left:10px;"></i> 
+                                        <span class="time-ampm">${b.slot_time_ampm || b.slot_time || 'N/A'}</span>
+                                        <i class="fas fa-rupee-sign" style="margin-left:10px;"></i> ₹${b.total_amount || 0}
+                                        <span class="payment-status ${b.payment_status === 'paid' ? 'payment-paid' : 'payment-pending'}" style="margin-left:8px;">
+                                            ${b.payment_status === 'paid' ? '✅ Paid' : '⏳ Pending'}
+                                        </span>
+                                    </div>
+                                    <div class="booking-id">
+                                        <i class="fas fa-hashtag"></i> ${b.booking_id || 'N/A'}
+                                    </div>
+                                    ${countdown ? `<div class="countdown">${countdown}</div>` : ''}
+                                    ${isExpired ? `<div class="countdown warning">⏰ Time Expired</div>` : ''}
+                                </div>
+                                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+                                    <span class="status-badge ${badgeMap[b.status] || 'status-pending-badge'}">
+                                        ${b.status === 'expired' ? 'Expired' : (b.status || 'Pending')}
+                                    </span>
+                                    ${b.status !== 'cancelled' && b.status !== 'completed' && b.status !== 'expired' ? `
+                                        <button class="btn-sm btn-sm-danger" onclick="cancelBooking('${b.booking_id}')">
+                                            <i class="fas fa-times"></i> Cancel
+                                        </button>
+                                        <button class="btn-sm btn-sm-outline" onclick="rescheduleBooking('${b.booking_id}')">
+                                            <i class="fas fa-edit"></i> Reschedule
+                                        </button>
+                                    ` : ''}
+                                    ${b.status === 'completed' ? `
+                                        <button class="btn-sm btn-sm-success" onclick="rateBooking('${b.booking_id}')">
+                                            <i class="fas fa-star"></i> Rate
+                                        </button>
+                                    ` : ''}
+                                    ${b.status === 'cancelled' ? `
+                                        <span class="btn-sm btn-sm-disabled">
+                                            <i class="fas fa-times-circle"></i> Cancelled
+                                        </span>
+                                    ` : ''}
+                                    ${b.status === 'expired' ? `
+                                        <span class="btn-sm btn-sm-disabled">
+                                            <i class="fas fa-hourglass-end"></i> Expired
+                                        </span>
+                                    ` : ''}
+                                </div>
+                            </div>
+                        `;
+            }).join('');
         }
 
         // ============================================
@@ -1236,6 +1217,19 @@
         }
 
         // ============================================
+        // RATE BOOKING
+        // ============================================
+        function rateBooking(bookingId) {
+            const rating = prompt('Rate your experience (1-5 stars):', '5');
+            if (rating && rating >= 1 && rating <= 5) {
+                showToast(`⭐ Rated ${rating} stars! Thank you for your feedback.`, 'success');
+                // In production, you would send this to API
+            } else if (rating !== null) {
+                showToast('Please enter a rating between 1 and 5', 'warning');
+            }
+        }
+
+        // ============================================
         // FORMAT DATE
         // ============================================
         function formatDate(dateStr) {
@@ -1259,14 +1253,14 @@
         function showToast(message, type = 'info') {
             const container = el.toastContainer;
             const className = type === 'success' ? 'toast-success' :
-                             type === 'error' ? 'toast-error' :
-                             type === 'warning' ? 'toast-warning' : 'toast-info';
+                type === 'error' ? 'toast-error' :
+                type === 'warning' ? 'toast-warning' : 'toast-info';
 
             container.innerHTML = `<div class="toast ${className}">${message}</div>`;
 
             setTimeout(() => {
                 container.innerHTML = '';
-            }, 5000);
+            }, 4000);
         }
 
         console.log('✅ Customer Dashboard Loaded');
