@@ -7,11 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
@@ -19,10 +15,151 @@
             color: #0f172a;
             line-height: 1.6;
             min-height: 100vh;
+            display: flex;
         }
 
         a { text-decoration: none; color: inherit; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: #0f172a;
+            color: #94a3b8;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            padding: 20px 0;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+        }
+
+        .sidebar.open { left: 0; }
+
+        .sidebar .logo {
+            padding: 0 24px 20px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 16px;
+        }
+
+        .sidebar .logo h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar .logo h2 i { color: #10b981; }
+        .sidebar .logo h2 span { color: #10b981; }
+        .sidebar .logo p { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+        .sidebar .user-info {
+            padding: 0 24px 16px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .sidebar .user-info .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .sidebar .user-info .details .name { color: white; font-weight: 600; font-size: 15px; }
+        .sidebar .user-info .details .role { font-size: 12px; color: #64748b; }
+
+        .sidebar .nav-links {
+            list-style: none;
+            padding: 0 12px;
+        }
+
+        .sidebar .nav-links li { margin-bottom: 4px; }
+
+        .sidebar .nav-links li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .sidebar .nav-links li a:hover,
+        .sidebar .nav-links li a.active {
+            background: #1e293b;
+            color: white;
+        }
+
+        .sidebar .nav-links li a i { width: 20px; text-align: center; font-size: 16px; }
+
+        .sidebar .nav-divider {
+            height: 1px;
+            background: #1e293b;
+            margin: 12px 16px;
+        }
+
+        .sidebar .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: calc(100% - 24px);
+            margin: 0 12px;
+            font-family: inherit;
+        }
+
+        .sidebar .logout-btn:hover { background: #1e293b; }
+        .sidebar .logout-btn i { width: 20px; text-align: center; font-size: 16px; }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        .sidebar-overlay.active { display: block; }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
 
         /* ===== HEADER ===== */
         header {
@@ -39,112 +176,102 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 0;
+            padding: 12px 20px;
         }
 
-        .logo {
-            font-size: 24px;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #0f172a;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .menu-toggle:hover { background: #f1f5f9; color: #10b981; }
+
+        .logo-header {
+            font-size: 18px;
             font-weight: 800;
             color: #0f172a;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .logo i {
-            color: #10b981;
-            font-size: 28px;
-        }
+        .logo-header i { color: #10b981; font-size: 20px; }
+        .logo-header span { color: #10b981; }
 
-        .logo span { color: #10b981; }
-
-        nav {
+        .header-right .user-badge-mini {
             display: flex;
             align-items: center;
-            gap: 32px;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 4px 12px 4px 8px;
+            border-radius: 20px;
         }
 
-        nav a {
-            font-size: 15px;
-            font-weight: 500;
-            color: #475569;
-            transition: color 0.2s;
-            position: relative;
-        }
-
-        nav a:hover,
-        nav a.active {
-            color: #10b981;
-        }
-
-        nav a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            right: 0;
-            height: 2px;
+        .header-right .user-badge-mini .avatar-mini {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             background: #10b981;
-            border-radius: 4px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
         }
 
-        .btn-nav {
-            background: #10b981;
-            color: white !important;
-            padding: 8px 20px;
-            border-radius: 8px;
+        .header-right .user-badge-mini .name-mini {
             font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .btn-nav:hover {
-            background: #059669 !important;
-            color: white !important;
-        }
-
-        .btn-nav-outline {
-            border: 2px solid #10b981;
-            color: #10b981 !important;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .btn-nav-outline:hover {
-            background: #10b981;
-            color: white !important;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
+            font-size: 13px;
             color: #0f172a;
-            cursor: pointer;
         }
 
         /* ===== BOOKING PAGE ===== */
         .page-header {
-            padding: 32px 0 16px;
+            padding: 24px 20px 12px;
+            max-width: 700px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         .page-header h1 {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
         }
 
         .page-header p {
             color: #64748b;
+            font-size: 15px;
             margin-top: 2px;
+        }
+
+        .booking-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+            width: 100%;
         }
 
         /* ===== STEPS ===== */
         .steps {
             display: flex;
-            gap: 8px;
-            margin: 24px 0 32px;
+            gap: 6px;
+            margin: 20px 0 28px;
             justify-content: center;
             flex-wrap: wrap;
         }
@@ -152,15 +279,15 @@
         .step {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             color: #94a3b8;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .step .num {
-            width: 32px;
-            height: 32px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background: #e2e8f0;
             color: #64748b;
@@ -168,54 +295,35 @@
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 14px;
+            font-size: 13px;
             transition: all 0.3s;
         }
 
-        .step.active .num {
-            background: #10b981;
-            color: white;
-        }
-
-        .step.active {
-            color: #0f172a;
-        }
-
-        .step.completed .num {
-            background: #10b981;
-            color: white;
-        }
-
-        .step.completed {
-            color: #10b981;
-        }
+        .step.active .num { background: #10b981; color: white; }
+        .step.active { color: #0f172a; }
+        .step.completed .num { background: #10b981; color: white; }
+        .step.completed { color: #10b981; }
 
         .step-line {
-            width: 40px;
+            width: 30px;
             height: 2px;
             background: #e2e8f0;
             align-self: center;
         }
 
-        .step-line.completed {
-            background: #10b981;
-        }
+        .step-line.completed { background: #10b981; }
 
         /* ===== FORM SECTIONS ===== */
         .form-section {
             display: none;
             background: white;
             border-radius: 16px;
-            padding: 32px;
+            padding: 28px 24px;
             border: 1px solid #e2e8f0;
-            max-width: 700px;
-            margin: 0 auto;
             animation: fadeIn 0.3s ease;
         }
 
-        .form-section.active {
-            display: block;
-        }
+        .form-section.active { display: block; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -223,26 +331,27 @@
         }
 
         .form-section h2 {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             margin-bottom: 4px;
         }
 
         .form-section .subtitle {
             color: #64748b;
-            margin-bottom: 24px;
+            font-size: 14px;
+            margin-bottom: 20px;
         }
 
         /* ===== SERVICES GRID ===== */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 12px;
-            margin-bottom: 20px;
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 10px;
+            margin-bottom: 18px;
         }
 
         .service-option {
-            padding: 16px;
+            padding: 14px;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
             text-align: center;
@@ -263,7 +372,7 @@
         }
 
         .service-option .icon {
-            font-size: 28px;
+            font-size: 24px;
             color: #10b981;
             display: block;
             margin-bottom: 4px;
@@ -271,31 +380,31 @@
 
         .service-option .name {
             font-weight: 600;
-            font-size: 15px;
+            font-size: 14px;
         }
 
         .service-option .price {
             color: #10b981;
             font-weight: 700;
-            font-size: 16px;
+            font-size: 15px;
         }
 
         .service-option .duration {
             color: #94a3b8;
-            font-size: 12px;
+            font-size: 11px;
         }
 
         /* ===== DATE & SLOTS ===== */
         .date-input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-family: inherit;
             background: #f8fafc;
             transition: border-color 0.2s;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .date-input:focus {
@@ -306,18 +415,18 @@
 
         .slots-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-            gap: 10px;
-            margin: 12px 0;
+            grid-template-columns: repeat(auto-fill, minmax(75px, 1fr));
+            gap: 8px;
+            margin: 10px 0;
         }
 
         .slot-btn {
-            padding: 10px 4px;
+            padding: 8px 4px;
             border: 2px solid #e2e8f0;
             border-radius: 8px;
             background: white;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 500;
             transition: all 0.2s;
             font-family: inherit;
@@ -355,43 +464,36 @@
             font-weight: 400;
         }
 
-        .slot-btn.selected .ampm {
-            color: rgba(255,255,255,0.8);
-        }
-
-        .slot-btn.booked .ampm {
-            color: #cbd5e1;
-        }
+        .slot-btn.selected .ampm { color: rgba(255,255,255,0.8); }
+        .slot-btn.booked .ampm { color: #cbd5e1; }
 
         .slot-info {
-            font-size: 13px;
+            font-size: 12px;
             color: #94a3b8;
-            margin-top: 8px;
+            margin-top: 6px;
         }
 
         /* ===== FORM FIELDS ===== */
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .form-group label {
             display: block;
             font-weight: 600;
-            font-size: 14px;
+            font-size: 13px;
             margin-bottom: 4px;
             color: #0f172a;
         }
 
-        .form-group label .required {
-            color: #ef4444;
-        }
+        .form-group label .required { color: #ef4444; }
 
         .form-group input {
             width: 100%;
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-family: inherit;
             transition: border-color 0.2s;
             background: #f8fafc;
@@ -403,110 +505,57 @@
             background: white;
         }
 
-        .form-group input.error {
-            border-color: #ef4444;
-        }
+        .form-group input.error { border-color: #ef4444; }
 
         .form-error {
             color: #ef4444;
-            font-size: 13px;
+            font-size: 12px;
             margin-top: 4px;
             display: none;
         }
 
-        .form-error.show {
-            display: block;
-        }
+        .form-error.show { display: block; }
 
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 16px;
+            gap: 14px;
         }
 
         /* ===== SUMMARY ===== */
         .summary-box {
             background: #f8fafc;
             border-radius: 12px;
-            padding: 20px;
-            margin: 16px 0;
+            padding: 16px 18px;
+            margin: 14px 0;
         }
 
         .summary-box .row {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
+            padding: 6px 0;
             border-bottom: 1px solid #e2e8f0;
         }
 
-        .summary-box .row:last-child {
-            border-bottom: none;
-        }
+        .summary-box .row:last-child { border-bottom: none; }
 
         .summary-box .total {
-            font-size: 22px;
+            font-size: 20px;
             font-weight: 700;
             color: #10b981;
-        }
-
-        /* ===== PAYMENT OPTIONS ===== */
-        .payment-options {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 16px 0;
-        }
-
-        .payment-option {
-            padding: 14px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            background: #fafafa;
-        }
-
-        .payment-option:hover {
-            border-color: #10b981;
-        }
-
-        .payment-option.selected {
-            border-color: #10b981;
-            background: #ecfdf5;
-        }
-
-        .payment-option i {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .payment-option.selected i {
-            color: #10b981;
-        }
-
-        .payment-option .label {
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .payment-option .sub {
-            font-size: 12px;
-            color: #94a3b8;
         }
 
         /* ===== BUTTONS ===== */
         .btn-primary {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 32px;
+            gap: 8px;
+            padding: 12px 28px;
             background: #10b981;
             color: white;
             border: none;
             border-radius: 10px;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -515,22 +564,16 @@
             justify-content: center;
         }
 
-        .btn-primary:hover {
-            background: #059669;
-        }
-
-        .btn-primary:disabled {
-            background: #94a3b8;
-            cursor: not-allowed;
-        }
+        .btn-primary:hover { background: #059669; }
+        .btn-primary:disabled { background: #94a3b8; cursor: not-allowed; }
 
         .btn-secondary {
-            padding: 12px 24px;
+            padding: 10px 20px;
             background: transparent;
             color: #0f172a;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -544,79 +587,71 @@
 
         .btn-group {
             display: flex;
-            gap: 12px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 18px;
         }
 
-        .btn-group .btn-secondary {
-            flex: 0 0 auto;
-        }
-
-        .btn-group .btn-primary {
-            flex: 1;
-        }
+        .btn-group .btn-secondary { flex: 0 0 auto; }
+        .btn-group .btn-primary { flex: 1; }
 
         /* ===== SUCCESS ===== */
         .success-section {
             text-align: center;
-            padding: 40px 20px;
+            padding: 30px 16px;
         }
 
         .success-section .icon {
-            font-size: 64px;
+            font-size: 56px;
             color: #10b981;
-            margin-bottom: 16px;
+            margin-bottom: 12px;
         }
 
         .success-section h2 {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 800;
             color: #0f172a;
         }
 
         .success-section p {
             color: #64748b;
-            margin: 8px 0 16px;
+            margin: 6px 0 14px;
+            font-size: 14px;
         }
 
         .success-details {
             background: #f8fafc;
             border-radius: 12px;
-            padding: 20px;
+            padding: 16px 18px;
             text-align: left;
-            max-width: 400px;
-            margin: 0 auto 20px;
+            max-width: 380px;
+            margin: 0 auto 16px;
         }
 
         .success-details .row {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
+            padding: 5px 0;
             border-bottom: 1px solid #e2e8f0;
+            font-size: 14px;
         }
 
-        .success-details .row:last-child {
-            border-bottom: none;
-        }
-
-        .success-details .time-ampm {
-            color: #10b981;
-            font-weight: 600;
-        }
+        .success-details .row:last-child { border-bottom: none; }
+        .success-details .time-ampm { color: #10b981; font-weight: 600; }
 
         /* ===== TOAST ===== */
         .toast {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            padding: 16px 24px;
+            bottom: 20px;
+            right: 20px;
+            padding: 14px 22px;
             border-radius: 12px;
             color: white;
             font-weight: 500;
-            z-index: 999;
+            z-index: 2000;
             animation: slideUp 0.3s ease;
             box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            max-width: 400px;
+            max-width: 380px;
+            font-size: 14px;
         }
 
         .toast-success { background: #10b981; }
@@ -630,144 +665,145 @@
 
         .loading-spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             border: 3px solid rgba(255,255,255,0.3);
             border-top: 3px solid white;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .hidden { display: none !important; }
 
         /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            nav {
-                display: none;
-                flex-direction: column;
-                gap: 12px;
-                padding: 16px 0;
-                width: 100%;
-            }
 
-            nav.open {
-                display: flex;
-            }
-
-            .mobile-menu-btn {
-                display: block;
-            }
+        /* Mobile */
+        @media (max-width: 480px) {
+            .page-header h1 { font-size: 22px; }
+            .page-header p { font-size: 14px; }
 
             .steps {
-                flex-wrap: wrap;
                 gap: 4px;
+                font-size: 11px;
             }
+            .step .num { width: 26px; height: 26px; font-size: 12px; }
+            .step-line { width: 16px; }
 
-            .step-line {
-                width: 20px;
-            }
+            .form-section { padding: 18px 14px; }
+            .form-section h2 { font-size: 18px; }
 
-            .form-section {
-                padding: 20px;
-            }
+            .services-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .service-option { padding: 12px; }
+            .service-option .icon { font-size: 20px; }
+            .service-option .name { font-size: 13px; }
+            .service-option .price { font-size: 14px; }
 
-            .services-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+            .slots-grid { grid-template-columns: repeat(auto-fill, minmax(60px, 1fr)); gap: 6px; }
+            .slot-btn { font-size: 11px; padding: 6px 2px; }
 
-            .form-row {
-                grid-template-columns: 1fr;
-            }
+            .form-row { grid-template-columns: 1fr; gap: 10px; }
 
-            .btn-group {
-                flex-direction: column;
-            }
+            .btn-group { flex-direction: column; }
+            .btn-group .btn-secondary { width: 100%; text-align: center; }
 
-            .btn-group .btn-secondary {
-                width: 100%;
-                text-align: center;
-            }
+            .summary-box { padding: 14px; }
+            .summary-box .row { font-size: 13px; }
 
-            .slots-grid {
-                grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
-            }
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
 
-            .payment-options {
-                grid-template-columns: 1fr;
-            }
+            .header-inner { padding: 10px 14px; }
+            .logo-header { font-size: 16px; }
+            .header-right .user-badge-mini .name-mini { display: none; }
+            .menu-toggle { font-size: 18px; padding: 6px; }
 
-            .page-header h1 {
-                font-size: 26px;
-            }
+            .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
+
+            .booking-wrapper { padding: 0 12px 40px; }
+            .page-header { padding: 20px 12px 8px; }
         }
 
-        @media (max-width: 480px) {
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
+        /* Tablet */
+        @media (min-width: 481px) and (max-width: 1024px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
+        }
 
-            .slots-grid {
-                grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
-            }
-
-            .slot-btn {
-                font-size: 11px;
-                padding: 8px 2px;
-            }
-
-            .step {
-                font-size: 12px;
-            }
-
-            .step .num {
-                width: 26px;
-                height: 26px;
-                font-size: 12px;
-            }
-
-            .step-line {
-                width: 12px;
-            }
+        /* Desktop */
+        @media (min-width: 1025px) {
+            .services-grid { grid-template-columns: repeat(3, 1fr); }
+            .sidebar { left: -280px; }
+            .sidebar.open { left: 0; }
+            .menu-toggle { font-size: 22px; padding: 8px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
-    <header>
-        <div class="container">
-            <div class="header-inner">
-                <a href="index.html" class="logo">
-                    <i class="fas fa-scissors"></i> Premium<span>Salon</span>
-                </a>
-                <nav id="mainNav">
-                    <a href="index.html">Home</a>
-                    <a href="services.html">Services</a>
-                    <a href="booking.html" class="active">Book Now</a>
-                    <a href="customer-dashboard.html" id="dashboardLink" class="hidden">Dashboard</a>
-                    <a href="login.html" id="authLink">Login</a>
-                </nav>
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
-                    <i class="fas fa-bars"></i>
-                </button>
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2><i class="fas fa-scissors"></i> Premium<span>Salon</span></h2>
+            <p>Book Appointment</p>
+        </div>
+
+        <div class="user-info">
+            <div class="avatar" id="sideAvatar"><i class="fas fa-user"></i></div>
+            <div class="details">
+                <div class="name" id="sideName">Guest</div>
+                <div class="role" id="sideRole">Not Logged In</div>
             </div>
         </div>
-    </header>
 
-    <!-- ===== BOOKING PAGE ===== -->
-    <section class="page-header">
-        <div class="container">
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="services.html"><i class="fas fa-cut"></i> Services</a></li>
+            <li><a href="booking.html" class="active"><i class="fas fa-calendar-plus"></i> Book Now</a></li>
+            <li><a href="login.html" id="sideAuthLink"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        </ul>
+
+        <div class="nav-divider"></div>
+
+        <div style="padding: 0 24px; color:#64748b; font-size:12px;">
+            <p><i class="fas fa-shield-alt"></i> Secure &amp; Private</p>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- ===== HEADER ===== -->
+        <header>
+            <div class="header-inner">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a href="index.html" class="logo-header">
+                        <i class="fas fa-scissors"></i> Premium<span>Salon</span>
+                    </a>
+                </div>
+                <div class="header-right">
+                    <div class="user-badge-mini">
+                        <div class="avatar-mini" id="headerAvatar"><i class="fas fa-user"></i></div>
+                        <span class="name-mini" id="headerName">Guest</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== BOOKING PAGE ===== -->
+        <div class="page-header">
             <h1>Book Your Appointment</h1>
             <p>Select service, choose time, and confirm your booking</p>
         </div>
-    </section>
 
-    <section style="padding-bottom:60px;">
-        <div class="container">
+        <div class="booking-wrapper">
 
             <!-- Steps -->
             <div class="steps">
@@ -778,7 +814,7 @@
                 <div class="step-line" id="line1"></div>
                 <div class="step" id="step2">
                     <span class="num">2</span>
-                    <span>Date & Time</span>
+                    <span>Date &amp; Time</span>
                 </div>
                 <div class="step-line" id="line2"></div>
                 <div class="step" id="step3">
@@ -797,7 +833,7 @@
                 <h2>Choose a Service</h2>
                 <p class="subtitle">Select the service you'd like to book</p>
                 <div id="servicesContainer">
-                    <div style="text-align:center; padding:20px; color:#94a3b8;">
+                    <div style="text-align:center; padding:16px; color:#94a3b8;">
                         <i class="fas fa-spinner fa-spin"></i> Loading services...
                     </div>
                 </div>
@@ -808,7 +844,7 @@
 
             <!-- ===== STEP 2: DATE & TIME ===== -->
             <div class="form-section" id="step2Section">
-                <h2>Choose Date & Time</h2>
+                <h2>Choose Date &amp; Time</h2>
                 <p class="subtitle">Select your preferred date and time slot</p>
 
                 <div class="form-group">
@@ -819,7 +855,7 @@
                 <div class="form-group">
                     <label>Available Time Slots</label>
                     <div id="slotsContainer">
-                        <div style="text-align:center; padding:16px; color:#94a3b8;">
+                        <div style="text-align:center; padding:14px; color:#94a3b8;">
                             <i class="fas fa-spinner fa-spin"></i> Loading slots...
                         </div>
                     </div>
@@ -853,8 +889,8 @@
                         <span>Time</span>
                         <span id="summaryTime">-</span>
                     </div>
-                    <div class="row" style="border-top:2px solid #d1d5db; padding-top:10px; margin-top:6px;">
-                        <span style="font-weight:700; font-size:18px;">Total</span>
+                    <div class="row" style="border-top:2px solid #d1d5db; padding-top:8px; margin-top:4px;">
+                        <span style="font-weight:700; font-size:17px;">Total</span>
                         <span class="total" id="summaryTotal">₹0</span>
                     </div>
                 </div>
@@ -914,11 +950,11 @@
                             <span id="successAmount">-</span>
                         </div>
                     </div>
-                    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
-                        <a href="customer-dashboard.html" class="btn-primary" style="width:auto; padding:12px 28px;">
+                    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap;">
+                        <a href="customer-dashboard.html" class="btn-primary" style="width:auto; padding:10px 24px; font-size:14px;">
                             <i class="fas fa-user"></i> My Bookings
                         </a>
-                        <a href="booking.html" class="btn-secondary" style="width:auto; padding:12px 28px;">
+                        <a href="booking.html" class="btn-secondary" style="width:auto; padding:10px 24px; font-size:14px;">
                             <i class="fas fa-plus"></i> Book Another
                         </a>
                     </div>
@@ -926,16 +962,8 @@
             </div>
 
         </div>
-    </section>
 
-    <!-- ===== FOOTER ===== -->
-    <footer style="background:#0f172a; color:#94a3b8; padding:32px 0 20px; margin-top:20px;">
-        <div class="container">
-            <div style="text-align:center; font-size:14px; border-top:1px solid #1e293b; padding-top:20px;">
-                &copy; 2026 PremiumSalon. All rights reserved.
-            </div>
-        </div>
-    </footer>
+    </div>
 
     <!-- ===== TOAST ===== -->
     <div id="toastContainer"></div>
@@ -948,7 +976,7 @@
         // CONFIG
         // ============================================
         const CONFIG = {
-            API_BASE_URL: 'http://localhost:5000',
+            API_BASE_URL: 'https://avinashKumar8235.pythonanywhere.com',
         };
 
         // ============================================
@@ -994,26 +1022,80 @@
             step3Back: document.getElementById('step3Back'),
             confirmBooking: document.getElementById('confirmBooking'),
             toastContainer: document.getElementById('toastContainer'),
-            authLink: document.getElementById('authLink'),
-            dashboardLink: document.getElementById('dashboardLink'),
-            mobileMenuBtn: document.getElementById('mobileMenuBtn'),
-            mainNav: document.getElementById('mainNav'),
+            sidebar: document.getElementById('sidebar'),
+            sidebarOverlay: document.getElementById('sidebarOverlay'),
+            menuToggle: document.getElementById('menuToggle'),
+            headerName: document.getElementById('headerName'),
+            headerAvatar: document.getElementById('headerAvatar'),
+            sideName: document.getElementById('sideName'),
+            sideRole: document.getElementById('sideRole'),
+            sideAvatar: document.getElementById('sideAvatar'),
+            sideAuthLink: document.getElementById('sideAuthLink'),
             nameError: document.getElementById('nameError'),
             phoneError: document.getElementById('phoneError'),
         };
+
+        // ============================================
+        // SIDEBAR FUNCTIONS
+        // ============================================
+        function openSidebar() {
+            el.sidebar.classList.add('open');
+            el.sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            el.sidebar.classList.remove('open');
+            el.sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function toggleSidebar() {
+            if (el.sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
 
         // ============================================
         // INIT
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             checkAuth();
-            setupMobileMenu();
             loadServices();
             setupDatePicker();
             setupValidation();
             checkReschedule();
+            setupSidebarEvents();
             console.log('✅ Booking Page Loaded');
         });
+
+        // ============================================
+        // SIDEBAR EVENTS
+        // ============================================
+        function setupSidebarEvents() {
+            el.menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSidebar();
+            });
+
+            el.sidebarOverlay.addEventListener('click', closeSidebar);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && el.sidebar.classList.contains('open')) {
+                    closeSidebar();
+                }
+            });
+
+            document.querySelector('.main-content').addEventListener('click', function(e) {
+                if (el.sidebar.classList.contains('open') &&
+                    !e.target.closest('.sidebar') &&
+                    !e.target.closest('.menu-toggle')) {
+                    closeSidebar();
+                }
+            });
+        }
 
         // ============================================
         // CHECK AUTH
@@ -1023,18 +1105,33 @@
             const user = JSON.parse(localStorage.getItem('user') || '{}');
 
             if (token && user.id) {
-                el.authLink.textContent = 'Dashboard';
-                el.authLink.href = user.role === 'admin' ? 'admin-dashboard.html' :
-                                   user.role === 'staff' ? 'staff-dashboard.html' :
-                                   'customer-dashboard.html';
-                el.authLink.className = 'btn-nav';
+                const name = user.name || 'Customer';
+                const initial = name[0].toUpperCase();
+
+                el.headerName.textContent = name;
+                el.sideName.textContent = name;
+                el.sideRole.textContent = user.role || 'Customer';
+                el.headerAvatar.textContent = initial;
+                el.sideAvatar.textContent = initial;
+
+                const role = user.role || 'customer';
+                const dashboard = role === 'admin' ? 'admin-dashboard.html' :
+                    role === 'staff' ? 'staff-dashboard.html' :
+                    'customer-dashboard.html';
+                el.sideAuthLink.innerHTML = '<i class="fas fa-home"></i> Dashboard';
+                el.sideAuthLink.href = dashboard;
+
                 if (user.name) el.customerName.value = user.name;
                 if (user.phone) el.customerPhone.value = user.phone;
                 if (user.email) el.customerEmail.value = user.email;
             } else {
-                el.authLink.textContent = 'Login';
-                el.authLink.href = 'login.html';
-                el.authLink.className = 'btn-nav-outline';
+                el.headerName.textContent = 'Guest';
+                el.sideName.textContent = 'Guest';
+                el.sideRole.textContent = 'Not Logged In';
+                el.headerAvatar.innerHTML = '<i class="fas fa-user"></i>';
+                el.sideAvatar.innerHTML = '<i class="fas fa-user"></i>';
+                el.sideAuthLink.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                el.sideAuthLink.href = 'login.html';
             }
         }
 
@@ -1057,19 +1154,16 @@
                 const booking = await response.json();
 
                 if (booking.id) {
-                    // Pre-select service
                     const service = state.services.find(s => s.id === booking.service_id);
                     if (service) {
                         state.selectedService = service;
                         selectService(service.id);
                     }
 
-                    // Pre-select date
                     el.bookingDate.value = booking.booking_date;
                     state.selectedDate = booking.booking_date;
                     await loadSlots(booking.booking_date);
 
-                    // Pre-select slot
                     const slotId = booking.slot_id;
                     setTimeout(() => {
                         document.querySelectorAll('.slot-btn').forEach(btn => {
@@ -1079,7 +1173,6 @@
                         });
                     }, 500);
 
-                    // Pre-fill customer details
                     el.customerName.value = booking.customer_name;
                     el.customerPhone.value = booking.customer_phone;
 
@@ -1110,14 +1203,14 @@
                 const preselectedId = params.get('service');
 
                 el.servicesContainer.innerHTML = data.map((s, i) => `
-                    <div class="service-option ${preselectedId === s.id ? 'selected' : ''}" 
-                         data-id="${s.id}" onclick="selectService('${s.id}')">
-                        <span class="icon"><i class="fas ${icons[i % icons.length]}"></i></span>
-                        <div class="name">${s.name}</div>
-                        <div class="price">₹${s.price}</div>
-                        <div class="duration"><i class="far fa-clock"></i> ${s.duration_minutes} min</div>
-                    </div>
-                `).join('');
+                            <div class="service-option ${preselectedId === s.id ? 'selected' : ''}" 
+                                 data-id="${s.id}" onclick="selectService('${s.id}')">
+                                <span class="icon"><i class="fas ${icons[i % icons.length]}"></i></span>
+                                <div class="name">${s.name}</div>
+                                <div class="price">₹${s.price}</div>
+                                <div class="duration"><i class="far fa-clock"></i> ${s.duration_minutes} min</div>
+                            </div>
+                        `).join('');
 
                 if (preselectedId) {
                     const service = data.find(s => s.id === preselectedId);
@@ -1130,8 +1223,8 @@
             } catch (error) {
                 console.error('Error loading services:', error);
                 el.servicesContainer.innerHTML = `
-                    <p style="text-align:center; color:#ef4444;">⚠️ Failed to load services. Please refresh.</p>
-                `;
+                            <p style="text-align:center; color:#ef4444;">⚠️ Failed to load services. Please refresh.</p>
+                        `;
             }
         }
 
@@ -1174,10 +1267,10 @@
             if (!date) return;
 
             el.slotsContainer.innerHTML = `
-                <div style="text-align:center; padding:16px; color:#94a3b8;">
-                    <i class="fas fa-spinner fa-spin"></i> Loading slots...
-                </div>
-            `;
+                        <div style="text-align:center; padding:14px; color:#94a3b8;">
+                            <i class="fas fa-spinner fa-spin"></i> Loading slots...
+                        </div>
+                    `;
             el.slotInfo.textContent = '';
 
             try {
@@ -1186,8 +1279,8 @@
 
                 if (!slots || slots.length === 0) {
                     el.slotsContainer.innerHTML = `
-                        <p style="text-align:center; color:#94a3b8;">No slots available for this date</p>
-                    `;
+                                <p style="text-align:center; color:#94a3b8;">No slots available for this date</p>
+                            `;
                     return;
                 }
 
@@ -1195,33 +1288,33 @@
 
                 if (available.length === 0) {
                     el.slotsContainer.innerHTML = `
-                        <p style="text-align:center; color:#ef4444;">⚠️ All slots are booked for this date. Please select another date.</p>
-                    `;
+                                <p style="text-align:center; color:#ef4444;">⚠️ All slots are booked for this date. Please select another date.</p>
+                            `;
                     return;
                 }
 
                 el.slotsContainer.innerHTML = `
-                    <div class="slots-grid">
-                        ${slots.map(s => `
-                            <button class="slot-btn ${s.available ? '' : 'booked'}" 
-                                    data-id="${s.id}" 
-                                    data-time="${s.time}"
-                                    onclick="${s.available ? `selectSlot('${s.id}', '${s.time}', '${s.time_ampm || s.time}')` : ''}"
-                                    ${s.available ? '' : 'disabled'}>
-                                ${s.time}
-                                <span class="ampm">${s.time_ampm || ''}</span>
-                            </button>
-                        `).join('')}
-                    </div>
-                `;
+                            <div class="slots-grid">
+                                ${slots.map(s => `
+                                    <button class="slot-btn ${s.available ? '' : 'booked'}" 
+                                            data-id="${s.id}" 
+                                            data-time="${s.time}"
+                                            onclick="${s.available ? `selectSlot('${s.id}', '${s.time}', '${s.time_ampm || s.time}')` : ''}"
+                                            ${s.available ? '' : 'disabled'}>
+                                        ${s.time}
+                                        <span class="ampm">${s.time_ampm || ''}</span>
+                                    </button>
+                                `).join('')}
+                            </div>
+                        `;
 
                 el.slotInfo.textContent = `${available.length} slots available`;
 
             } catch (error) {
                 console.error('Error loading slots:', error);
                 el.slotsContainer.innerHTML = `
-                    <p style="text-align:center; color:#ef4444;">⚠️ Failed to load slots</p>
-                `;
+                            <p style="text-align:center; color:#ef4444;">⚠️ Failed to load slots</p>
+                        `;
             }
         }
 
@@ -1351,7 +1444,6 @@
                 let url = `${CONFIG.API_BASE_URL}/api/booking/create`;
                 let method = 'POST';
 
-                // If reschedule, use different endpoint
                 if (state.isReschedule && state.rescheduleBookingId) {
                     url = `${CONFIG.API_BASE_URL}/api/booking/${state.rescheduleBookingId}/reschedule`;
                     method = 'PUT';
@@ -1400,18 +1492,9 @@
         function showToast(message, type = 'info') {
             const container = el.toastContainer;
             const className = type === 'success' ? 'toast-success' :
-                             type === 'error' ? 'toast-error' : 'toast-info';
+                type === 'error' ? 'toast-error' : 'toast-info';
             container.innerHTML = `<div class="toast ${className}">${message}</div>`;
             setTimeout(() => container.innerHTML = '', 5000);
-        }
-
-        // ============================================
-        // MOBILE MENU
-        // ============================================
-        function setupMobileMenu() {
-            el.mobileMenuBtn.addEventListener('click', function() {
-                el.mainNav.classList.toggle('open');
-            });
         }
 
         // ============================================
