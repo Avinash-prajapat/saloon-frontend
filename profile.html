@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>My Profile - Premium Salon</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: #f1f5f9;
+            color: #0f172a;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+        }
+
+        a { text-decoration: none; color: inherit; }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: #0f172a;
+            color: #94a3b8;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            padding: 20px 0;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+        }
+
+        .sidebar.open { left: 0; }
+
+        .sidebar .logo {
+            padding: 0 24px 20px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 16px;
+        }
+
+        .sidebar .logo h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar .logo h2 i { color: #10b981; }
+        .sidebar .logo h2 span { color: #10b981; }
+        .sidebar .logo p { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+        .sidebar .user-info {
+            padding: 0 24px 16px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .sidebar .user-info .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .sidebar .user-info .details .name { color: white; font-weight: 600; font-size: 15px; }
+        .sidebar .user-info .details .role { font-size: 12px; color: #64748b; }
+
+        .sidebar .nav-links {
+            list-style: none;
+            padding: 0 12px;
+        }
+
+        .sidebar .nav-links li { margin-bottom: 4px; }
+
+        .sidebar .nav-links li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .sidebar .nav-links li a:hover,
+        .sidebar .nav-links li a.active {
+            background: #1e293b;
+            color: white;
+        }
+
+        .sidebar .nav-links li a i { width: 20px; text-align: center; font-size: 16px; }
+
+        .sidebar .nav-divider {
+            height: 1px;
+            background: #1e293b;
+            margin: 12px 16px;
+        }
+
+        .sidebar .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: calc(100% - 24px);
+            margin: 0 12px;
+            font-family: inherit;
+        }
+
+        .sidebar .logout-btn:hover { background: #1e293b; }
+        .sidebar .logout-btn i { width: 20px; text-align: center; font-size: 16px; }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        .sidebar-overlay.active { display: block; }
+
+        .main-content {
+            flex: 1;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* ===== HEADER ===== */
+        header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(12px);
+            background: rgba(255,255,255,0.92);
+        }
+
+        .header-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 20px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #0f172a;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .menu-toggle:hover { background: #f1f5f9; color: #10b981; }
+
+        .logo-header {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logo-header i { color: #10b981; font-size: 20px; }
+        .logo-header span { color: #10b981; }
+
+        .header-right .user-badge-mini {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 4px 12px 4px 8px;
+            border-radius: 20px;
+        }
+
+        .header-right .user-badge-mini .avatar-mini {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
+        }
+
+        .header-right .user-badge-mini .name-mini {
+            font-weight: 600;
+            font-size: 13px;
+            color: #0f172a;
+        }
+
+        /* ===== PROFILE PAGE ===== */
+        .profile-page {
+            padding: 24px 20px 60px;
+        }
+
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+            background: white;
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .profile-header .avatar-large {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 32px;
+        }
+
+        .profile-header .info h1 {
+            font-size: 24px;
+            font-weight: 800;
+        }
+
+        .profile-header .info p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        .profile-header .info .role-badge {
+            display: inline-block;
+            background: #d1fae5;
+            color: #059669;
+            padding: 2px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        .btn-edit-profile {
+            margin-left: auto;
+            background: #10b981;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-edit-profile:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+
+        /* ===== PROFILE CARD ===== */
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            border: 1px solid #e2e8f0;
+            max-width: 600px;
+        }
+
+        .profile-card .section-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .profile-card .form-group {
+            margin-bottom: 16px;
+        }
+
+        .profile-card .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: #0f172a;
+            margin-bottom: 4px;
+        }
+
+        .profile-card .form-group input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 14px;
+            font-family: inherit;
+            transition: all 0.2s;
+            background: #f8fafc;
+        }
+
+        .profile-card .form-group input:focus {
+            outline: none;
+            border-color: #10b981;
+            background: white;
+        }
+
+        .profile-card .form-group input:disabled {
+            background: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .profile-card .form-group .input-readonly {
+            background: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .profile-card .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .profile-card .btn-save {
+            background: #10b981;
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+            width: 100%;
+            margin-top: 8px;
+        }
+
+        .profile-card .btn-save:hover {
+            background: #059669;
+        }
+
+        .profile-card .btn-save:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+
+        .profile-card .btn-save .loading-spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .profile-card .edit-hint {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-top: 8px;
+            text-align: center;
+        }
+
+        /* ===== TOAST ===== */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 14px 22px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 2000;
+            animation: slideUp 0.3s ease;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            max-width: 380px;
+            font-size: 14px;
+        }
+
+        .toast-success { background: #10b981; }
+        .toast-error { background: #ef4444; }
+        .toast-info { background: #3b82f6; }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .profile-header {
+                flex-direction: column;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .profile-header .btn-edit-profile {
+                margin-left: 0;
+                width: 100%;
+                justify-content: center;
+            }
+
+            .profile-card .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
+
+            .header-inner { padding: 10px 14px; }
+            .logo-header { font-size: 16px; }
+            .header-right .user-badge-mini .name-mini { display: none; }
+
+            .profile-page { padding: 16px 12px 40px; }
+
+            .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
+
+            .menu-toggle { font-size: 18px; padding: 6px; }
+        }
+
+        @media (min-width: 481px) and (max-width: 1024px) {
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
+        }
+
+        @media (min-width: 1025px) {
+            .sidebar { left: -280px; }
+            .sidebar.open { left: 0; }
+            .menu-toggle { font-size: 22px; padding: 8px; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2><i class="fas fa-scissors"></i> Premium<span>Salon</span></h2>
+            <p>My Profile</p>
+        </div>
+
+        <div class="user-info">
+            <div class="avatar" id="sideAvatar">C</div>
+            <div class="details">
+                <div class="name" id="sideName">Customer</div>
+                <div class="role" id="sidePhone">-</div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="customer-dashboard.html"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="booking.html"><i class="fas fa-calendar-plus"></i> Book Appointment</a></li>
+            <li><a href="services.html"><i class="fas fa-cut"></i> Services</a></li>
+            <li><a href="profile.html" class="active"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="index.html"><i class="fas fa-arrow-left"></i> Back to Home</a></li>
+        </ul>
+
+        <div class="nav-divider"></div>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </button>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- ===== HEADER ===== -->
+        <header>
+            <div class="header-inner">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a href="index.html" class="logo-header">
+                        <i class="fas fa-scissors"></i> Premium<span>Salon</span>
+                    </a>
+                </div>
+                <div class="header-right">
+                    <div class="user-badge-mini">
+                        <div class="avatar-mini" id="headerAvatar">C</div>
+                        <span class="name-mini" id="headerName">Customer</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== PROFILE PAGE ===== -->
+        <section class="profile-page">
+            <div class="container" style="max-width:800px; margin:0 auto;">
+
+                <!-- Profile Header -->
+                <div class="profile-header">
+                    <div class="avatar-large" id="profileAvatar">C</div>
+                    <div class="info">
+                        <h1 id="profileName">Customer</h1>
+                        <p id="profilePhone">+91 98765 43210</p>
+                        <span class="role-badge" id="profileRole">Customer</span>
+                    </div>
+                    <button class="btn-edit-profile" onclick="toggleEdit()">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                </div>
+
+                <!-- Profile Card -->
+                <div class="profile-card">
+                    <div class="section-title"><i class="fas fa-user-circle"></i> Personal Information</div>
+
+                    <form id="profileForm" onsubmit="updateProfile(event)">
+                        <div class="form-group">
+                            <label>Full Name <span style="color:#ef4444;">*</span></label>
+                            <input type="text" id="fullName" placeholder="Enter your full name" required>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <input type="tel" id="phone" disabled class="input-readonly">
+                            </div>
+                            <div class="form-group">
+                                <label>Email</label>
+                                <input type="email" id="email" placeholder="Enter your email">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Password</label>
+                            <input type="password" id="password" placeholder="Enter new password (leave blank to keep current)">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Confirm Password</label>
+                            <input type="password" id="confirmPassword" placeholder="Confirm new password">
+                        </div>
+
+                        <div class="form-group" style="margin-top:4px;">
+                            <label style="font-weight:400; font-size:12px; color:#94a3b8;">
+                                <i class="fas fa-info-circle"></i> Phone number cannot be changed. Contact support for assistance.
+                            </label>
+                        </div>
+
+                        <button type="submit" class="btn-save" id="saveBtn">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                    </form>
+
+                    <div class="edit-hint">
+                        <i class="fas fa-lock"></i> Your data is secure and private.
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+
+    <!-- ===== TOAST ===== -->
+    <div id="toastContainer"></div>
+
+    <!-- ============================================
+    JAVASCRIPT - COMPLETE PROFILE LOGIC
+    ============================================ -->
+    <script>
+        // ============================================
+        // CONFIG
+        // ============================================
+        const CONFIG = {
+            API_BASE_URL: 'https://avinashKumar8235.pythonanywhere.com',
+        };
+
+        // ============================================
+        // DOM REFS
+        // ============================================
+        const el = {
+            headerName: document.getElementById('headerName'),
+            headerAvatar: document.getElementById('headerAvatar'),
+            sideName: document.getElementById('sideName'),
+            sidePhone: document.getElementById('sidePhone'),
+            sideAvatar: document.getElementById('sideAvatar'),
+            profileName: document.getElementById('profileName'),
+            profilePhone: document.getElementById('profilePhone'),
+            profileRole: document.getElementById('profileRole'),
+            profileAvatar: document.getElementById('profileAvatar'),
+            fullName: document.getElementById('fullName'),
+            phone: document.getElementById('phone'),
+            email: document.getElementById('email'),
+            password: document.getElementById('password'),
+            confirmPassword: document.getElementById('confirmPassword'),
+            saveBtn: document.getElementById('saveBtn'),
+            toastContainer: document.getElementById('toastContainer'),
+            sidebar: document.getElementById('sidebar'),
+            sidebarOverlay: document.getElementById('sidebarOverlay'),
+            menuToggle: document.getElementById('menuToggle'),
+        };
+
+        // ============================================
+        // STATE
+        // ============================================
+        let user = {};
+        let isEditMode = false;
+
+        // ============================================
+        // SIDEBAR FUNCTIONS
+        // ============================================
+        function openSidebar() {
+            el.sidebar.classList.add('open');
+            el.sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            el.sidebar.classList.remove('open');
+            el.sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function toggleSidebar() {
+            if (el.sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+
+        // ============================================
+        // INIT
+        // ============================================
+        document.addEventListener('DOMContentLoaded', function() {
+            const token = localStorage.getItem('token');
+            user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (!token || !user.id) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            displayUserInfo(user);
+            loadUserProfile(token);
+
+            // Sidebar events
+            el.menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSidebar();
+            });
+
+            el.sidebarOverlay.addEventListener('click', closeSidebar);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && el.sidebar.classList.contains('open')) {
+                    closeSidebar();
+                }
+            });
+
+            document.querySelector('.main-content').addEventListener('click', function(e) {
+                if (el.sidebar.classList.contains('open') && !e.target.closest('.sidebar') && !e.target.closest(
+                        '.menu-toggle')) {
+                    closeSidebar();
+                }
+            });
+
+            console.log('✅ Profile Page Loaded');
+        });
+
+        // ============================================
+        // DISPLAY USER INFO
+        // ============================================
+        function displayUserInfo(user) {
+            const name = user.name || 'Customer';
+            const initial = name[0].toUpperCase();
+
+            el.headerName.textContent = name;
+            el.sideName.textContent = name;
+            el.profileName.textContent = name;
+            el.profilePhone.textContent = user.phone || '+91 98765 43210';
+            el.profileRole.textContent = user.role || 'Customer';
+            el.headerAvatar.textContent = initial;
+            el.sideAvatar.textContent = initial;
+            el.profileAvatar.textContent = initial;
+
+            el.fullName.value = name;
+            el.phone.value = user.phone || '';
+        }
+
+        // ============================================
+        // LOAD USER PROFILE
+        // ============================================
+        async function loadUserProfile(token) {
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/auth/me`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+
+                if (response.status === 401) {
+                    logout();
+                    return;
+                }
+
+                const data = await response.json();
+                if (data.id) {
+                    el.email.value = data.email || '';
+                    user = data;
+                    displayUserInfo(data);
+                }
+            } catch (error) {
+                console.error('Error loading profile:', error);
+            }
+        }
+
+        // ============================================
+        // TOGGLE EDIT MODE
+        // ============================================
+        function toggleEdit() {
+            isEditMode = !isEditMode;
+            const inputs = [el.fullName, el.email, el.password, el.confirmPassword];
+            inputs.forEach(input => {
+                if (input === el.fullName || input === el.email) {
+                    input.disabled = !isEditMode;
+                    input.classList.toggle('input-readonly', !isEditMode);
+                }
+            });
+            if (!isEditMode) {
+                el.password.value = '';
+                el.confirmPassword.value = '';
+            }
+            const btn = document.querySelector('.btn-edit-profile');
+            btn.innerHTML = isEditMode ? '<i class="fas fa-times"></i> Cancel' : '<i class="fas fa-edit"></i> Edit Profile';
+            btn.style.background = isEditMode ? '#ef4444' : '#10b981';
+        }
+
+        // ============================================
+        // UPDATE PROFILE
+        // ============================================
+        async function updateProfile(event) {
+            event.preventDefault();
+
+            const name = el.fullName.value.trim();
+            const email = el.email.value.trim();
+            const password = el.password.value;
+            const confirmPassword = el.confirmPassword.value;
+
+            if (!name) {
+                showToast('Please enter your name', 'error');
+                return;
+            }
+
+            if (password && password !== confirmPassword) {
+                showToast('Passwords do not match', 'error');
+                return;
+            }
+
+            if (password && password.length < 6) {
+                showToast('Password must be at least 6 characters', 'error');
+                return;
+            }
+
+            const token = localStorage.getItem('token');
+
+            const updateData = {
+                name: name,
+                email: email
+            };
+
+            if (password) {
+                updateData.password = password;
+            }
+
+            el.saveBtn.disabled = true;
+            el.saveBtn.innerHTML = '<span class="loading-spinner"></span> Saving...';
+
+            try {
+                const response = await fetch(`${CONFIG.API_BASE_URL}/api/auth/me`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(updateData)
+                });
+
+                const result = await response.json();
+
+                if (result.success || result.id) {
+                    // Update local storage
+                    const updatedUser = { ...user, name: name, email: email };
+                    localStorage.setItem('user', JSON.stringify(updatedUser));
+                    user = updatedUser;
+
+                    // Update UI
+                    displayUserInfo(updatedUser);
+                    showToast('✅ Profile updated successfully!', 'success');
+
+                    // Exit edit mode
+                    if (isEditMode) {
+                        toggleEdit();
+                    }
+                } else {
+                    showToast('❌ ' + (result.error || 'Failed to update profile'), 'error');
+                }
+
+            } catch (error) {
+                console.error('Update error:', error);
+                showToast('❌ Network error. Please try again.', 'error');
+            }
+
+            el.saveBtn.disabled = false;
+            el.saveBtn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
+        }
+
+        // ============================================
+        // LOGOUT
+        // ============================================
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.href = 'login.html';
+        }
+
+        // ============================================
+        // TOAST
+        // ============================================
+        function showToast(message, type = 'info') {
+            const container = el.toastContainer;
+            const className = type === 'success' ? 'toast-success' :
+                type === 'error' ? 'toast-error' : 'toast-info';
+
+            container.innerHTML = `<div class="toast ${className}">${message}</div>`;
+
+            setTimeout(() => {
+                container.innerHTML = '';
+            }, 4000);
+        }
+
+        console.log('✅ Profile Page Loaded');
+        console.log('📡 API URL:', CONFIG.API_BASE_URL);
+    </script>
+</body>
+</html>
