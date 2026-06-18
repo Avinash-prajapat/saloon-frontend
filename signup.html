@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Sign Up - Premium Salon</title>
+    <link rel="icon" type="image/png" href="image.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>
@@ -114,27 +115,6 @@
             background: #1e293b;
             margin: 12px 16px;
         }
-
-        .sidebar .logout-btn {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            padding: 12px 16px;
-            border-radius: 10px;
-            color: #ef4444;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-            background: none;
-            width: calc(100% - 24px);
-            margin: 0 12px;
-            font-family: inherit;
-        }
-
-        .sidebar .logout-btn:hover { background: #1e293b; }
-        .sidebar .logout-btn i { width: 20px; text-align: center; font-size: 16px; }
 
         .sidebar-overlay {
             position: fixed;
@@ -532,6 +512,8 @@
             .menu-toggle { font-size: 18px; padding: 6px; }
 
             .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
+
+            .terms { font-size: 12px; }
         }
 
         /* Tablet */
@@ -1019,8 +1001,21 @@
 
                     showToast('✅ Account created successfully!', 'success');
 
+                    // ✅ Check for redirect parameter
+                    const params = new URLSearchParams(window.location.search);
+                    const redirect = params.get('redirect');
+
                     setTimeout(() => {
-                        window.location.href = 'customer-dashboard.html';
+                        if (redirect === 'booking') {
+                            const bookingData = localStorage.getItem('booking_data');
+                            if (bookingData) {
+                                window.location.href = 'booking.html?restore=1';
+                            } else {
+                                window.location.href = 'booking.html';
+                            }
+                        } else {
+                            window.location.href = 'customer-dashboard.html';
+                        }
                     }, 1200);
 
                 } else {
