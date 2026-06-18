@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Book Appointment - Premium Salon</title>
+    <link rel="icon" type="image/png" href="image.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>
@@ -545,6 +546,65 @@
             color: #10b981;
         }
 
+        /* ===== LOGIN REQUIRED OVERLAY ===== */
+        .login-required-overlay {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.95);
+            border-radius: 16px;
+            z-index: 10;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .login-required-overlay.active {
+            display: flex;
+        }
+
+        .login-required-overlay i {
+            font-size: 56px;
+            color: #f59e0b;
+            margin-bottom: 16px;
+        }
+
+        .login-required-overlay h3 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 8px;
+        }
+
+        .login-required-overlay p {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .login-required-overlay .btn-login {
+            background: #10b981;
+            color: white;
+            padding: 12px 32px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+
+        .login-required-overlay .btn-login:hover {
+            background: #059669;
+            transform: translateY(-1px);
+        }
+
         /* ===== BUTTONS ===== */
         .btn-primary {
             display: inline-flex;
@@ -657,6 +717,7 @@
         .toast-success { background: #10b981; }
         .toast-error { background: #ef4444; }
         .toast-info { background: #3b82f6; }
+        .toast-warning { background: #f59e0b; }
 
         @keyframes slideUp {
             from { opacity: 0; transform: translateY(20px); }
@@ -723,6 +784,9 @@
 
             .booking-wrapper { padding: 0 12px 40px; }
             .page-header { padding: 20px 12px 8px; }
+
+            .login-required-overlay i { font-size: 40px; }
+            .login-required-overlay h3 { font-size: 18px; }
         }
 
         /* Tablet */
@@ -914,7 +978,17 @@
                     </div>
                 </div>
 
-                <div class="btn-group">
+                <!-- 🔒 LOGIN REQUIRED OVERLAY -->
+                <div class="login-required-overlay" id="loginRequiredOverlay">
+                    <i class="fas fa-lock"></i>
+                    <h3>Login Required</h3>
+                    <p>Please login to book an appointment</p>
+                    <button class="btn-login" onclick="redirectToLogin()">
+                        <i class="fas fa-sign-in-alt"></i> Login Now
+                    </button>
+                </div>
+
+                <div class="btn-group" id="bookingActions">
                     <button class="btn-secondary" id="step3Back">← Back</button>
                     <button class="btn-primary" id="confirmBooking">
                         <i class="fas fa-check"></i> Confirm Booking
@@ -1033,6 +1107,8 @@
             sideAuthLink: document.getElementById('sideAuthLink'),
             nameError: document.getElementById('nameError'),
             phoneError: document.getElementById('phoneError'),
+            loginRequiredOverlay: document.getElementById('loginRequiredOverlay'),
+            bookingActions: document.getElementById('bookingActions'),
         };
 
         // ============================================
@@ -1059,6 +1135,55 @@
         }
 
         // ============================================
+        // REDIRECT TO LOGIN
+        // ============================================
+        function redirectToLogin() {
+            // Save current booking data
+            const bookingData = {
+                service_id: state.selectedService?.id,
+                service_name: state.selectedService?.name,
+                slot_id: state.selectedSlot?.id,
+                slot_time: state.selectedSlot?.time,
+                slot_ampm: state.selectedSlot?.ampm,
+                booking_date: state.selectedDate,
+                amount: state.selectedService?.price,
+                customer_name: el.customerName.value.trim(),
+                customer_phone: el.customerPhone.value.trim(),
+                customer_email: el.customerEmail.value.trim()
+            };
+            localStorage.setItem('booking_data', JSON.stringify(bookingData));
+            window.location.href = 'login.html?redirect=booking';
+        }
+
+        // ============================================
+        // CHECK LOGIN STATUS
+        // ============================================
+        function isLoggedIn() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            return !!(token && user.id);
+        }
+
+        // ============================================
+        // UPDATE UI BASED ON LOGIN STATUS
+        // ============================================
+        function updateLoginUI() {
+            const loggedIn = isLoggedIn();
+
+            if (loggedIn) {
+                el.loginRequiredOverlay.classList.remove('active');
+                el.bookingActions.style.display = 'flex';
+                // Show confirm button
+                el.confirmBooking.style.display = 'inline-flex';
+            } else {
+                el.loginRequiredOverlay.classList.add('active');
+                el.bookingActions.style.display = 'none';
+                // Hide confirm button
+                el.confirmBooking.style.display = 'none';
+            }
+        }
+
+        // ============================================
         // INIT
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
@@ -1068,6 +1193,42 @@
             setupValidation();
             checkReschedule();
             setupSidebarEvents();
+
+            // ✅ Update UI based on login status
+            setTimeout(updateLoginUI, 500);
+
+            // ✅ Restore booking data after login
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('restore') === '1') {
+                const savedData = localStorage.getItem('booking_data');
+                if (savedData) {
+                    const data = JSON.parse(savedData);
+                    // Restore service
+                    const service = state.services.find(s => s.id === data.service_id);
+                    if (service) {
+                        state.selectedService = service;
+                        // Select service in UI
+                        document.querySelectorAll('.service-option').forEach(el => {
+                            el.classList.toggle('selected', el.dataset.id === service.id);
+                        });
+                        el.step1Next.disabled = false;
+                    }
+                    // Restore date
+                    if (data.booking_date) {
+                        el.bookingDate.value = data.booking_date;
+                        state.selectedDate = data.booking_date;
+                        loadSlots(data.booking_date);
+                    }
+                    // Restore customer details
+                    if (data.customer_name) el.customerName.value = data.customer_name;
+                    if (data.customer_phone) el.customerPhone.value = data.customer_phone;
+                    if (data.customer_email) el.customerEmail.value = data.customer_email;
+
+                    localStorage.removeItem('booking_data');
+                    showToast('📝 Restored your booking details', 'info');
+                }
+            }
+
             console.log('✅ Booking Page Loaded');
         });
 
@@ -1238,6 +1399,9 @@
             });
             el.step1Next.disabled = false;
             showToast(`✓ ${state.selectedService.name} selected`, 'success');
+
+            // ✅ Update login UI if service selected
+            updateLoginUI();
         }
 
         // ============================================
@@ -1328,6 +1492,9 @@
             });
             el.step2Next.disabled = false;
             showToast(`✓ ${slotTime} ${slotAmpm} selected`, 'success');
+
+            // ✅ Update login UI if slot selected
+            updateLoginUI();
         }
 
         // ============================================
@@ -1390,7 +1557,11 @@
                 }
             }
 
-            if (step === 3) updateSummary();
+            if (step === 3) {
+                updateSummary();
+                // ✅ Update login UI when reaching step 3
+                updateLoginUI();
+            }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -1414,9 +1585,34 @@
         }
 
         // ============================================
-        // CONFIRM BOOKING
+        // CONFIRM BOOKING - WITH LOGIN CHECK
         // ============================================
         async function confirmBooking() {
+            // ✅ CHECK: Login required
+            if (!isLoggedIn()) {
+                showToast('⚠️ Please login to book an appointment', 'warning');
+                // Save booking data for later
+                const bookingData = {
+                    service_id: state.selectedService?.id,
+                    service_name: state.selectedService?.name,
+                    slot_id: state.selectedSlot?.id,
+                    slot_time: state.selectedSlot?.time,
+                    slot_ampm: state.selectedSlot?.ampm,
+                    booking_date: state.selectedDate,
+                    amount: state.selectedService?.price,
+                    customer_name: el.customerName.value.trim(),
+                    customer_phone: el.customerPhone.value.trim(),
+                    customer_email: el.customerEmail.value.trim()
+                };
+                localStorage.setItem('booking_data', JSON.stringify(bookingData));
+
+                setTimeout(() => {
+                    window.location.href = 'login.html?redirect=booking';
+                }, 1500);
+                return;
+            }
+
+            // ✅ User is logged in - proceed with booking
             if (!validateName() || !validatePhone()) {
                 showToast('Please fill all required fields correctly', 'error');
                 return;
@@ -1426,6 +1622,7 @@
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
 
+            const token = localStorage.getItem('token');
             const name = el.customerName.value.trim();
             const phone = el.customerPhone.value.trim();
             const email = el.customerEmail.value.trim();
@@ -1451,11 +1648,25 @@
 
                 const res = await fetch(url, {
                     method: method,
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`  // ✅ Send token
+                    },
                     body: JSON.stringify(bookingData)
                 });
 
                 const result = await res.json();
+
+                // ✅ Check if token expired
+                if (res.status === 401) {
+                    showToast('⚠️ Session expired. Please login again.', 'error');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user');
+                    setTimeout(() => {
+                        window.location.href = 'login.html';
+                    }, 1500);
+                    return;
+                }
 
                 if (result.success) {
                     state.bookingId = result.booking_id || state.rescheduleBookingId;
@@ -1492,7 +1703,8 @@
         function showToast(message, type = 'info') {
             const container = el.toastContainer;
             const className = type === 'success' ? 'toast-success' :
-                type === 'error' ? 'toast-error' : 'toast-info';
+                type === 'error' ? 'toast-error' :
+                type === 'warning' ? 'toast-warning' : 'toast-info';
             container.innerHTML = `<div class="toast ${className}">${message}</div>`;
             setTimeout(() => container.innerHTML = '', 5000);
         }
