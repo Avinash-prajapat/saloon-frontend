@@ -7,28 +7,161 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>
-        /* ============================================
-           RESET & BASE
-           ============================================ */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, sans-serif;
-            background: #f8fafc;
+            background: #f1f5f9;
             color: #0f172a;
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
         }
 
         a { text-decoration: none; color: inherit; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-        /* ============================================
-           HEADER
-           ============================================ */
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -280px;
+            width: 280px;
+            height: 100%;
+            background: #0f172a;
+            color: #94a3b8;
+            z-index: 1000;
+            transition: left 0.3s ease;
+            padding: 20px 0;
+            overflow-y: auto;
+            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+        }
+
+        .sidebar.open { left: 0; }
+
+        .sidebar .logo {
+            padding: 0 24px 20px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 16px;
+        }
+
+        .sidebar .logo h2 {
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sidebar .logo h2 i { color: #10b981; }
+        .sidebar .logo h2 span { color: #10b981; }
+        .sidebar .logo p { font-size: 12px; color: #64748b; margin-top: 2px; }
+
+        .sidebar .user-info {
+            padding: 0 24px 16px;
+            border-bottom: 1px solid #1e293b;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .sidebar .user-info .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #10b981;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 20px;
+        }
+
+        .sidebar .user-info .details .name { color: white; font-weight: 600; font-size: 15px; }
+        .sidebar .user-info .details .role { font-size: 12px; color: #64748b; }
+
+        .sidebar .nav-links {
+            list-style: none;
+            padding: 0 12px;
+        }
+
+        .sidebar .nav-links li { margin-bottom: 4px; }
+
+        .sidebar .nav-links li a {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .sidebar .nav-links li a:hover,
+        .sidebar .nav-links li a.active {
+            background: #1e293b;
+            color: white;
+        }
+
+        .sidebar .nav-links li a i { width: 20px; text-align: center; font-size: 16px; }
+
+        .sidebar .nav-divider {
+            height: 1px;
+            background: #1e293b;
+            margin: 12px 16px;
+        }
+
+        .sidebar .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: #ef4444;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: calc(100% - 24px);
+            margin: 0 12px;
+            font-family: inherit;
+        }
+
+        .sidebar .logout-btn:hover { background: #1e293b; }
+        .sidebar .logout-btn i { width: 20px; text-align: center; font-size: 16px; }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            display: none;
+            backdrop-filter: blur(4px);
+        }
+
+        .sidebar-overlay.active { display: block; }
+
+        /* ===== MAIN CONTENT ===== */
+        .main-content {
+            flex: 1;
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ===== HEADER ===== */
         header {
             background: #ffffff;
             border-bottom: 1px solid #e2e8f0;
@@ -43,101 +176,81 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 14px 0;
+            padding: 12px 20px;
         }
 
-        .logo {
-            font-size: 24px;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 22px;
+            color: #0f172a;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            transition: all 0.2s;
+        }
+
+        .menu-toggle:hover { background: #f1f5f9; color: #10b981; }
+
+        .logo-header {
+            font-size: 18px;
             font-weight: 800;
             color: #0f172a;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
-        .logo i {
-            color: #10b981;
-            font-size: 28px;
-        }
+        .logo-header i { color: #10b981; font-size: 20px; }
+        .logo-header span { color: #10b981; }
 
-        .logo span { color: #10b981; }
-
-        nav {
+        .header-right .user-badge-mini {
             display: flex;
             align-items: center;
-            gap: 32px;
+            gap: 10px;
+            background: #f1f5f9;
+            padding: 4px 12px 4px 8px;
+            border-radius: 20px;
         }
 
-        nav a {
-            font-size: 15px;
-            font-weight: 500;
-            color: #475569;
-            transition: color 0.2s;
-            position: relative;
-        }
-
-        nav a:hover,
-        nav a.active {
-            color: #10b981;
-        }
-
-        nav a.active::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            right: 0;
-            height: 2px;
+        .header-right .user-badge-mini .avatar-mini {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
             background: #10b981;
-            border-radius: 4px;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13px;
         }
 
-        .btn-nav {
-            background: #10b981;
-            color: white !important;
-            padding: 8px 20px;
-            border-radius: 8px;
+        .header-right .user-badge-mini .name-mini {
             font-weight: 600;
-            transition: background 0.2s;
-        }
-
-        .btn-nav:hover {
-            background: #059669 !important;
-            color: white !important;
-        }
-
-        .btn-nav-outline {
-            border: 2px solid #10b981;
-            color: #10b981 !important;
-            padding: 8px 20px;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-
-        .btn-nav-outline:hover {
-            background: #10b981;
-            color: white !important;
-        }
-
-        .mobile-menu-btn {
-            display: none;
-            background: none;
-            border: none;
-            font-size: 24px;
+            font-size: 13px;
             color: #0f172a;
-            cursor: pointer;
         }
 
-        /* ============================================
-           SERVICES PAGE
-           ============================================ */
+        /* ===== SERVICES PAGE ===== */
         .page-header {
-            padding: 40px 0 24px;
+            padding: 32px 20px 16px;
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         .page-header h1 {
-            font-size: 36px;
+            font-size: 32px;
             font-weight: 800;
             color: #0f172a;
         }
@@ -145,20 +258,25 @@
         .page-header p {
             color: #64748b;
             font-size: 16px;
-            margin-top: 4px;
+            margin-top: 2px;
         }
 
-        /* ============================================
-           SEARCH & FILTER
-           ============================================ */
+        .services-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px 60px;
+            width: 100%;
+        }
+
+        /* ===== SEARCH & FILTER ===== */
         .search-section {
             display: flex;
-            gap: 16px;
+            gap: 14px;
             flex-wrap: wrap;
-            margin-bottom: 32px;
+            margin-bottom: 28px;
             background: white;
-            padding: 20px 24px;
-            border-radius: 16px;
+            padding: 18px 22px;
+            border-radius: 14px;
             border: 1px solid #e2e8f0;
             align-items: center;
         }
@@ -179,10 +297,10 @@
 
         .search-box input {
             width: 100%;
-            padding: 12px 12px 12px 44px;
+            padding: 10px 12px 10px 42px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            font-size: 15px;
+            font-size: 14px;
             font-family: inherit;
             transition: border-color 0.2s;
             background: #f8fafc;
@@ -196,16 +314,16 @@
 
         .filter-group {
             display: flex;
-            gap: 12px;
+            gap: 10px;
             flex-wrap: wrap;
             align-items: center;
         }
 
         .filter-group select {
-            padding: 12px 16px;
+            padding: 10px 14px;
             border: 2px solid #e2e8f0;
             border-radius: 10px;
-            font-size: 14px;
+            font-size: 13px;
             font-family: inherit;
             background: #f8fafc;
             cursor: pointer;
@@ -219,26 +337,24 @@
 
         .result-count {
             color: #64748b;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 500;
-            padding: 8px 16px;
+            padding: 6px 14px;
             background: #f1f5f9;
             border-radius: 8px;
         }
 
-        /* ============================================
-           SERVICES GRID
-           ============================================ */
+        /* ===== SERVICES GRID ===== */
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 20px;
         }
 
         .service-card {
             background: white;
-            border-radius: 16px;
-            padding: 28px 24px;
+            border-radius: 14px;
+            padding: 24px 20px;
             border: 1px solid #e2e8f0;
             transition: all 0.25s;
             position: relative;
@@ -252,35 +368,35 @@
 
         .service-card .badge {
             position: absolute;
-            top: 16px;
-            right: 16px;
+            top: 14px;
+            right: 14px;
             background: #d1fae5;
             color: #065f46;
-            font-size: 11px;
+            font-size: 10px;
             font-weight: 600;
-            padding: 2px 12px;
+            padding: 2px 10px;
             border-radius: 20px;
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
 
         .service-card .icon {
-            font-size: 36px;
+            font-size: 32px;
             color: #10b981;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: block;
         }
 
         .service-card h3 {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 600;
             margin-bottom: 4px;
         }
 
         .service-card .desc {
             color: #64748b;
-            font-size: 14px;
-            margin-bottom: 12px;
+            font-size: 13px;
+            margin-bottom: 10px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -291,19 +407,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 16px;
+            padding-top: 14px;
             border-top: 1px solid #f1f5f9;
         }
 
         .service-card .price {
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 700;
             color: #10b981;
         }
 
         .service-card .duration {
             color: #94a3b8;
-            font-size: 14px;
+            font-size: 13px;
         }
 
         .service-card .duration i {
@@ -313,40 +429,36 @@
         .btn-book {
             background: #10b981;
             color: white;
-            padding: 8px 20px;
+            padding: 6px 16px;
             border: none;
             border-radius: 8px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: background 0.2s;
             font-family: inherit;
         }
 
-        .btn-book:hover {
-            background: #059669;
-        }
+        .btn-book:hover { background: #059669; }
 
-        /* ============================================
-           EMPTY STATE
-           ============================================ */
+        /* ===== EMPTY STATE ===== */
         .empty-state {
             grid-column: 1 / -1;
             text-align: center;
-            padding: 60px 20px;
+            padding: 50px 20px;
             background: white;
-            border-radius: 16px;
+            border-radius: 14px;
             border: 1px solid #e2e8f0;
         }
 
         .empty-state i {
-            font-size: 48px;
+            font-size: 44px;
             color: #cbd5e1;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
         }
 
         .empty-state h3 {
-            font-size: 20px;
+            font-size: 18px;
             color: #0f172a;
         }
 
@@ -355,61 +467,20 @@
             margin-top: 4px;
         }
 
-        /* ============================================
-           FOOTER
-           ============================================ */
-        footer {
-            background: #0f172a;
-            color: #94a3b8;
-            padding: 48px 0 24px;
-            margin-top: 60px;
-        }
-
-        .footer-grid {
-            display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 32px;
-        }
-
-        .footer-grid h4 {
-            color: white;
-            font-weight: 600;
-            margin-bottom: 12px;
-        }
-
-        .footer-grid a {
-            display: block;
-            margin-bottom: 6px;
-            transition: color 0.2s;
-        }
-
-        .footer-grid a:hover {
-            color: white;
-        }
-
-        .footer-bottom {
-            border-top: 1px solid #1e293b;
-            padding-top: 20px;
-            text-align: center;
-            font-size: 14px;
-        }
-
-        /* ============================================
-           TOAST
-           ============================================ */
+        /* ===== TOAST ===== */
         .toast {
             position: fixed;
-            bottom: 24px;
-            right: 24px;
-            padding: 16px 24px;
+            bottom: 20px;
+            right: 20px;
+            padding: 14px 22px;
             border-radius: 12px;
             color: white;
             font-weight: 500;
-            z-index: 999;
+            z-index: 2000;
             animation: slideUp 0.3s ease;
             box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            max-width: 400px;
+            max-width: 380px;
+            font-size: 14px;
         }
 
         .toast-success { background: #10b981; }
@@ -421,8 +492,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .hidden { display: none !important; }
-
         .loading-spinner {
             grid-column: 1 / -1;
             text-align: center;
@@ -431,116 +500,180 @@
         }
 
         .loading-spinner i {
-            font-size: 40px;
+            font-size: 36px;
             display: block;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             color: #10b981;
         }
 
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
-        @media (max-width: 1024px) {
-            .services-grid {
-                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-            }
+        /* ===== FOOTER ===== */
+        footer {
+            background: #0f172a;
+            color: #94a3b8;
+            padding: 40px 20px 24px;
+            margin-top: auto;
+            width: 100%;
         }
 
-        @media (max-width: 768px) {
-            nav {
-                display: none;
-                flex-direction: column;
-                gap: 12px;
-                padding: 16px 0;
-                width: 100%;
-            }
+        .footer-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+        }
 
-            nav.open {
-                display: flex;
-            }
+        .footer-inner h4 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
 
-            .mobile-menu-btn {
-                display: block;
-            }
+        .footer-inner a {
+            display: block;
+            margin-bottom: 6px;
+            transition: color 0.2s;
+        }
+
+        .footer-inner a:hover { color: white; }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 32px auto 0;
+            padding-top: 20px;
+            border-top: 1px solid #1e293b;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        /* ===== RESPONSIVE ===== */
+
+        /* Mobile */
+        @media (max-width: 480px) {
+            .page-header h1 { font-size: 24px; }
 
             .search-section {
                 flex-direction: column;
-                padding: 16px;
+                padding: 14px;
             }
 
             .filter-group {
                 width: 100%;
-            }
-
-            .filter-group select {
-                flex: 1;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-
-            .page-header h1 {
-                font-size: 28px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .footer-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .filter-group {
                 flex-direction: column;
             }
 
-            .filter-group select {
-                width: 100%;
-            }
+            .filter-group select { width: 100%; }
+
+            .services-grid { grid-template-columns: 1fr; }
+
+            .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
+
+            .header-inner { padding: 10px 14px; }
+            .logo-header { font-size: 16px; }
+            .header-right .user-badge-mini .name-mini { display: none; }
+            .menu-toggle { font-size: 18px; padding: 6px; }
+
+            .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
+
+            .services-wrapper { padding: 0 12px 40px; }
+            .page-header { padding: 24px 12px 12px; }
+        }
+
+        /* Tablet */
+        @media (min-width: 481px) and (max-width: 1024px) {
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+
+            .footer-inner { grid-template-columns: 1fr 1fr; }
+
+            .sidebar { width: 260px; left: -260px; }
+            .sidebar.open { left: 0; }
+        }
+
+        /* Desktop */
+        @media (min-width: 1025px) {
+            .services-grid { grid-template-columns: repeat(3, 1fr); }
+
+            .footer-inner { grid-template-columns: 2fr 1fr 1fr 1fr; }
+
+            .sidebar { left: -280px; }
+            .sidebar.open { left: 0; }
+
+            .menu-toggle { font-size: 22px; padding: 8px; }
+        }
+
+        /* Large Desktop */
+        @media (min-width: 1400px) {
+            .services-grid { grid-template-columns: repeat(4, 1fr); }
+            .page-header h1 { font-size: 36px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== HEADER ===== -->
-    <header>
-        <div class="container">
-            <div class="header-inner">
-                <a href="index.html" class="logo">
-                    <i class="fas fa-scissors"></i> Premium<span>Salon</span>
-                </a>
-                <nav id="mainNav">
-                    <a href="index.html">Home</a>
-                    <a href="services.html" class="active">Services</a>
-                    <a href="booking.html">Book Now</a>
-                    <a href="customer-dashboard.html" id="dashboardLink" class="hidden">Dashboard</a>
-                    <a href="login.html" id="authLink">Login</a>
-                </nav>
-                <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Menu">
-                    <i class="fas fa-bars"></i>
-                </button>
+    <!-- ===== SIDEBAR ===== -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <div class="sidebar" id="sidebar">
+        <div class="logo">
+            <h2><i class="fas fa-scissors"></i> Premium<span>Salon</span></h2>
+            <p>Our Services</p>
+        </div>
+
+        <div class="user-info">
+            <div class="avatar" id="sideAvatar"><i class="fas fa-user"></i></div>
+            <div class="details">
+                <div class="name" id="sideName">Guest</div>
+                <div class="role" id="sideRole">Not Logged In</div>
             </div>
         </div>
-    </header>
 
-    <!-- ===== SERVICES PAGE ===== -->
-    <section class="page-header">
-        <div class="container">
+        <ul class="nav-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="services.html" class="active"><i class="fas fa-cut"></i> Services</a></li>
+            <li><a href="booking.html"><i class="fas fa-calendar-plus"></i> Book Now</a></li>
+            <li><a href="login.html" id="sideAuthLink"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        </ul>
+
+        <div class="nav-divider"></div>
+
+        <div style="padding: 0 24px; color:#64748b; font-size:12px;">
+            <p><i class="fas fa-shield-alt"></i> Secure &amp; Private</p>
+        </div>
+    </div>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <div class="main-content">
+
+        <!-- ===== HEADER ===== -->
+        <header>
+            <div class="header-inner">
+                <div class="header-left">
+                    <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <a href="index.html" class="logo-header">
+                        <i class="fas fa-scissors"></i> Premium<span>Salon</span>
+                    </a>
+                </div>
+                <div class="header-right">
+                    <div class="user-badge-mini">
+                        <div class="avatar-mini" id="headerAvatar"><i class="fas fa-user"></i></div>
+                        <span class="name-mini" id="headerName">Guest</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== SERVICES PAGE ===== -->
+        <div class="page-header">
             <h1>Our Services</h1>
             <p>Choose from our range of professional grooming services</p>
         </div>
-    </section>
 
-    <section>
-        <div class="container">
+        <div class="services-wrapper">
             <!-- Search & Filter -->
             <div class="search-section">
                 <div class="search-box">
@@ -567,14 +700,12 @@
                 </div>
             </div>
         </div>
-    </section>
 
-    <!-- ===== FOOTER ===== -->
-    <footer>
-        <div class="container">
-            <div class="footer-grid">
+        <!-- ===== FOOTER ===== -->
+        <footer>
+            <div class="footer-inner">
                 <div>
-                    <h4 style="color:white; font-size:20px;">
+                    <h4 style="color:white; font-size:18px;">
                         <i class="fas fa-scissors" style="color:#10b981;"></i> PremiumSalon
                     </h4>
                     <p style="margin-top:8px;">Premium grooming services at your village doorstep.</p>
@@ -603,21 +734,22 @@
             <div class="footer-bottom">
                 &copy; 2026 PremiumSalon. All rights reserved.
             </div>
-        </div>
-    </footer>
+        </footer>
+
+    </div>
 
     <!-- ===== TOAST ===== -->
     <div id="toastContainer"></div>
 
     <!-- ============================================
-    JAVASCRIPT
+    JAVASCRIPT - COMPLETE SERVICES
     ============================================ -->
     <script>
         // ============================================
         // CONFIG
         // ============================================
         const CONFIG = {
-            API_BASE_URL: 'http://localhost:5000',
+            API_BASE_URL: 'https://avinashKumar8235.pythonanywhere.com',
         };
 
         // ============================================
@@ -629,15 +761,21 @@
         // ============================================
         // DOM REFS
         // ============================================
-        const elements = {
+        const el = {
             servicesContainer: document.getElementById('servicesContainer'),
             searchInput: document.getElementById('searchInput'),
             sortFilter: document.getElementById('sortFilter'),
             resultCount: document.getElementById('resultCount'),
-            authLink: document.getElementById('authLink'),
             toastContainer: document.getElementById('toastContainer'),
-            mobileMenuBtn: document.getElementById('mobileMenuBtn'),
-            mainNav: document.getElementById('mainNav'),
+            sidebar: document.getElementById('sidebar'),
+            sidebarOverlay: document.getElementById('sidebarOverlay'),
+            menuToggle: document.getElementById('menuToggle'),
+            headerName: document.getElementById('headerName'),
+            headerAvatar: document.getElementById('headerAvatar'),
+            sideName: document.getElementById('sideName'),
+            sideRole: document.getElementById('sideRole'),
+            sideAvatar: document.getElementById('sideAvatar'),
+            sideAuthLink: document.getElementById('sideAuthLink'),
         };
 
         // ============================================
@@ -658,14 +796,94 @@
         }
 
         // ============================================
+        // SIDEBAR FUNCTIONS
+        // ============================================
+        function openSidebar() {
+            el.sidebar.classList.add('open');
+            el.sidebarOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            el.sidebar.classList.remove('open');
+            el.sidebarOverlay.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        function toggleSidebar() {
+            if (el.sidebar.classList.contains('open')) {
+                closeSidebar();
+            } else {
+                openSidebar();
+            }
+        }
+
+        // ============================================
         // INIT
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             loadServices();
             checkAuth();
-            setupMobileMenu();
+
+            // Sidebar events
+            el.menuToggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleSidebar();
+            });
+
+            el.sidebarOverlay.addEventListener('click', closeSidebar);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && el.sidebar.classList.contains('open')) {
+                    closeSidebar();
+                }
+            });
+
+            document.querySelector('.main-content').addEventListener('click', function(e) {
+                if (el.sidebar.classList.contains('open') &&
+                    !e.target.closest('.sidebar') &&
+                    !e.target.closest('.menu-toggle')) {
+                    closeSidebar();
+                }
+            });
+
             console.log('✅ Services Page Loaded');
+            console.log('📡 API URL:', CONFIG.API_BASE_URL);
         });
+
+        // ============================================
+        // CHECK AUTH
+        // ============================================
+        function checkAuth() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (token && user.id) {
+                const name = user.name || 'Customer';
+                const initial = name[0].toUpperCase();
+
+                el.headerName.textContent = name;
+                el.sideName.textContent = name;
+                el.sideRole.textContent = user.role || 'Customer';
+                el.headerAvatar.textContent = initial;
+                el.sideAvatar.textContent = initial;
+
+                const role = user.role || 'customer';
+                const dashboard = role === 'admin' ? 'admin-dashboard.html' :
+                    role === 'staff' ? 'staff-dashboard.html' :
+                    'customer-dashboard.html';
+                el.sideAuthLink.innerHTML = '<i class="fas fa-home"></i> Dashboard';
+                el.sideAuthLink.href = dashboard;
+            } else {
+                el.headerName.textContent = 'Guest';
+                el.sideName.textContent = 'Guest';
+                el.sideRole.textContent = 'Not Logged In';
+                el.headerAvatar.innerHTML = '<i class="fas fa-user"></i>';
+                el.sideAvatar.innerHTML = '<i class="fas fa-user"></i>';
+                el.sideAuthLink.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                el.sideAuthLink.href = 'login.html';
+            }
+        }
 
         // ============================================
         // LOAD SERVICES
@@ -700,31 +918,31 @@
                 return;
             }
 
-            elements.servicesContainer.innerHTML = services.map(s => `
-                <div class="service-card">
-                    <span class="badge">${s.is_active ? 'Available' : 'Unavailable'}</span>
-                    <span class="icon"><i class="fas ${getIcon(s.name)}"></i></span>
-                    <h3>${s.name}</h3>
-                    <p class="desc">${s.description || 'Professional service'}</p>
-                    <div class="footer">
-                        <div>
-                            <div class="price">₹${s.price}</div>
-                            <div class="duration"><i class="far fa-clock"></i> ${s.duration_minutes} min</div>
+            el.servicesContainer.innerHTML = services.map(s => `
+                        <div class="service-card">
+                            <span class="badge">${s.is_active ? 'Available' : 'Unavailable'}</span>
+                            <span class="icon"><i class="fas ${getIcon(s.name)}"></i></span>
+                            <h3>${s.name}</h3>
+                            <p class="desc">${s.description || 'Professional service'}</p>
+                            <div class="footer">
+                                <div>
+                                    <div class="price">₹${s.price}</div>
+                                    <div class="duration"><i class="far fa-clock"></i> ${s.duration_minutes} min</div>
+                                </div>
+                                <button class="btn-book" onclick="bookService('${s.id}')">
+                                    <i class="fas fa-calendar-plus"></i> Book
+                                </button>
+                            </div>
                         </div>
-                        <button class="btn-book" onclick="bookService('${s.id}')">
-                            <i class="fas fa-calendar-plus"></i> Book
-                        </button>
-                    </div>
-                </div>
-            `).join('');
+                    `).join('');
         }
 
         // ============================================
         // FILTER SERVICES
         // ============================================
         function filterServices() {
-            const search = elements.searchInput.value.toLowerCase().trim();
-            const sort = elements.sortFilter.value;
+            const search = el.searchInput.value.toLowerCase().trim();
+            const sort = el.sortFilter.value;
 
             let result = allServices.filter(s => {
                 const nameMatch = s.name.toLowerCase().includes(search);
@@ -733,11 +951,20 @@
             });
 
             switch (sort) {
-                case 'price-low': result.sort((a, b) => a.price - b.price); break;
-                case 'price-high': result.sort((a, b) => b.price - a.price); break;
-                case 'name': result.sort((a, b) => a.name.localeCompare(b.name)); break;
-                case 'duration': result.sort((a, b) => a.duration_minutes - b.duration_minutes); break;
-                default: break;
+                case 'price-low':
+                    result.sort((a, b) => a.price - b.price);
+                    break;
+                case 'price-high':
+                    result.sort((a, b) => b.price - a.price);
+                    break;
+                case 'name':
+                    result.sort((a, b) => a.name.localeCompare(b.name));
+                    break;
+                case 'duration':
+                    result.sort((a, b) => a.duration_minutes - b.duration_minutes);
+                    break;
+                default:
+                    break;
             }
 
             filteredServices = result;
@@ -749,20 +976,20 @@
         // UPDATE RESULT COUNT
         // ============================================
         function updateResultCount(count) {
-            elements.resultCount.textContent = `${count} service${count !== 1 ? 's' : ''}`;
+            el.resultCount.textContent = `${count} service${count !== 1 ? 's' : ''}`;
         }
 
         // ============================================
         // EMPTY STATE
         // ============================================
         function showEmptyState(message) {
-            elements.servicesContainer.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-cut"></i>
-                    <h3>${message}</h3>
-                    <p>Please check back later or try a different search.</p>
-                </div>
-            `;
+            el.servicesContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-cut"></i>
+                            <h3>${message}</h3>
+                            <p>Please check back later or try a different search.</p>
+                        </div>
+                    `;
             updateResultCount(0);
         }
 
@@ -786,47 +1013,18 @@
         }
 
         // ============================================
-        // CHECK AUTH
-        // ============================================
-        function checkAuth() {
-            const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-            if (token && user.id) {
-                elements.authLink.textContent = 'Dashboard';
-                elements.authLink.href = user.role === 'admin' ? 'admin-dashboard.html' :
-                                         user.role === 'staff' ? 'staff-dashboard.html' :
-                                         'customer-dashboard.html';
-                elements.authLink.className = 'btn-nav';
-            } else {
-                elements.authLink.textContent = 'Login';
-                elements.authLink.href = 'login.html';
-                elements.authLink.className = 'btn-nav-outline';
-            }
-        }
-
-        // ============================================
-        // MOBILE MENU
-        // ============================================
-        function setupMobileMenu() {
-            elements.mobileMenuBtn.addEventListener('click', function() {
-                elements.mainNav.classList.toggle('open');
-            });
-        }
-
-        // ============================================
         // TOAST
         // ============================================
         function showToast(message, type = 'info') {
-            const container = elements.toastContainer;
+            const container = el.toastContainer;
             const className = type === 'success' ? 'toast-success' :
-                             type === 'error' ? 'toast-error' : 'toast-info';
+                type === 'error' ? 'toast-error' : 'toast-info';
 
             container.innerHTML = `<div class="toast ${className}">${message}</div>`;
 
             setTimeout(() => {
                 container.innerHTML = '';
-            }, 5000);
+            }, 4000);
         }
 
         console.log('✅ Services Page Loaded');
