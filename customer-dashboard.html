@@ -6,136 +6,229 @@
     <title>My Dashboard - Premium Salon</title>
     <link rel="icon" type="image/png" href="image.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: #f1f5f9;
-            color: #0f172a;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--dark);
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
         }
 
-        a { text-decoration: none; color: inherit; }
+        a { 
+            text-decoration: none; 
+            color: inherit; 
+            transition: all 0.3s ease;
+        }
 
         /* ===== SIDEBAR ===== */
         .sidebar {
             position: fixed;
             top: 0;
-            left: -280px;
-            width: 280px;
+            left: -300px;
+            width: 300px;
             height: 100%;
-            background: #0f172a;
-            color: #94a3b8;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            color: #cbd5e1;
             z-index: 1000;
-            transition: left 0.3s ease;
-            padding: 20px 0;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0;
             overflow-y: auto;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+            box-shadow: 8px 0 30px rgba(0,0,0,0.3);
         }
 
-        .sidebar.open { left: 0; }
+        .sidebar.open { 
+            left: 0; 
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            background: rgba(16, 185, 129, 0.1);
+            border-bottom: 2px solid rgba(16, 185, 129, 0.2);
+        }
 
         .sidebar .logo {
-            padding: 0 24px 20px;
-            border-bottom: 1px solid #1e293b;
-            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar .logo i {
+            font-size: 28px;
+            color: var(--primary);
         }
 
         .sidebar .logo h2 {
             color: white;
-            font-size: 20px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
         }
 
-        .sidebar .logo h2 i { color: #10b981; }
-        .sidebar .logo h2 span { color: #10b981; }
-        .sidebar .logo p { font-size: 12px; color: #64748b; margin-top: 2px; }
+        .sidebar .logo h2 span { 
+            color: var(--primary); 
+        }
+
+        .sidebar .tagline {
+            font-size: 12px;
+            color: #94a3b8;
+            font-style: italic;
+        }
 
         .sidebar .user-info {
-            padding: 0 24px 16px;
-            border-bottom: 1px solid #1e293b;
-            margin-bottom: 12px;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
         .sidebar .user-info .avatar {
-            width: 48px;
-            height: 48px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
-            background: #10b981;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 20px;
+            font-size: 22px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
-        .sidebar .user-info .details .name { color: white; font-weight: 600; font-size: 15px; }
-        .sidebar .user-info .details .role { font-size: 12px; color: #64748b; }
+        .sidebar .user-info .details .name { 
+            color: white; 
+            font-weight: 600; 
+            font-size: 16px; 
+        }
+
+        .sidebar .user-info .details .role { 
+            font-size: 13px; 
+            color: #94a3b8; 
+            margin-top: 2px;
+        }
 
         .sidebar .nav-links {
             list-style: none;
-            padding: 0 12px;
+            padding: 16px 12px;
         }
 
-        .sidebar .nav-links li { margin-bottom: 4px; }
+        .sidebar .nav-links li { 
+            margin-bottom: 6px; 
+        }
 
         .sidebar .nav-links li a {
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 12px 16px;
-            border-radius: 10px;
-            color: #94a3b8;
-            font-size: 14px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: #cbd5e1;
+            font-size: 15px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar .nav-links li a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar .nav-links li a:hover::before,
+        .sidebar .nav-links li a.active::before {
+            transform: scaleY(1);
         }
 
         .sidebar .nav-links li a:hover,
         .sidebar .nav-links li a.active {
-            background: #1e293b;
+            background: rgba(16, 185, 129, 0.15);
             color: white;
+            transform: translateX(4px);
         }
 
-        .sidebar .nav-links li a i { width: 20px; text-align: center; font-size: 16px; }
+        .sidebar .nav-links li a i { 
+            width: 22px; 
+            text-align: center; 
+            font-size: 18px; 
+        }
 
         .sidebar .nav-divider {
             height: 1px;
-            background: #1e293b;
-            margin: 12px 16px;
+            background: rgba(255,255,255,0.1);
+            margin: 12px 24px;
         }
 
         .sidebar .logout-btn {
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 12px 16px;
-            border-radius: 10px;
+            padding: 14px 18px;
+            border-radius: 12px;
             color: #ef4444;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             border: none;
             background: none;
             width: calc(100% - 24px);
-            margin: 0 12px;
+            margin: 0 12px 16px;
             font-family: inherit;
         }
 
-        .sidebar .logout-btn:hover { background: #1e293b; }
-        .sidebar .logout-btn i { width: 20px; text-align: center; font-size: 16px; }
+        .sidebar .logout-btn:hover { 
+            background: rgba(239, 68, 68, 0.15); 
+            transform: translateX(4px);
+        }
+
+        .sidebar .logout-btn i { 
+            width: 22px; 
+            text-align: center; 
+            font-size: 18px; 
+        }
+
+        .sidebar-footer {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: auto;
+        }
+
+        .sidebar-footer p {
+            font-size: 11px;
+            color: #64748b;
+            text-align: center;
+        }
 
         .sidebar-overlay {
             position: fixed;
@@ -143,18 +236,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             z-index: 999;
             display: none;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
         }
 
-        .sidebar-overlay.active { display: block; }
+        .sidebar-overlay.active { 
+            display: block; 
+        }
 
+        /* ===== MAIN CONTENT ===== */
         .main-content {
             flex: 1;
             margin-left: 0;
-            transition: margin-left 0.3s ease;
+            transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
             width: 100%;
             display: flex;
@@ -163,223 +259,305 @@
 
         /* ===== HEADER ===== */
         header {
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
             backdrop-filter: blur(12px);
-            background: rgba(255,255,255,0.92);
+            box-shadow: var(--shadow);
         }
 
         .header-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
+            padding: 16px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
         .menu-toggle {
             background: none;
             border: none;
-            font-size: 22px;
-            color: #0f172a;
+            font-size: 24px;
+            color: var(--dark);
             cursor: pointer;
-            padding: 8px;
+            padding: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
-            transition: all 0.2s;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
 
-        .menu-toggle:hover { background: #f1f5f9; color: #10b981; }
+        .menu-toggle:hover { 
+            background: rgba(16, 185, 129, 0.1); 
+            color: var(--primary); 
+            transform: scale(1.05);
+        }
 
         .logo-header {
-            font-size: 18px;
-            font-weight: 800;
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo-header i { color: #10b981; font-size: 20px; }
-        .logo-header span { color: #10b981; }
-
-        .header-right .user-badge-mini {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark);
             display: flex;
             align-items: center;
             gap: 10px;
-            background: #f1f5f9;
-            padding: 4px 12px 4px 8px;
-            border-radius: 20px;
         }
 
-        .header-right .user-badge-mini .avatar-mini {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #10b981;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 13px;
+        .logo-header i { 
+            color: var(--primary); 
+            font-size: 24px; 
         }
 
-        .header-right .user-badge-mini .name-mini {
-            font-weight: 600;
-            font-size: 13px;
-            color: #0f172a;
+        .logo-header span { 
+            color: var(--primary); 
         }
+
+        /* Header Right is now empty/clean as requested */
 
         /* ===== DASHBOARD ===== */
-        .dashboard { padding: 24px 20px 60px; }
+        .dashboard { 
+            padding: 30px 24px 20px; 
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
 
         .dashboard-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 20px;
+            gap: 20px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 24px;
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border);
         }
 
         .dashboard-header .greeting h1 {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 800;
+            color: var(--dark);
         }
-        .dashboard-header .greeting h1 span { color: #10b981; }
+        
+        .dashboard-header .greeting h1 span { 
+            color: var(--primary); 
+        }
 
-        .dashboard-header .greeting p { color: #64748b; font-size: 14px; }
+        .dashboard-header .greeting p { 
+            color: var(--gray); 
+            font-size: 15px; 
+            margin-top: 4px;
+        }
 
         .quick-actions {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             flex-wrap: wrap;
         }
 
         .btn-primary-sm {
-            background: #10b981;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
-            padding: 8px 18px;
+            padding: 10px 20px;
             border: none;
             border-radius: 10px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             font-family: inherit;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
         }
 
         .btn-primary-sm:hover {
-            background: #059669;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3);
         }
 
         .btn-outline-sm {
-            background: transparent;
-            color: #0f172a;
-            padding: 8px 18px;
-            border: 2px solid #e2e8f0;
+            background: white;
+            color: var(--dark);
+            padding: 10px 20px;
+            border: 2px solid var(--border);
             border-radius: 10px;
             font-weight: 600;
-            font-size: 13px;
+            font-size: 14px;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             font-family: inherit;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
         }
 
         .btn-outline-sm:hover {
-            border-color: #10b981;
-            color: #10b981;
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        /* Tuesday Warning */
+        .tuesday-warning {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+            padding: 12px 20px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tuesday-warning i {
+            font-size: 20px;
+            color: #d97706;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* ===== STATS ===== */
         .stats-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 12px;
-            margin-bottom: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
         }
 
         .stat-card {
             background: white;
-            padding: 16px;
-            border-radius: 14px;
-            border: 1px solid #e2e8f0;
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid var(--border);
             text-align: center;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .stat-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
         }
 
-        .stat-card .icon { font-size: 22px; margin-bottom: 2px; }
-        .stat-card .number { font-size: 24px; font-weight: 800; }
-        .stat-card .label { font-size: 12px; color: #64748b; }
+        .stat-card .icon { 
+            font-size: 28px; 
+            margin-bottom: 12px; 
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+        }
 
-        .stat-card.total .icon { color: #3b82f6; }
+        .stat-card .number { 
+            font-size: 28px; 
+            font-weight: 800; 
+            margin-bottom: 4px;
+        }
+
+        .stat-card .label { 
+            font-size: 14px; 
+            color: var(--gray); 
+            font-weight: 500;
+        }
+
+        .stat-card.total .icon { background: rgba(59, 130, 246, 0.1); color: #3b82f6; }
         .stat-card.total .number { color: #3b82f6; }
-        .stat-card.upcoming .icon { color: #f59e0b; }
+        
+        .stat-card.upcoming .icon { background: rgba(245, 158, 11, 0.1); color: #f59e0b; }
         .stat-card.upcoming .number { color: #f59e0b; }
-        .stat-card.completed .icon { color: #10b981; }
+        
+        .stat-card.completed .icon { background: rgba(16, 185, 129, 0.1); color: #10b981; }
         .stat-card.completed .number { color: #10b981; }
-        .stat-card.cancelled .icon { color: #ef4444; }
+        
+        .stat-card.cancelled .icon { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
         .stat-card.cancelled .number { color: #ef4444; }
 
-        /* ===== FILTER TABS ===== */
+        /* ===== FILTER TABS (HORIZONTAL SCROLL) ===== */
+        .filter-tabs-container {
+            margin-bottom: 24px;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; /* Firefox */
+        }
+        
+        .filter-tabs-container::-webkit-scrollbar {
+            display: none; /* Chrome/Safari */
+        }
+
         .filter-tabs {
             display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            margin-bottom: 16px;
+            gap: 10px;
             background: white;
-            padding: 6px;
-            border-radius: 12px;
-            border: 1px solid #e2e8f0;
+            padding: 8px;
+            border-radius: 14px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            width: max-content; /* Important for scroll */
+            min-width: 100%;
         }
 
         .filter-tab {
-            padding: 6px 16px;
+            padding: 10px 20px;
             border: none;
-            border-radius: 8px;
-            font-size: 13px;
+            border-radius: 10px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             background: transparent;
-            color: #64748b;
+            color: var(--gray);
             font-family: inherit;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
         }
 
-        .filter-tab:hover { background: #f1f5f9; }
-        .filter-tab.active { background: #10b981; color: white; }
+        .filter-tab:hover { 
+            background: var(--light); 
+            color: var(--dark);
+        }
+
+        .filter-tab.active { 
+            background: var(--primary); 
+            color: white; 
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+        }
 
         .filter-tab .count {
-            background: #e2e8f0;
-            color: #475569;
-            padding: 0 8px;
+            background: rgba(0,0,0,0.05);
+            color: var(--gray);
+            padding: 2px 8px;
             border-radius: 12px;
             font-size: 11px;
-            margin-left: 4px;
+            font-weight: 700;
         }
 
         .filter-tab.active .count {
@@ -387,46 +565,95 @@
             color: white;
         }
 
-        /* ===== BOOKINGS ===== */
-        .section-title {
+        /* ===== BOOKINGS SECTION (SCROLLABLE CONTAINER) ===== */
+        .bookings-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: white;
+            border-radius: 20px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+            min-height: 400px;
+        }
+
+        .section-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 14px;
-            flex-wrap: wrap;
-            gap: 8px;
+            background: #f8fafc;
         }
 
-        .section-title h2 { font-size: 20px; font-weight: 700; }
+        .section-header h2 { 
+            font-size: 20px; 
+            font-weight: 700; 
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-        .section-title .badge {
-            background: #e2e8f0;
-            padding: 2px 10px;
+        .section-header h2 i {
+            color: var(--primary);
+        }
+
+        .section-header .badge {
+            background: var(--primary);
+            color: white;
+            padding: 4px 12px;
             border-radius: 20px;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: 600;
-            color: #475569;
+        }
+
+        /* Scrollable Area */
+        .bookings-list-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            max-height: 600px; /* Fixed max height for scroll */
+        }
+
+        .bookings-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .bookings-list-container::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .bookings-list-container::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
         }
 
         /* ===== BOOKING CARDS ===== */
         .booking-card {
             background: white;
-            border-radius: 14px;
-            padding: 14px 18px;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 10px;
+            border-radius: 16px;
+            padding: 20px 24px;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 10px;
-            transition: all 0.2s;
-            border-left: 4px solid #94a3b8;
+            gap: 16px;
+            transition: all 0.3s ease;
+            border-left: 5px solid var(--gray);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .booking-card:last-child {
+            margin-bottom: 0;
         }
 
         .booking-card:hover {
-            border-color: #10b981;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
         }
 
         .booking-card.status-pending { border-left-color: #f59e0b; }
@@ -434,56 +661,78 @@
         .booking-card.status-arrived { border-left-color: #8b5cf6; }
         .booking-card.status-completed { border-left-color: #10b981; }
         .booking-card.status-cancelled { border-left-color: #ef4444; }
-        .booking-card.status-expired { border-left-color: #94a3b8; opacity: 0.6; }
+        .booking-card.status-expired { border-left-color: #94a3b8; opacity: 0.8; }
 
         .booking-card .info {
             flex: 1;
-            min-width: 180px;
+            min-width: 200px;
         }
 
         .booking-card .info .service {
-            font-weight: 600;
-            font-size: 16px;
+            font-weight: 700;
+            font-size: 18px;
+            color: var(--dark);
+            margin-bottom: 8px;
         }
 
         .booking-card .info .meta {
-            font-size: 13px;
-            color: #64748b;
+            font-size: 14px;
+            color: var(--gray);
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 8px;
         }
 
         .booking-card .info .meta i {
-            margin-right: 4px;
+            color: var(--primary);
             width: 16px;
         }
 
         .booking-card .info .meta .time-ampm {
-            color: #10b981;
+            color: var(--primary-dark);
             font-weight: 600;
         }
 
         .booking-card .info .booking-id {
             font-size: 12px;
             color: #94a3b8;
-            margin-top: 2px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
 
         .booking-card .info .countdown {
-            font-size: 12px;
+            font-size: 13px;
             color: #10b981;
             font-weight: 600;
-            margin-top: 2px;
+            margin-top: 6px;
+            display: inline-block;
+            background: rgba(16, 185, 129, 0.1);
+            padding: 4px 10px;
+            border-radius: 6px;
         }
 
         .booking-card .info .countdown.warning {
             color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+        }
+
+        .booking-card .right-section {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
         }
 
         .booking-card .status-badge {
-            padding: 3px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
-            font-size: 11px;
-            font-weight: 600;
+            font-size: 12px;
+            font-weight: 700;
             text-transform: capitalize;
+            letter-spacing: 0.5px;
         }
 
         .status-pending-badge { background: #fef3c7; color: #d97706; }
@@ -493,177 +742,411 @@
         .status-cancelled-badge { background: #fee2e2; color: #dc2626; }
         .status-expired-badge { background: #f1f5f9; color: #94a3b8; }
 
-        .booking-card .actions {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-        }
-
-        .btn-sm {
-            padding: 5px 12px;
-            border: none;
-            border-radius: 8px;
+        .payment-status {
             font-size: 12px;
             font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-family: inherit;
+            padding: 4px 10px;
+            border-radius: 12px;
             display: inline-flex;
             align-items: center;
             gap: 4px;
         }
 
-        .btn-sm-danger { background: #fee2e2; color: #dc2626; }
-        .btn-sm-danger:hover { background: #fecaca; }
-        .btn-sm-outline { background: transparent; color: #10b981; border: 1px solid #10b981; }
-        .btn-sm-outline:hover { background: #10b981; color: white; }
-        .btn-sm-success { background: #d1fae5; color: #059669; }
-        .btn-sm-success:hover { background: #a7f3d0; }
-        .btn-sm-disabled { background: #f1f5f9; color: #94a3b8; cursor: default; }
-
-        .payment-status {
-            font-size: 11px;
-            font-weight: 600;
-            padding: 2px 10px;
-            border-radius: 12px;
-        }
-
         .payment-paid { background: #d1fae5; color: #059669; }
         .payment-pending { background: #fef3c7; color: #d97706; }
 
-        .empty-state {
-            text-align: center;
-            padding: 50px 20px;
-            background: white;
-            border-radius: 14px;
-            border: 1px solid #e2e8f0;
+        .booking-card .actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-top: 8px;
         }
 
-        .empty-state i { font-size: 56px; color: #cbd5e1; margin-bottom: 12px; }
-        .empty-state h3 { font-size: 20px; color: #0f172a; }
-        .empty-state p { color: #94a3b8; }
+        .btn-sm {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: inherit;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .btn-sm-danger { background: #fee2e2; color: #dc2626; }
+        .btn-sm-danger:hover { background: #fecaca; transform: translateY(-1px); }
+        
+        .btn-sm-outline { background: transparent; color: #10b981; border: 1px solid #10b981; }
+        .btn-sm-outline:hover { background: #10b981; color: white; transform: translateY(-1px); }
+        
+        .btn-sm-success { background: #d1fae5; color: #059669; }
+        .btn-sm-success:hover { background: #a7f3d0; transform: translateY(-1px); }
+        
+        .btn-sm-disabled { background: #f1f5f9; color: #94a3b8; cursor: default; border: 1px solid transparent; }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .empty-state i { 
+            font-size: 60px; 
+            color: #cbd5e1; 
+            margin-bottom: 16px; 
+        }
+
+        .empty-state h3 { 
+            font-size: 22px; 
+            color: var(--dark); 
+            margin-bottom: 8px;
+        }
+
+        .empty-state p { 
+            color: var(--gray); 
+            margin-bottom: 20px;
+        }
+
+        /* ===== CREDITS SECTION ===== */
+        .credits-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 40px 24px;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        .credits-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .credits-section h3 {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            color: var(--primary);
+        }
+
+        .credits-names {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .credit-item {
+            text-align: center;
+        }
+
+        .credit-item .label {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .credit-item .name {
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+        }
 
         /* ===== TOAST ===== */
         .toast {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 14px 22px;
-            border-radius: 12px;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 28px;
+            border-radius: 14px;
             color: white;
             font-weight: 500;
             z-index: 2000;
-            animation: slideUp 0.3s ease;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            max-width: 380px;
-            font-size: 14px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 400px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .toast-success { background: #10b981; }
-        .toast-error { background: #ef4444; }
-        .toast-info { background: #3b82f6; }
-        .toast-warning { background: #f59e0b; }
+        .toast-success { 
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+        }
+
+        .toast-error { 
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+        }
+
+        .toast-info { 
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
+        }
+
+        .toast-warning { 
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); 
+        }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
-        .loading-spinner {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid white;
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--dark);
+            color: #94a3b8;
+            padding: 50px 24px 30px;
+            margin-top: auto;
+            width: 100%;
+        }
+
+        .footer-inner {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 50px;
+        }
+
+        .footer-brand h4 {
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-brand h4 i {
+            color: var(--primary);
+        }
+
+        .footer-brand p {
+            margin-top: 12px;
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .footer-inner h4 {
+            color: white;
+            font-weight: 600;
+            margin-bottom: 16px;
+            font-size: 17px;
+        }
+
+        .footer-inner a {
+            display: block;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            font-size: 15px;
+        }
+
+        .footer-inner a:hover { 
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        .social-links a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-4px);
+        }
 
-        .hidden { display: none !important; }
+        .footer-bottom {
+            max-width: 1300px;
+            margin: 40px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            font-size: 14px;
+            color: #64748b;
+        }
 
         /* ===== RESPONSIVE ===== */
         @media (max-width: 480px) {
-            .dashboard-header .greeting h1 { font-size: 20px; }
+            .dashboard-header {
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 20px;
+            }
 
-            .quick-actions { width: 100%; }
+            .dashboard-header .greeting h1 { 
+                font-size: 22px; 
+            }
+
+            .quick-actions { 
+                width: 100%; 
+            }
+
             .quick-actions .btn-primary-sm,
             .quick-actions .btn-outline-sm {
                 flex: 1;
                 justify-content: center;
-                font-size: 12px;
-                padding: 8px 12px;
+                font-size: 13px;
+                padding: 10px 16px;
             }
 
-            .stats-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
-            .stat-card { padding: 12px; }
-            .stat-card .number { font-size: 20px; }
-            .stat-card .label { font-size: 11px; }
+            .stats-grid { 
+                grid-template-columns: 1fr 1fr; 
+                gap: 12px; 
+            }
+
+            .stat-card { 
+                padding: 16px; 
+            }
+
+            .stat-card .number { 
+                font-size: 22px; 
+            }
 
             .booking-card {
                 flex-direction: column;
                 align-items: flex-start;
-                padding: 12px 14px;
+                padding: 16px;
             }
 
-            .booking-card .info { width: 100%; min-width: unset; }
-            .booking-card .info .service { font-size: 15px; }
-            .booking-card .info .meta { font-size: 12px; }
+            .booking-card .info { 
+                width: 100%; 
+                min-width: unset; 
+            }
+
+            .booking-card .right-section {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
 
             .booking-card .actions {
                 width: 100%;
                 justify-content: flex-start;
             }
 
-            .btn-sm { font-size: 11px; padding: 4px 10px; }
+            .btn-sm { 
+                font-size: 12px; 
+                padding: 6px 12px; 
+            }
 
-            .section-title h2 { font-size: 17px; }
+            .section-header h2 { 
+                font-size: 18px; 
+            }
 
-            .filter-tabs { gap: 4px; padding: 4px; }
-            .filter-tab { font-size: 12px; padding: 4px 12px; }
+            .sidebar { 
+                width: 280px; 
+                left: -280px; 
+            }
 
-            .sidebar { width: 260px; left: -260px; }
-            .sidebar.open { left: 0; }
+            .sidebar.open { 
+                left: 0; 
+            }
 
-            .header-inner { padding: 10px 14px; }
-            .logo-header { font-size: 16px; }
-            .header-right .user-badge-mini .name-mini { display: none; }
+            .header-inner { 
+                padding: 12px 16px; 
+            }
 
-            .dashboard { padding: 16px 12px 40px; }
+            .logo-header { 
+                font-size: 18px; 
+            }
 
-            .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
+            .dashboard { 
+                padding: 20px 16px 20px; 
+            }
 
-            .menu-toggle { font-size: 18px; padding: 6px; }
+            .toast { 
+                max-width: 90%; 
+                right: 5%; 
+                bottom: 16px; 
+                font-size: 14px; 
+                padding: 14px 20px; 
+            }
+
+            .menu-toggle { 
+                font-size: 20px; 
+                padding: 8px; 
+            }
+
+            .footer-inner { 
+                grid-template-columns: 1fr; 
+                gap: 30px; 
+            }
+
+            .credits-names {
+                gap: 20px;
+            }
+            
+            .bookings-list-container {
+                padding: 16px;
+            }
         }
 
         @media (min-width: 481px) and (max-width: 1024px) {
-            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 10px; }
-            .stat-card { padding: 14px; }
-            .stat-card .number { font-size: 22px; }
+            .stats-grid { 
+                grid-template-columns: repeat(4, 1fr); 
+                gap: 16px; 
+            }
 
-            .booking-card { padding: 12px 16px; }
-            .booking-card .info .service { font-size: 15px; }
+            .sidebar { 
+                width: 280px; 
+                left: -280px; 
+            }
 
-            .sidebar { width: 260px; left: -260px; }
-            .sidebar.open { left: 0; }
+            .sidebar.open { 
+                left: 0; 
+            }
         }
 
         @media (min-width: 1025px) {
-            .stats-grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
-            .stat-card .number { font-size: 28px; }
+            .stats-grid { 
+                grid-template-columns: repeat(4, 1fr); 
+                gap: 20px; 
+            }
 
-            .booking-card { padding: 16px 20px; }
-            .booking-card .info .service { font-size: 17px; }
+            .stat-card .number { 
+                font-size: 32px; 
+            }
 
-            .sidebar { left: -280px; }
-            .sidebar.open { left: 0; }
+            .sidebar { 
+                left: -300px; 
+            }
 
-            .menu-toggle { font-size: 22px; padding: 8px; }
-        }
+            .sidebar.open { 
+                left: 0; 
+            }
 
-        @media (min-width: 1400px) {
-            .stat-card .number { font-size: 32px; }
+            .menu-toggle { 
+                font-size: 24px; 
+                padding: 10px; 
+            }
         }
     </style>
 </head>
@@ -673,13 +1156,16 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="sidebar" id="sidebar">
-        <div class="logo">
-            <h2><i class="fas fa-scissors"></i> Premium<span>Salon</span></h2>
-            <p>Customer Dashboard</p>
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-scissors"></i>
+                <h2>Premium<span>Salon</span></h2>
+            </div>
+            <p class="tagline">Excellence in Every Cut</p>
         </div>
 
         <div class="user-info">
-            <div class="avatar" id="sideAvatar">C</div>
+            <div class="avatar" id="sideAvatar"><i class="fas fa-user"></i></div>
             <div class="details">
                 <div class="name" id="sideName">Customer</div>
                 <div class="role" id="sidePhone">-</div>
@@ -699,6 +1185,10 @@
         <button class="logout-btn" onclick="logout()">
             <i class="fas fa-sign-out-alt"></i> Logout
         </button>
+
+        <div class="sidebar-footer">
+            <p>&copy; 2026 PremiumSalon</p>
+        </div>
     </div>
 
     <!-- ===== MAIN CONTENT ===== -->
@@ -715,60 +1205,63 @@
                         <i class="fas fa-scissors"></i> Premium<span>Salon</span>
                     </a>
                 </div>
-                <div class="header-right">
-                    <div class="user-badge-mini">
-                        <div class="avatar-mini" id="headerAvatar">C</div>
-                        <span class="name-mini" id="headerName">Customer</span>
-                    </div>
-                </div>
+                <!-- Right side profile removed as requested -->
             </div>
         </header>
 
         <!-- ===== DASHBOARD ===== -->
         <section class="dashboard">
-            <div class="container" style="max-width:1200px; margin:0 auto;">
 
-                <!-- Dashboard Header -->
-                <div class="dashboard-header">
-                    <div class="greeting">
-                        <h1>Welcome back, <span id="userName">Customer</span> 👋</h1>
-                        <p>Manage your appointments and view booking history</p>
-                    </div>
-                    <div class="quick-actions">
-                        <a href="booking.html" class="btn-primary-sm">
-                            <i class="fas fa-plus"></i> Book Now
-                        </a>
-                        <a href="profile.html" class="btn-outline-sm">
-                            <i class="fas fa-user"></i> Profile
-                        </a>
-                    </div>
+            <!-- Tuesday Warning (Hidden by default) -->
+            <div id="tuesdayWarning" class="tuesday-warning hidden">
+                <i class="fas fa-store-slash"></i>
+                <div>
+                    <strong>Shop Closed Today:</strong> Please note that our salon remains closed on Tuesdays. You can still book appointments for other days.
                 </div>
+            </div>
 
-                <!-- Stats -->
-                <div class="stats-grid" id="statsGrid">
-                    <div class="stat-card total">
-                        <div class="icon"><i class="fas fa-calendar-check"></i></div>
-                        <div class="number" id="totalBookings">0</div>
-                        <div class="label">Total Bookings</div>
-                    </div>
-                    <div class="stat-card upcoming">
-                        <div class="icon"><i class="fas fa-clock"></i></div>
-                        <div class="number" id="upcomingBookings">0</div>
-                        <div class="label">Upcoming</div>
-                    </div>
-                    <div class="stat-card completed">
-                        <div class="icon"><i class="fas fa-check-circle"></i></div>
-                        <div class="number" id="completedBookings">0</div>
-                        <div class="label">Completed</div>
-                    </div>
-                    <div class="stat-card cancelled">
-                        <div class="icon"><i class="fas fa-times-circle"></i></div>
-                        <div class="number" id="cancelledBookings">0</div>
-                        <div class="label">Cancelled / Expired</div>
-                    </div>
+            <!-- Dashboard Header -->
+            <div class="dashboard-header">
+                <div class="greeting">
+                    <h1>Welcome back, <span id="userName">Customer</span> 👋</h1>
+                    <p>Manage your appointments and view booking history</p>
                 </div>
+                <div class="quick-actions">
+                    <a href="booking.html" class="btn-primary-sm">
+                        <i class="fas fa-plus"></i> Book Now
+                    </a>
+                    <a href="profile.html" class="btn-outline-sm">
+                        <i class="fas fa-user"></i> Profile
+                    </a>
+                </div>
+            </div>
 
-                <!-- Filter Tabs -->
+            <!-- Stats -->
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-card total">
+                    <div class="icon"><i class="fas fa-calendar-check"></i></div>
+                    <div class="number" id="totalBookings">0</div>
+                    <div class="label">Total Bookings</div>
+                </div>
+                <div class="stat-card upcoming">
+                    <div class="icon"><i class="fas fa-clock"></i></div>
+                    <div class="number" id="upcomingBookings">0</div>
+                    <div class="label">Upcoming</div>
+                </div>
+                <div class="stat-card completed">
+                    <div class="icon"><i class="fas fa-check-circle"></i></div>
+                    <div class="number" id="completedBookings">0</div>
+                    <div class="label">Completed</div>
+                </div>
+                <div class="stat-card cancelled">
+                    <div class="icon"><i class="fas fa-times-circle"></i></div>
+                    <div class="number" id="cancelledBookings">0</div>
+                    <div class="label">Cancelled / Expired</div>
+                </div>
+            </div>
+
+            <!-- Filter Tabs (Horizontal Scrollable) -->
+            <div class="filter-tabs-container">
                 <div class="filter-tabs" id="filterTabs">
                     <button class="filter-tab active" data-filter="all" onclick="filterBookings('all')">
                         All <span class="count" id="allCount">0</span>
@@ -783,22 +1276,80 @@
                         Cancelled <span class="count" id="cancelledCountFilter">0</span>
                     </button>
                 </div>
+            </div>
 
-                <!-- Bookings -->
-                <div class="section-title">
-                    <h2><i class="fas fa-list"></i> My Bookings</h2>
+            <!-- Bookings Section (Scrollable Container) -->
+            <div class="bookings-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-list-ul"></i> My Bookings</h2>
                     <span class="badge" id="bookingCount">0</span>
                 </div>
-
-                <div id="bookingsContainer">
-                    <div style="text-align:center; padding:30px; color:#94a3b8;">
-                        <i class="fas fa-spinner fa-spin" style="font-size:28px; display:block; margin-bottom:10px;"></i>
+                
+                <div class="bookings-list-container" id="bookingsContainer">
+                    <div style="text-align:center; padding:40px; color:#94a3b8;">
+                        <i class="fas fa-spinner fa-spin" style="font-size:32px; display:block; margin-bottom:12px;"></i>
                         Loading your bookings...
                     </div>
                 </div>
+            </div>
 
+        </section>
+
+        <!-- ===== CREDITS ===== -->
+        <section class="credits-section">
+            <div class="credits-content">
+                <h3>Project Credits</h3>
+                <p style="color: #cbd5e1; margin-bottom: 20px;">Premium Salon Management System</p>
+                <div class="credits-names">
+                    <div class="credit-item">
+                        <div class="label">Project Owner</div>
+                        <div class="name">Dileep Thakur</div>
+                    </div>
+                    <div class="credit-item">
+                        <div class="label">Developer</div>
+                        <div class="name">Avinash Kumar</div>
+                    </div>
+                </div>
             </div>
         </section>
+
+        <!-- ===== FOOTER ===== -->
+        <footer>
+            <div class="footer-inner">
+                <div class="footer-brand">
+                    <h4><i class="fas fa-scissors"></i> PremiumSalon</h4>
+                    <p>Your trusted partner for premium grooming services. We bring professional care right to your village doorstep.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <a href="services.html">Our Services</a>
+                    <a href="booking.html">Book Appointment</a>
+                    <a href="login.html">Login / Register</a>
+                    <a href="#">Privacy Policy</a>
+                </div>
+                <div>
+                    <h4>Contact Info</h4>
+                    <a href="tel:+919876543210"><i class="fas fa-phone"></i> +91 98765 43210</a>
+                    <a href="mailto:info@premiumsalon.com"><i class="fas fa-envelope"></i> info@premiumsalon.com</a>
+                    <a href="#"><i class="fas fa-map-marker-alt"></i> Village Location</a>
+                </div>
+                <div>
+                    <h4>Business Hours</h4>
+                    <a href="#">Mon - Sat: 9AM - 8PM</a>
+                    <a href="#" style="color: #ef4444;">Tuesday: Closed</a>
+                    <a href="#">Sunday: 10AM - 6PM</a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                &copy; 2026 PremiumSalon. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #ef4444;"></i> by Avinash Kumar
+            </div>
+        </footer>
 
     </div>
 
@@ -821,8 +1372,6 @@
         // ============================================
         const el = {
             userName: document.getElementById('userName'),
-            headerName: document.getElementById('headerName'),
-            headerAvatar: document.getElementById('headerAvatar'),
             sideName: document.getElementById('sideName'),
             sidePhone: document.getElementById('sidePhone'),
             sideAvatar: document.getElementById('sideAvatar'),
@@ -841,6 +1390,7 @@
             sidebarOverlay: document.getElementById('sidebarOverlay'),
             menuToggle: document.getElementById('menuToggle'),
             filterTabs: document.getElementById('filterTabs'),
+            tuesdayWarning: document.getElementById('tuesdayWarning'),
         };
 
         // ============================================
@@ -871,6 +1421,30 @@
                 closeSidebar();
             } else {
                 openSidebar();
+            }
+        }
+
+        // ============================================
+        // LOGOUT FUNCTION
+        // ============================================
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            showToast('Logged out successfully!', 'success');
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 1500);
+        }
+
+        // ============================================
+        // CHECK TUESDAY
+        // ============================================
+        function checkTuesday() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, 2 = Tuesday...
+            
+            if (dayOfWeek === 2) {
+                el.tuesdayWarning.classList.remove('hidden');
             }
         }
 
@@ -968,7 +1542,7 @@
 
                 filteredBookings = [...allBookings];
 
-                // ✅ DATE WISE SORTING - Latest date first (17 Jun → 16 Jun → 15 Jun)
+                // ✅ DATE WISE SORTING - Latest date first
                 filteredBookings.sort((a, b) => {
                     const dateA = new Date(a.booking_date + 'T' + (a.slot_time || '00:00'));
                     const dateB = new Date(b.booking_date + 'T' + (b.slot_time || '00:00'));
@@ -980,12 +1554,12 @@
             } catch (error) {
                 console.error('Error loading bookings:', error);
                 el.bookingsContainer.innerHTML = `
-                            <div class="empty-state">
-                                <i class="fas fa-exclamation-circle"></i>
-                                <h3>Failed to Load</h3>
-                                <p>Please refresh and try again.</p>
-                            </div>
-                        `;
+                    <div class="empty-state">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <h3>Failed to Load</h3>
+                        <p>Please refresh and try again.</p>
+                    </div>
+                `;
             }
         }
 
@@ -1052,15 +1626,15 @@
 
             if (bookings.length === 0) {
                 el.bookingsContainer.innerHTML = `
-                            <div class="empty-state">
-                                <i class="fas fa-calendar-plus"></i>
-                                <h3>No Bookings Found</h3>
-                                <p>${currentFilter === 'all' ? 'Book your first appointment now!' : `No ${currentFilter} bookings found.`}</p>
-                                <a href="booking.html" class="btn-primary-sm" style="margin-top:16px; display:inline-flex;">
-                                    <i class="fas fa-plus"></i> Book Now
-                                </a>
-                            </div>
-                        `;
+                    <div class="empty-state">
+                        <i class="fas fa-calendar-plus"></i>
+                        <h3>No Bookings Found</h3>
+                        <p>${currentFilter === 'all' ? 'Book your first appointment now!' : `No ${currentFilter} bookings found.`}</p>
+                        <a href="booking.html" class="btn-primary-sm" style="margin-top:16px; display:inline-flex;">
+                            <i class="fas fa-plus"></i> Book Now
+                        </a>
+                    </div>
+                `;
                 return;
             }
 
@@ -1095,55 +1669,58 @@
                 const isExpired = b.status === 'expired';
 
                 return `
-                            <div class="booking-card ${statusMap[b.status] || 'status-pending'}">
-                                <div class="info">
-                                    <div class="service">${b.service?.name || 'Service'}</div>
-                                    <div class="meta">
-                                        <i class="fas fa-calendar-day"></i> ${formatDate(b.booking_date)}
-                                        <i class="fas fa-clock" style="margin-left:10px;"></i> 
-                                        <span class="time-ampm">${b.slot_time_ampm || b.slot_time || 'N/A'}</span>
-                                        <i class="fas fa-rupee-sign" style="margin-left:10px;"></i> ₹${b.total_amount || 0}
-                                        <span class="payment-status ${b.payment_status === 'paid' ? 'payment-paid' : 'payment-pending'}" style="margin-left:8px;">
-                                            ${b.payment_status === 'paid' ? '✅ Paid' : '⏳ Pending'}
-                                        </span>
-                                        ${isExpired ? '<span style="margin-left:8px; color:#ef4444; font-weight:600; font-size:12px;">⏰ Expired</span>' : ''}
-                                    </div>
-                                    <div class="booking-id">
-                                        <i class="fas fa-hashtag"></i> ${b.booking_id || 'N/A'}
-                                    </div>
-                                    ${countdown ? `<div class="countdown">${countdown}</div>` : ''}
-                                    ${isExpired ? `<div class="countdown warning">⏰ Time Expired</div>` : ''}
-                                </div>
-                                <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-                                    <span class="status-badge ${badgeMap[b.status] || 'status-pending-badge'}">
-                                        ${b.status === 'expired' ? 'Expired' : (b.status || 'Pending')}
-                                    </span>
-                                    ${b.status !== 'cancelled' && b.status !== 'completed' && b.status !== 'expired' ? `
-                                        <button class="btn-sm btn-sm-danger" onclick="cancelBooking('${b.booking_id}')">
-                                            <i class="fas fa-times"></i> Cancel
-                                        </button>
-                                        <button class="btn-sm btn-sm-outline" onclick="rescheduleBooking('${b.booking_id}')">
-                                            <i class="fas fa-edit"></i> Reschedule
-                                        </button>
-                                    ` : ''}
-                                    ${b.status === 'expired' ? `
-                                        <button class="btn-sm btn-sm-outline" onclick="rescheduleBooking('${b.booking_id}')">
-                                            <i class="fas fa-redo"></i> Book Again
-                                        </button>
-                                    ` : ''}
-                                    ${b.status === 'completed' ? `
-                                        <button class="btn-sm btn-sm-success" onclick="rateBooking('${b.booking_id}')">
-                                            <i class="fas fa-star"></i> Rate
-                                        </button>
-                                    ` : ''}
-                                    ${b.status === 'cancelled' ? `
-                                        <span class="btn-sm btn-sm-disabled">
-                                            <i class="fas fa-times-circle"></i> Cancelled
-                                        </span>
-                                    ` : ''}
-                                </div>
+                    <div class="booking-card ${statusMap[b.status] || 'status-pending'}">
+                        <div class="info">
+                            <div class="service">${b.service?.name || 'Service'}</div>
+                            <div class="meta">
+                                <span><i class="fas fa-calendar-day"></i> ${formatDate(b.booking_date)}</span>
+                                <span><i class="fas fa-clock"></i> <span class="time-ampm">${b.slot_time_ampm || b.slot_time || 'N/A'}</span></span>
+                                <span><i class="fas fa-rupee-sign"></i> ₹${b.total_amount || 0}</span>
                             </div>
-                        `;
+                            <div class="meta" style="margin-top:4px;">
+                                <span class="payment-status ${b.payment_status === 'paid' ? 'payment-paid' : 'payment-pending'}">
+                                    ${b.payment_status === 'paid' ? '<i class="fas fa-check-circle"></i> Paid' : '<i class="fas fa-hourglass-half"></i> Pending'}
+                                </span>
+                                ${isExpired ? '<span style="margin-left:8px; color:#ef4444; font-weight:600; font-size:12px;"><i class="fas fa-exclamation-triangle"></i> Expired</span>' : ''}
+                            </div>
+                            <div class="booking-id">
+                                <i class="fas fa-hashtag"></i> ${b.booking_id || 'N/A'}
+                            </div>
+                            ${countdown ? `<div class="countdown">${countdown}</div>` : ''}
+                            ${isExpired ? `<div class="countdown warning"><i class="fas fa-hourglass-end"></i> Time Expired</div>` : ''}
+                        </div>
+                        <div class="right-section">
+                            <span class="status-badge ${badgeMap[b.status] || 'status-pending-badge'}">
+                                ${b.status === 'expired' ? 'Expired' : (b.status || 'Pending')}
+                            </span>
+                            <div class="actions">
+                                ${b.status !== 'cancelled' && b.status !== 'completed' && b.status !== 'expired' ? `
+                                    <button class="btn-sm btn-sm-danger" onclick="cancelBooking('${b.booking_id}')">
+                                        <i class="fas fa-times"></i> Cancel
+                                    </button>
+                                    <button class="btn-sm btn-sm-outline" onclick="rescheduleBooking('${b.booking_id}')">
+                                        <i class="fas fa-edit"></i> Reschedule
+                                    </button>
+                                ` : ''}
+                                ${b.status === 'expired' ? `
+                                    <button class="btn-sm btn-sm-outline" onclick="rescheduleBooking('${b.booking_id}')">
+                                        <i class="fas fa-redo"></i> Book Again
+                                    </button>
+                                ` : ''}
+                                ${b.status === 'completed' ? `
+                                    <button class="btn-sm btn-sm-success" onclick="rateBooking('${b.booking_id}')">
+                                        <i class="fas fa-star"></i> Rate
+                                    </button>
+                                ` : ''}
+                                ${b.status === 'cancelled' ? `
+                                    <span class="btn-sm btn-sm-disabled">
+                                        <i class="fas fa-times-circle"></i> Cancelled
+                                    </span>
+                                ` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
             }).join('');
         }
 
@@ -1205,28 +1782,25 @@
         }
 
         // ============================================
-        // LOGOUT
-        // ============================================
-        function logout() {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = 'login.html';
-        }
-
-        // ============================================
-        // TOAST
+        // TOAST NOTIFICATION
         // ============================================
         function showToast(message, type = 'info') {
             const container = el.toastContainer;
             const className = type === 'success' ? 'toast-success' :
                 type === 'error' ? 'toast-error' :
                 type === 'warning' ? 'toast-warning' : 'toast-info';
+            
+            const icon = type === 'success' ? 'check-circle' :
+                        type === 'error' ? 'exclamation-circle' :
+                        type === 'warning' ? 'exclamation-triangle' : 'info-circle';
 
-            container.innerHTML = `<div class="toast ${className}">${message}</div>`;
-
-            setTimeout(() => {
-                container.innerHTML = '';
-            }, 4000);
+            container.innerHTML = `
+                <div class="toast ${className}">
+                    <i class="fas fa-${icon}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
+            setTimeout(() => container.innerHTML = '', 5000);
         }
 
         // ============================================
@@ -1270,6 +1844,7 @@
             displayUserInfo(user);
             loadBookings();
             setupMobileMenu();
+            checkTuesday(); // Check if today is Tuesday
 
             console.log('✅ Customer Dashboard Loaded');
             console.log('📡 API URL:', CONFIG.API_BASE_URL);
@@ -1283,10 +1858,8 @@
             const initial = name[0].toUpperCase();
 
             el.userName.textContent = name;
-            el.headerName.textContent = name;
             el.sideName.textContent = name;
             el.sidePhone.textContent = user.phone || '';
-            el.headerAvatar.textContent = initial;
             el.sideAvatar.textContent = initial;
         }
     </script>
