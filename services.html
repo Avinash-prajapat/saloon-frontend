@@ -321,42 +321,27 @@
             color: var(--primary); 
         }
 
-        .header-right .user-badge-mini {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
-            padding: 6px 16px 6px 10px;
-            border-radius: 24px;
-            border: 1px solid rgba(16, 185, 129, 0.2);
-            transition: all 0.3s ease;
-        }
+        /* Header Right is clean now */
 
-        .header-right .user-badge-mini:hover {
-            box-shadow: var(--shadow);
-            transform: translateY(-2px);
-        }
-
-        .header-right .user-badge-mini .avatar-mini {
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            color: white;
-            display: flex;
+        /* ===== TUESDAY WARNING ===== */
+        .tuesday-warning {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: 500;
+            display: none;
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 14px;
+            gap: 10px;
+        }
+        
+        .tuesday-warning.show {
+            display: flex;
         }
 
-        .header-right .user-badge-mini .name-mini {
-            font-weight: 600;
-            font-size: 14px;
-            color: var(--dark);
-        }
-
-        /* ===== PAGE HEADER ===== */
+        /* ===== SERVICES PAGE ===== */
         .page-header {
             padding: 40px 24px 20px;
             max-width: 1300px;
@@ -369,7 +354,6 @@
             font-size: 36px;
             font-weight: 800;
             color: var(--dark);
-            margin-bottom: 8px;
         }
 
         .page-header h1 span {
@@ -383,7 +367,6 @@
             margin: 0 auto;
         }
 
-        /* ===== SERVICES WRAPPER ===== */
         .services-wrapper {
             max-width: 1300px;
             margin: 0 auto;
@@ -896,10 +879,6 @@
                 font-size: 18px; 
             }
 
-            .header-right .user-badge-mini .name-mini { 
-                display: none; 
-            }
-
             .menu-toggle { 
                 font-size: 20px; 
                 padding: 8px; 
@@ -992,26 +971,23 @@
             <p class="tagline">Excellence in Every Cut</p>
         </div>
 
-        <div class="user-info">
-            <div class="avatar" id="sideAvatar"><i class="fas fa-user"></i></div>
-            <div class="details">
-                <div class="name" id="sideName">Guest</div>
-                <div class="role" id="sideRole">Not Logged In</div>
-            </div>
+        <!-- Dynamic User Info Container -->
+        <div id="sidebarUserInfoContainer">
+            <!-- Content injected by JS based on login status -->
         </div>
 
-        <ul class="nav-links">
+        <ul class="nav-links" id="sidebarNavLinks">
             <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="services.html" class="active"><i class="fas fa-cut"></i> Services</a></li>
             <li><a href="booking.html"><i class="fas fa-calendar-plus"></i> Book Now</a></li>
-            <li><a href="login.html" id="sideAuthLink"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            <!-- Dynamic Links injected by JS -->
         </ul>
 
         <div class="nav-divider"></div>
 
-        <button class="logout-btn" onclick="logout()">
-            <i class="fas fa-sign-out-alt"></i> Logout
-        </button>
+        <div id="sidebarAuthButtonContainer">
+            <!-- Login/Logout button injected by JS -->
+        </div>
 
         <div class="sidebar-footer">
             <p>&copy; 2026 PremiumSalon</p>
@@ -1020,6 +996,12 @@
 
     <!-- ===== MAIN CONTENT ===== -->
     <div class="main-content">
+
+        <!-- Tuesday Warning Banner -->
+        <div id="tuesdayWarning" class="tuesday-warning">
+            <i class="fas fa-store-slash"></i>
+            <span><strong>Note:</strong> Our salon remains closed on Tuesdays. Please book for other days.</span>
+        </div>
 
         <!-- ===== HEADER ===== -->
         <header>
@@ -1032,12 +1014,7 @@
                         <i class="fas fa-scissors"></i> Premium<span>Salon</span>
                     </a>
                 </div>
-                <div class="header-right">
-                    <div class="user-badge-mini">
-                        <div class="avatar-mini" id="headerAvatar"><i class="fas fa-user"></i></div>
-                        <span class="name-mini" id="headerName">Guest</span>
-                    </div>
-                </div>
+                <!-- Right side removed as requested -->
             </div>
         </header>
 
@@ -1121,8 +1098,8 @@
                 <div>
                     <h4>Business Hours</h4>
                     <a href="#">Mon - Sat: 9AM - 8PM</a>
+                    <a href="#" style="color: #ef4444;">Tuesday: Closed</a>
                     <a href="#">Sunday: 10AM - 6PM</a>
-                    <a href="#">Holidays: Closed</a>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -1164,12 +1141,10 @@
             sidebar: document.getElementById('sidebar'),
             sidebarOverlay: document.getElementById('sidebarOverlay'),
             menuToggle: document.getElementById('menuToggle'),
-            headerName: document.getElementById('headerName'),
-            headerAvatar: document.getElementById('headerAvatar'),
-            sideName: document.getElementById('sideName'),
-            sideRole: document.getElementById('sideRole'),
-            sideAvatar: document.getElementById('sideAvatar'),
-            sideAuthLink: document.getElementById('sideAuthLink'),
+            sidebarUserInfoContainer: document.getElementById('sidebarUserInfoContainer'),
+            sidebarNavLinks: document.getElementById('sidebarNavLinks'),
+            sidebarAuthButtonContainer: document.getElementById('sidebarAuthButtonContainer'),
+            tuesdayWarning: document.getElementById('tuesdayWarning'),
         };
 
         // ============================================
@@ -1211,6 +1186,69 @@
         }
 
         // ============================================
+        // CHECK LOGIN STATUS
+        // ============================================
+        function isLoggedIn() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            return !!(token && user.id);
+        }
+
+        // ============================================
+        // UPDATE SIDEBAR UI BASED ON LOGIN
+        // ============================================
+        function updateSidebarUI() {
+            const loggedIn = isLoggedIn();
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (loggedIn) {
+                // Show User Info
+                const name = user.name || 'Customer';
+                const initial = name[0].toUpperCase();
+                const role = user.role || 'Member';
+
+                el.sidebarUserInfoContainer.innerHTML = `
+                    <div class="user-info">
+                        <div class="avatar">${initial}</div>
+                        <div class="details">
+                            <div class="name">${name}</div>
+                            <div class="role">${role}</div>
+                        </div>
+                    </div>
+                `;
+
+                // Add Dashboard Link if not present
+                if (!document.querySelector('a[href="customer-dashboard.html"]')) {
+                    const dashboardLi = document.createElement('li');
+                    dashboardLi.innerHTML = `<a href="customer-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>`;
+                    // Insert after Book Now (index 2)
+                    el.sidebarNavLinks.insertBefore(dashboardLi, el.sidebarNavLinks.children[3]);
+                }
+
+                // Show Logout Button
+                el.sidebarAuthButtonContainer.innerHTML = `
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                `;
+            } else {
+                // Hide User Info
+                el.sidebarUserInfoContainer.innerHTML = '';
+
+                // Remove Dashboard Link if present
+                const dashboardLink = document.querySelector('a[href="customer-dashboard.html"]');
+                if (dashboardLink) dashboardLink.parentElement.remove();
+
+                // Show Login Button
+                el.sidebarAuthButtonContainer.innerHTML = `
+                    <ul class="nav-links" style="padding:0;">
+                        <li><a href="login.html" style="color:#ef4444;"><i class="fas fa-sign-in-alt"></i> Login to Account</a></li>
+                    </ul>
+                `;
+            }
+        }
+
+        // ============================================
         // LOGOUT FUNCTION
         // ============================================
         function logout() {
@@ -1218,8 +1256,20 @@
             localStorage.removeItem('user');
             showToast('Logged out successfully!', 'success');
             setTimeout(() => {
-                window.location.href = 'login.html';
+                window.location.reload();
             }, 1500);
+        }
+
+        // ============================================
+        // CHECK TUESDAY
+        // ============================================
+        function checkTuesday() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, 2 = Tuesday...
+            
+            if (dayOfWeek === 2) {
+                el.tuesdayWarning.classList.add('show');
+            }
         }
 
         // ============================================
@@ -1227,7 +1277,8 @@
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             loadServices();
-            checkAuth();
+            updateSidebarUI(); // Initial check
+            checkTuesday(); // Check if today is Tuesday
 
             // Sidebar events
             el.menuToggle.addEventListener('click', function(e) {
@@ -1256,40 +1307,6 @@
         });
 
         // ============================================
-        // CHECK AUTH
-        // ============================================
-        function checkAuth() {
-            const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-            if (token && user.id) {
-                const name = user.name || 'Customer';
-                const initial = name[0].toUpperCase();
-
-                el.headerName.textContent = name;
-                el.sideName.textContent = name;
-                el.sideRole.textContent = user.role || 'Customer';
-                el.headerAvatar.textContent = initial;
-                el.sideAvatar.textContent = initial;
-
-                const role = user.role || 'customer';
-                const dashboard = role === 'admin' ? 'admin-dashboard.html' :
-                    role === 'staff' ? 'staff-dashboard.html' :
-                    'customer-dashboard.html';
-                el.sideAuthLink.innerHTML = '<i class="fas fa-tachometer-alt"></i> Dashboard';
-                el.sideAuthLink.href = dashboard;
-            } else {
-                el.headerName.textContent = 'Guest';
-                el.sideName.textContent = 'Guest';
-                el.sideRole.textContent = 'Not Logged In';
-                el.headerAvatar.innerHTML = '<i class="fas fa-user"></i>';
-                el.sideAvatar.innerHTML = '<i class="fas fa-user"></i>';
-                el.sideAuthLink.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-                el.sideAuthLink.href = 'login.html';
-            }
-        }
-
-        // ============================================
         // LOAD SERVICES
         // ============================================
         async function loadServices() {
@@ -1314,7 +1331,7 @@
 
             } catch (error) {
                 console.error('Error loading services:', error);
-                showEmptyState('Unable to load services. Please check your connection.');
+                showEmptyState('Unable to load services. Please refresh.');
                 showToast('Failed to load services', 'error');
             }
         }
