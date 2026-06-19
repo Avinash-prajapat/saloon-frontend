@@ -5,136 +5,229 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Premium Salon - Book Online</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        :root {
+            --primary: #10b981;
+            --primary-dark: #059669;
+            --secondary: #0f172a;
+            --accent: #f59e0b;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --gray: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
 
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
-            background: #f1f5f9;
-            color: #0f172a;
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            color: var(--dark);
             line-height: 1.6;
             min-height: 100vh;
             display: flex;
         }
 
-        a { text-decoration: none; color: inherit; }
+        a { 
+            text-decoration: none; 
+            color: inherit; 
+            transition: all 0.3s ease;
+        }
 
         /* ===== SIDEBAR ===== */
         .sidebar {
             position: fixed;
             top: 0;
-            left: -280px;
-            width: 280px;
+            left: -300px;
+            width: 300px;
             height: 100%;
-            background: #0f172a;
-            color: #94a3b8;
+            background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+            color: #cbd5e1;
             z-index: 1000;
-            transition: left 0.3s ease;
-            padding: 20px 0;
+            transition: left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            padding: 0;
             overflow-y: auto;
-            box-shadow: 4px 0 20px rgba(0,0,0,0.2);
+            box-shadow: 8px 0 30px rgba(0,0,0,0.3);
         }
 
-        .sidebar.open { left: 0; }
+        .sidebar.open { 
+            left: 0; 
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            background: rgba(16, 185, 129, 0.1);
+            border-bottom: 2px solid rgba(16, 185, 129, 0.2);
+        }
 
         .sidebar .logo {
-            padding: 0 24px 20px;
-            border-bottom: 1px solid #1e293b;
-            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar .logo i {
+            font-size: 28px;
+            color: var(--primary);
         }
 
         .sidebar .logo h2 {
             color: white;
-            font-size: 20px;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
         }
 
-        .sidebar .logo h2 i { color: #10b981; }
-        .sidebar .logo h2 span { color: #10b981; }
-        .sidebar .logo p { font-size: 12px; color: #64748b; margin-top: 2px; }
+        .sidebar .logo h2 span { 
+            color: var(--primary); 
+        }
+
+        .sidebar .tagline {
+            font-size: 12px;
+            color: #94a3b8;
+            font-style: italic;
+        }
 
         .sidebar .user-info {
-            padding: 0 24px 16px;
-            border-bottom: 1px solid #1e293b;
-            margin-bottom: 12px;
+            padding: 20px 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
         .sidebar .user-info .avatar {
-            width: 48px;
-            height: 48px;
+            width: 52px;
+            height: 52px;
             border-radius: 50%;
-            background: #10b981;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 20px;
+            font-size: 22px;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
         }
 
-        .sidebar .user-info .details .name { color: white; font-weight: 600; font-size: 15px; }
-        .sidebar .user-info .details .role { font-size: 12px; color: #64748b; }
+        .sidebar .user-info .details .name { 
+            color: white; 
+            font-weight: 600; 
+            font-size: 16px; 
+        }
+
+        .sidebar .user-info .details .role { 
+            font-size: 13px; 
+            color: #94a3b8; 
+            margin-top: 2px;
+        }
 
         .sidebar .nav-links {
             list-style: none;
-            padding: 0 12px;
+            padding: 16px 12px;
         }
 
-        .sidebar .nav-links li { margin-bottom: 4px; }
+        .sidebar .nav-links li { 
+            margin-bottom: 6px; 
+        }
 
         .sidebar .nav-links li a {
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 12px 16px;
-            border-radius: 10px;
-            color: #94a3b8;
-            font-size: 14px;
+            padding: 14px 18px;
+            border-radius: 12px;
+            color: #cbd5e1;
+            font-size: 15px;
             font-weight: 500;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sidebar .nav-links li a::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 3px;
+            background: var(--primary);
+            transform: scaleY(0);
+            transition: transform 0.3s ease;
+        }
+
+        .sidebar .nav-links li a:hover::before,
+        .sidebar .nav-links li a.active::before {
+            transform: scaleY(1);
         }
 
         .sidebar .nav-links li a:hover,
         .sidebar .nav-links li a.active {
-            background: #1e293b;
+            background: rgba(16, 185, 129, 0.15);
             color: white;
+            transform: translateX(4px);
         }
 
-        .sidebar .nav-links li a i { width: 20px; text-align: center; font-size: 16px; }
+        .sidebar .nav-links li a i { 
+            width: 22px; 
+            text-align: center; 
+            font-size: 18px; 
+        }
 
         .sidebar .nav-divider {
             height: 1px;
-            background: #1e293b;
-            margin: 12px 16px;
+            background: rgba(255,255,255,0.1);
+            margin: 12px 24px;
         }
 
         .sidebar .logout-btn {
             display: flex;
             align-items: center;
             gap: 14px;
-            padding: 12px 16px;
-            border-radius: 10px;
+            padding: 14px 18px;
+            border-radius: 12px;
             color: #ef4444;
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 500;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
             border: none;
             background: none;
             width: calc(100% - 24px);
-            margin: 0 12px;
+            margin: 0 12px 16px;
             font-family: inherit;
         }
 
-        .sidebar .logout-btn:hover { background: #1e293b; }
-        .sidebar .logout-btn i { width: 20px; text-align: center; font-size: 16px; }
+        .sidebar .logout-btn:hover { 
+            background: rgba(239, 68, 68, 0.15); 
+            transform: translateX(4px);
+        }
+
+        .sidebar .logout-btn i { 
+            width: 22px; 
+            text-align: center; 
+            font-size: 18px; 
+        }
+
+        .sidebar-footer {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: auto;
+        }
+
+        .sidebar-footer p {
+            font-size: 11px;
+            color: #64748b;
+            text-align: center;
+        }
 
         .sidebar-overlay {
             position: fixed;
@@ -142,19 +235,21 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             z-index: 999;
             display: none;
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(6px);
         }
 
-        .sidebar-overlay.active { display: block; }
+        .sidebar-overlay.active { 
+            display: block; 
+        }
 
         /* ===== MAIN CONTENT ===== */
         .main-content {
             flex: 1;
             margin-left: 0;
-            transition: margin-left 0.3s ease;
+            transition: margin-left 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             min-height: 100vh;
             width: 100%;
             display: flex;
@@ -163,181 +258,250 @@
 
         /* ===== HEADER ===== */
         header {
-            background: #ffffff;
-            border-bottom: 1px solid #e2e8f0;
+            background: rgba(255, 255, 255, 0.95);
+            border-bottom: 1px solid var(--border);
             position: sticky;
             top: 0;
             z-index: 100;
             backdrop-filter: blur(12px);
-            background: rgba(255,255,255,0.92);
+            box-shadow: var(--shadow);
         }
 
         .header-inner {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 20px;
+            padding: 16px 24px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 14px;
+            gap: 16px;
         }
 
         .menu-toggle {
             background: none;
             border: none;
-            font-size: 22px;
-            color: #0f172a;
+            font-size: 24px;
+            color: var(--dark);
             cursor: pointer;
-            padding: 8px;
+            padding: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border-radius: 8px;
-            transition: all 0.2s;
+            border-radius: 10px;
+            transition: all 0.3s ease;
         }
 
-        .menu-toggle:hover { background: #f1f5f9; color: #10b981; }
+        .menu-toggle:hover { 
+            background: rgba(16, 185, 129, 0.1); 
+            color: var(--primary); 
+            transform: scale(1.05);
+        }
 
         .logo-header {
-            font-size: 18px;
-            font-weight: 800;
-            color: #0f172a;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .logo-header i { color: #10b981; font-size: 20px; }
-        .logo-header span { color: #10b981; }
-
-        .header-right .user-badge-mini {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--dark);
             display: flex;
             align-items: center;
             gap: 10px;
-            background: #f1f5f9;
-            padding: 4px 12px 4px 8px;
-            border-radius: 20px;
         }
 
-        .header-right .user-badge-mini .avatar-mini {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: #10b981;
-            color: white;
-            display: flex;
+        .logo-header i { 
+            color: var(--primary); 
+            font-size: 24px; 
+        }
+
+        .logo-header span { 
+            color: var(--primary); 
+        }
+
+        /* Header Right is now clean/empty as requested */
+
+        /* ===== TUESDAY WARNING ===== */
+        .tuesday-warning {
+            background: #fffbeb;
+            border: 1px solid #fcd34d;
+            color: #92400e;
+            padding: 12px 20px;
+            text-align: center;
+            font-weight: 500;
+            display: none; /* Hidden by default */
             align-items: center;
             justify-content: center;
-            font-weight: 700;
-            font-size: 13px;
+            gap: 10px;
         }
-
-        .header-right .user-badge-mini .name-mini {
-            font-weight: 600;
-            font-size: 13px;
-            color: #0f172a;
+        
+        .tuesday-warning.show {
+            display: flex;
         }
 
         /* ===== HERO ===== */
         .hero {
-            padding: 60px 20px;
-            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            padding: 80px 24px;
+            background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 50%, #a7f3d0 100%);
             text-align: center;
+            position: relative;
+            overflow: hidden;
         }
 
-        .hero h1 {
-            font-size: 42px;
-            font-weight: 800;
-            line-height: 1.15;
-            color: #0f172a;
-            max-width: 800px;
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: -30%;
+            left: -5%;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 900px;
             margin: 0 auto;
         }
 
-        .hero h1 span { color: #10b981; }
+        .hero h1 {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.2;
+            color: var(--dark);
+            margin-bottom: 20px;
+        }
+
+        .hero h1 span { 
+            color: var(--primary);
+            position: relative;
+        }
+
+        .hero h1 span::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 2px;
+        }
 
         .hero p {
-            font-size: 18px;
-            color: #475569;
-            margin: 16px auto 32px;
-            max-width: 560px;
+            font-size: 20px;
+            color: var(--gray);
+            margin: 0 auto 36px;
+            max-width: 600px;
+            line-height: 1.7;
         }
 
         .hero-buttons {
             display: flex;
-            gap: 16px;
+            gap: 20px;
             justify-content: center;
             flex-wrap: wrap;
+            margin-bottom: 50px;
         }
 
         .btn-primary {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 32px;
-            background: #10b981;
+            gap: 12px;
+            padding: 16px 36px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
             color: white;
             border: none;
-            border-radius: 10px;
-            font-size: 16px;
+            border-radius: 12px;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
         }
 
         .btn-primary:hover {
-            background: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
         }
 
         .btn-secondary {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 32px;
+            gap: 12px;
+            padding: 16px 36px;
             background: white;
-            color: #0f172a;
-            border: 2px solid #e2e8f0;
-            border-radius: 10px;
-            font-size: 16px;
+            color: var(--dark);
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            font-size: 17px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all 0.3s ease;
         }
 
         .btn-secondary:hover {
-            border-color: #10b981;
-            color: #10b981;
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
         }
 
         .hero-stats {
             display: flex;
             justify-content: center;
-            gap: 48px;
-            margin-top: 40px;
+            gap: 60px;
             flex-wrap: wrap;
         }
 
+        .hero-stats .stat {
+            text-align: center;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            min-width: 150px;
+            transition: all 0.3s ease;
+        }
+
+        .hero-stats .stat:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
         .hero-stats .stat h3 {
-            font-size: 28px;
+            font-size: 32px;
             font-weight: 700;
-            color: #0f172a;
+            color: var(--primary);
+            margin-bottom: 4px;
         }
 
         .hero-stats .stat p {
             font-size: 14px;
-            color: #64748b;
-            margin-top: 2px;
+            color: var(--gray);
+            margin: 0;
         }
 
         /* ===== SERVICES ===== */
         .section {
-            padding: 60px 20px;
-            max-width: 1200px;
+            padding: 70px 24px;
+            max-width: 1300px;
             margin: 0 auto;
             width: 100%;
         }
@@ -346,262 +510,530 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 32px;
+            margin-bottom: 40px;
             flex-wrap: wrap;
-            gap: 12px;
+            gap: 16px;
         }
 
         .section-header h2 {
-            font-size: 30px;
+            font-size: 34px;
             font-weight: 700;
+            color: var(--dark);
         }
 
         .section-header a {
-            color: #10b981;
+            color: var(--primary);
             font-weight: 600;
             display: inline-flex;
             align-items: center;
-            gap: 6px;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            transition: all 0.3s ease;
         }
 
-        .section-header a:hover { text-decoration: underline; }
+        .section-header a:hover { 
+            background: var(--primary);
+            color: white;
+            transform: translateX(4px);
+        }
 
         .services-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 24px;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 28px;
         }
 
         .service-card {
             background: white;
-            border-radius: 16px;
-            padding: 28px 24px;
-            border: 1px solid #e2e8f0;
-            transition: all 0.25s;
+            border-radius: 20px;
+            padding: 32px 28px;
+            border: 1px solid var(--border);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
         }
 
         .service-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-            border-color: #10b981;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-color: var(--primary);
         }
 
         .service-card .icon {
-            font-size: 36px;
-            color: #10b981;
-            margin-bottom: 12px;
+            font-size: 42px;
+            color: var(--primary);
+            margin-bottom: 16px;
             display: block;
+            transition: all 0.3s ease;
+        }
+
+        .service-card:hover .icon {
+            transform: scale(1.1);
         }
 
         .service-card h3 {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            color: var(--dark);
         }
 
         .service-card .price {
-            font-size: 20px;
+            font-size: 24px;
             font-weight: 700;
-            color: #10b981;
+            color: var(--primary);
+            margin: 12px 0;
         }
 
         .service-card .duration {
-            font-size: 13px;
-            color: #94a3b8;
-            margin-top: 4px;
+            font-size: 14px;
+            color: var(--gray);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
 
         .service-card .book-link {
             display: inline-block;
-            margin-top: 12px;
-            color: #10b981;
+            margin-top: 16px;
+            color: var(--primary);
             font-weight: 600;
-            font-size: 14px;
+            font-size: 15px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            background: rgba(16, 185, 129, 0.1);
+            transition: all 0.3s ease;
         }
 
-        .service-card .book-link:hover { text-decoration: underline; }
+        .service-card .book-link:hover { 
+            background: var(--primary);
+            color: white;
+            transform: translateX(4px);
+        }
 
         /* ===== FEATURES ===== */
+        .features-section {
+            background: white;
+            padding: 60px 24px;
+            margin: 40px 0;
+        }
+
         .features-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 24px;
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            border: 1px solid #e2e8f0;
-            margin-top: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 32px;
+            max-width: 1300px;
+            margin: 0 auto;
         }
 
         .feature-item {
             text-align: center;
+            padding: 30px 20px;
+            border-radius: 16px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .feature-item:hover {
+            background: rgba(16, 185, 129, 0.05);
+            border-color: rgba(16, 185, 129, 0.2);
+            transform: translateY(-5px);
         }
 
         .feature-item i {
-            font-size: 32px;
-            color: #10b981;
-            margin-bottom: 8px;
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 16px;
+            display: block;
         }
 
         .feature-item h4 {
             font-weight: 600;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
+            font-size: 18px;
+            color: var(--dark);
         }
 
         .feature-item p {
-            font-size: 14px;
-            color: #64748b;
+            font-size: 15px;
+            color: var(--gray);
+            line-height: 1.6;
+        }
+
+        /* ===== CREDITS SECTION ===== */
+        .credits-section {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            color: white;
+            padding: 50px 24px;
+            text-align: center;
+        }
+
+        .credits-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .credits-section h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+
+        .credits-section p {
+            font-size: 16px;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            line-height: 1.7;
+        }
+
+        .credits-names {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 24px;
+            flex-wrap: wrap;
+        }
+
+        .credit-item {
+            text-align: center;
+        }
+
+        .credit-item .label {
+            font-size: 13px;
+            color: #94a3b8;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .credit-item .name {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
         }
 
         /* ===== FOOTER ===== */
         footer {
-            background: #0f172a;
+            background: var(--dark);
             color: #94a3b8;
-            padding: 40px 20px 24px;
+            padding: 50px 24px 30px;
             margin-top: auto;
             width: 100%;
         }
 
         .footer-inner {
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
             display: grid;
             grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 40px;
+            gap: 50px;
+        }
+
+        .footer-brand h4 {
+            color: white;
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-brand h4 i {
+            color: var(--primary);
+        }
+
+        .footer-brand p {
+            margin-top: 12px;
+            line-height: 1.7;
+            font-size: 15px;
         }
 
         .footer-inner h4 {
             color: white;
             font-weight: 600;
-            margin-bottom: 12px;
+            margin-bottom: 16px;
+            font-size: 17px;
         }
 
         .footer-inner a {
             display: block;
-            margin-bottom: 6px;
-            transition: color 0.2s;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            font-size: 15px;
         }
 
-        .footer-inner a:hover { color: white; }
+        .footer-inner a:hover { 
+            color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 16px;
+            margin-top: 16px;
+        }
+
+        .social-links a {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-4px);
+        }
 
         .footer-bottom {
-            max-width: 1200px;
-            margin: 32px auto 0;
-            padding-top: 20px;
-            border-top: 1px solid #1e293b;
+            max-width: 1300px;
+            margin: 40px auto 0;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
             text-align: center;
             font-size: 14px;
+            color: #64748b;
         }
 
         /* ===== TOAST ===== */
         .toast {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 14px 22px;
-            border-radius: 12px;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 28px;
+            border-radius: 14px;
             color: white;
             font-weight: 500;
             z-index: 2000;
-            animation: slideUp 0.3s ease;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
-            max-width: 380px;
-            font-size: 14px;
+            animation: slideUp 0.4s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            max-width: 400px;
+            font-size: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
 
-        .toast-success { background: #10b981; }
-        .toast-error { background: #ef4444; }
-        .toast-info { background: #3b82f6; }
+        .toast-success { 
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+        }
+
+        .toast-error { 
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); 
+        }
+
+        .toast-info { 
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
+        }
 
         @keyframes slideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
         }
 
         .loading-spinner {
             display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid rgba(255,255,255,0.3);
-            border-top: 3px solid white;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(16, 185, 129, 0.3);
+            border-top: 3px solid var(--primary);
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
 
-        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes spin { 
+            to { 
+                transform: rotate(360deg); 
+            } 
+        }
 
         /* ===== RESPONSIVE ===== */
 
         /* Mobile */
         @media (max-width: 480px) {
-            .hero h1 { font-size: 28px; }
-            .hero p { font-size: 16px; }
+            .hero {
+                padding: 50px 16px;
+            }
+
+            .hero h1 { 
+                font-size: 32px; 
+            }
+
+            .hero p { 
+                font-size: 16px; 
+            }
 
             .hero-stats {
                 flex-direction: column;
                 gap: 16px;
             }
 
-            .hero-stats .stat h3 { font-size: 24px; }
+            .hero-stats .stat {
+                min-width: auto;
+                width: 100%;
+            }
 
-            .services-grid { grid-template-columns: 1fr; }
+            .hero-stats .stat h3 { 
+                font-size: 28px; 
+            }
+
+            .services-grid { 
+                grid-template-columns: 1fr; 
+            }
 
             .features-grid {
                 grid-template-columns: 1fr;
-                padding: 24px;
             }
 
             .footer-inner {
                 grid-template-columns: 1fr;
-                gap: 24px;
+                gap: 30px;
             }
 
-            .section { padding: 40px 16px; }
-            .section-header h2 { font-size: 24px; }
+            .section { 
+                padding: 50px 16px; 
+            }
 
-            .sidebar { width: 260px; left: -260px; }
-            .sidebar.open { left: 0; }
+            .section-header h2 { 
+                font-size: 28px; 
+            }
 
-            .header-inner { padding: 10px 14px; }
-            .logo-header { font-size: 16px; }
-            .header-right .user-badge-mini .name-mini { display: none; }
-            .menu-toggle { font-size: 18px; padding: 6px; }
+            .sidebar { 
+                width: 280px; 
+                left: -280px; 
+            }
 
-            .toast { max-width: 90%; right: 5%; bottom: 10px; font-size: 13px; padding: 12px 18px; }
+            .sidebar.open { 
+                left: 0; 
+            }
+
+            .header-inner { 
+                padding: 12px 16px; 
+            }
+
+            .logo-header { 
+                font-size: 18px; 
+            }
+
+            .menu-toggle { 
+                font-size: 20px; 
+                padding: 8px; 
+            }
+
+            .toast { 
+                max-width: 90%; 
+                right: 5%; 
+                bottom: 16px; 
+                font-size: 14px; 
+                padding: 14px 20px; 
+            }
+
+            .credits-names {
+                gap: 20px;
+            }
         }
 
         /* Tablet */
         @media (min-width: 481px) and (max-width: 1024px) {
-            .hero h1 { font-size: 34px; }
+            .hero h1 { 
+                font-size: 40px; 
+            }
 
-            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .services-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+            }
 
-            .features-grid { grid-template-columns: repeat(2, 1fr); }
+            .features-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+            }
 
-            .footer-inner { grid-template-columns: 1fr 1fr; }
+            .footer-inner { 
+                grid-template-columns: 1fr 1fr; 
+            }
 
-            .sidebar { width: 260px; left: -260px; }
-            .sidebar.open { left: 0; }
+            .sidebar { 
+                width: 280px; 
+                left: -280px; 
+            }
+
+            .sidebar.open { 
+                left: 0; 
+            }
         }
 
         /* Desktop */
         @media (min-width: 1025px) {
-            .hero h1 { font-size: 48px; }
+            .hero h1 { 
+                font-size: 52px; 
+            }
 
-            .services-grid { grid-template-columns: repeat(4, 1fr); }
+            .services-grid { 
+                grid-template-columns: repeat(4, 1fr); 
+            }
 
-            .features-grid { grid-template-columns: repeat(4, 1fr); }
+            .features-grid { 
+                grid-template-columns: repeat(4, 1fr); 
+            }
 
-            .sidebar { left: -280px; }
-            .sidebar.open { left: 0; }
+            .sidebar { 
+                left: -300px; 
+            }
 
-            .menu-toggle { font-size: 22px; padding: 8px; }
+            .sidebar.open { 
+                left: 0; 
+            }
+
+            .menu-toggle { 
+                font-size: 24px; 
+                padding: 10px; 
+            }
         }
 
         /* Large Desktop */
         @media (min-width: 1400px) {
-            .hero h1 { font-size: 56px; }
+            .hero h1 { 
+                font-size: 60px; 
+            }
+
+            .section {
+                max-width: 1400px;
+            }
         }
     </style>
 </head>
@@ -611,35 +1043,45 @@
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <div class="sidebar" id="sidebar">
-        <div class="logo">
-            <h2><i class="fas fa-scissors"></i> Premium<span>Salon</span></h2>
-            <p>Welcome</p>
-        </div>
-
-        <div class="user-info">
-            <div class="avatar" id="sideAvatar"><i class="fas fa-user"></i></div>
-            <div class="details">
-                <div class="name" id="sideName">Guest</div>
-                <div class="role" id="sideRole">Not Logged In</div>
+        <div class="sidebar-header">
+            <div class="logo">
+                <i class="fas fa-scissors"></i>
+                <h2>Premium<span>Salon</span></h2>
             </div>
+            <p class="tagline">Excellence in Every Cut</p>
         </div>
 
-        <ul class="nav-links">
+        <!-- Dynamic User Info Container -->
+        <div id="sidebarUserInfoContainer">
+            <!-- Content injected by JS based on login status -->
+        </div>
+
+        <ul class="nav-links" id="sidebarNavLinks">
             <li><a href="index.html" class="active"><i class="fas fa-home"></i> Home</a></li>
             <li><a href="services.html"><i class="fas fa-cut"></i> Services</a></li>
             <li><a href="booking.html"><i class="fas fa-calendar-plus"></i> Book Now</a></li>
-            <li><a href="login.html" id="sideAuthLink"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            <!-- Dynamic Links injected by JS -->
         </ul>
 
         <div class="nav-divider"></div>
 
-        <div style="padding: 0 24px; color:#64748b; font-size:12px;">
-            <p><i class="fas fa-shield-alt"></i> Secure &amp; Private</p>
+        <div id="sidebarAuthButtonContainer">
+            <!-- Login/Logout button injected by JS -->
+        </div>
+
+        <div class="sidebar-footer">
+            <p>&copy; 2026 PremiumSalon</p>
         </div>
     </div>
 
     <!-- ===== MAIN CONTENT ===== -->
     <div class="main-content">
+
+        <!-- Tuesday Warning Banner -->
+        <div id="tuesdayWarning" class="tuesday-warning">
+            <i class="fas fa-store-slash"></i>
+            <span><strong>Note:</strong> Our salon remains closed on Tuesdays. Please book for other days.</span>
+        </div>
 
         <!-- ===== HEADER ===== -->
         <header>
@@ -652,39 +1094,36 @@
                         <i class="fas fa-scissors"></i> Premium<span>Salon</span>
                     </a>
                 </div>
-                <div class="header-right">
-                    <div class="user-badge-mini">
-                        <div class="avatar-mini" id="headerAvatar"><i class="fas fa-user"></i></div>
-                        <span class="name-mini" id="headerName">Guest</span>
-                    </div>
-                </div>
+                <!-- Right side removed as requested -->
             </div>
         </header>
 
         <!-- ===== HERO ===== -->
         <section class="hero">
-            <h1>Premium Grooming, <span>At Your Village</span></h1>
-            <p>Book your appointment online and skip the wait. Professional services at affordable prices.</p>
-            <div class="hero-buttons">
-                <a href="booking.html" class="btn-primary">
-                    <i class="fas fa-calendar-check"></i> Book Now
-                </a>
-                <a href="services.html" class="btn-secondary">
-                    <i class="fas fa-list"></i> View Services
-                </a>
-            </div>
-            <div class="hero-stats">
-                <div class="stat">
-                    <h3 id="statCustomers">100+</h3>
-                    <p>Happy Customers</p>
+            <div class="hero-content">
+                <h1>Premium Grooming, <span>At Your Village</span></h1>
+                <p>Book your appointment online and skip the wait. Professional services at affordable prices with expert care.</p>
+                <div class="hero-buttons">
+                    <a href="booking.html" class="btn-primary">
+                        <i class="fas fa-calendar-check"></i> Book Appointment
+                    </a>
+                    <a href="services.html" class="btn-secondary">
+                        <i class="fas fa-list-ul"></i> Explore Services
+                    </a>
                 </div>
-                <div class="stat">
-                    <h3>4.8</h3>
-                    <p>⭐ Rating</p>
-                </div>
-                <div class="stat">
-                    <h3>10+</h3>
-                    <p>Years Experience</p>
+                <div class="hero-stats">
+                    <div class="stat">
+                        <h3 id="statCustomers">100+</h3>
+                        <p>Happy Customers</p>
+                    </div>
+                    <div class="stat">
+                        <h3>4.8</h3>
+                        <p>⭐ Average Rating</p>
+                    </div>
+                    <div class="stat">
+                        <h3>10+</h3>
+                        <p>Years Experience</p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -692,39 +1131,57 @@
         <!-- ===== SERVICES PREVIEW ===== -->
         <section class="section">
             <div class="section-header">
-                <h2>Our Services</h2>
-                <a href="services.html">View All →</a>
+                <h2>Our Premium Services</h2>
+                <a href="services.html">View All Services <i class="fas fa-arrow-right"></i></a>
             </div>
             <div class="services-grid" id="servicesGrid">
-                <div style="text-align:center; padding:20px; color:#94a3b8; grid-column:1/-1;">
-                    <div class="loading-spinner" style="margin:0 auto 10px;"></div>
-                    Loading services...
+                <div style="text-align:center; padding:40px; color:#94a3b8; grid-column:1/-1;">
+                    <div class="loading-spinner" style="margin:0 auto 16px;"></div>
+                    Loading our premium services...
                 </div>
             </div>
         </section>
 
         <!-- ===== FEATURES ===== -->
-        <section class="section" style="padding-top:0;">
+        <section class="features-section">
             <div class="features-grid">
                 <div class="feature-item">
                     <i class="fas fa-clock"></i>
-                    <h4>Online Booking</h4>
-                    <p>Book 24/7 from anywhere</p>
+                    <h4>24/7 Booking</h4>
+                    <p>Book appointments anytime, anywhere with our easy online system</p>
                 </div>
                 <div class="feature-item">
-                    <i class="fas fa-user-check"></i>
-                    <h4>Expert Staff</h4>
-                    <p>Professional &amp; experienced</p>
+                    <i class="fas fa-user-tie"></i>
+                    <h4>Expert Professionals</h4>
+                    <p>Skilled and experienced staff dedicated to your satisfaction</p>
                 </div>
                 <div class="feature-item">
                     <i class="fas fa-shield-alt"></i>
-                    <h4>Safe &amp; Hygienic</h4>
-                    <p>Premium quality standards</p>
+                    <h4>Hygiene First</h4>
+                    <p>Premium quality standards with sanitized equipment</p>
                 </div>
                 <div class="feature-item">
-                    <i class="fas fa-credit-card"></i>
-                    <h4>Secure Payment</h4>
-                    <p>UPI, Card &amp; Cash options</p>
+                    <i class="fas fa-wallet"></i>
+                    <h4>Flexible Payment</h4>
+                    <p>Multiple payment options including UPI, cards & cash</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== CREDITS ===== -->
+        <section class="credits-section">
+            <div class="credits-content">
+                <h3>About This Project</h3>
+                <p>This premium salon booking platform has been carefully designed and developed to provide exceptional user experience.</p>
+                <div class="credits-names">
+                    <div class="credit-item">
+                        <div class="label">Project Owner</div>
+                        <div class="name">Dileep Thakur</div>
+                    </div>
+                    <div class="credit-item">
+                        <div class="label">Developer</div>
+                        <div class="name">Avinash Kumar</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -732,35 +1189,38 @@
         <!-- ===== FOOTER ===== -->
         <footer>
             <div class="footer-inner">
-                <div>
-                    <h4 style="color:white; font-size:18px;">
-                        <i class="fas fa-scissors" style="color:#10b981;"></i> PremiumSalon
-                    </h4>
-                    <p style="margin-top:8px;">Premium grooming services at your village doorstep.</p>
+                <div class="footer-brand">
+                    <h4><i class="fas fa-scissors"></i> PremiumSalon</h4>
+                    <p>Your trusted partner for premium grooming services. We bring professional care right to your village doorstep with quality you can trust.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
                 </div>
                 <div>
                     <h4>Quick Links</h4>
-                    <a href="services.html">Services</a>
-                    <a href="booking.html">Book Now</a>
-                    <a href="login.html">Login</a>
+                    <a href="services.html">Our Services</a>
+                    <a href="booking.html">Book Appointment</a>
+                    <a href="login.html">Login / Register</a>
+                    <a href="#">Privacy Policy</a>
                 </div>
                 <div>
-                    <h4>Contact</h4>
-                    <a href="tel:+919876543210">+91 98765 43210</a>
-                    <a href="mailto:info@premiumsalon.com">info@premiumsalon.com</a>
+                    <h4>Contact Info</h4>
+                    <a href="tel:+919876543210"><i class="fas fa-phone"></i> +91 98765 43210</a>
+                    <a href="mailto:info@premiumsalon.com"><i class="fas fa-envelope"></i> info@premiumsalon.com</a>
+                    <a href="#"><i class="fas fa-map-marker-alt"></i> Village Location</a>
                 </div>
                 <div>
-                    <h4>Follow Us</h4>
-                    <div style="display:flex; gap:12px; margin-top:8px;">
-                        <a href="#" style="font-size:20px;"><i class="fab fa-facebook"></i></a>
-                        <a href="#" style="font-size:20px;"><i class="fab fa-instagram"></i></a>
-                        <a href="#" style="font-size:20px;"><i class="fab fa-whatsapp"></i></a>
-                        <a href="#" style="font-size:20px;"><i class="fab fa-youtube"></i></a>
-                    </div>
+                    <h4>Business Hours</h4>
+                    <a href="#">Mon - Sat: 9AM - 8PM</a>
+                    <a href="#" style="color: #ef4444;">Tuesday: Closed</a>
+                    <a href="#">Sunday: 10AM - 6PM</a>
                 </div>
             </div>
             <div class="footer-bottom">
-                &copy; 2026 PremiumSalon. All rights reserved.
+                &copy; 2026 PremiumSalon. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #ef4444;"></i> by Avinash Kumar
             </div>
         </footer>
 
@@ -785,16 +1245,14 @@
         // ============================================
         const el = {
             servicesGrid: document.getElementById('servicesGrid'),
-            headerName: document.getElementById('headerName'),
-            headerAvatar: document.getElementById('headerAvatar'),
-            sideName: document.getElementById('sideName'),
-            sideRole: document.getElementById('sideRole'),
-            sideAvatar: document.getElementById('sideAvatar'),
-            sideAuthLink: document.getElementById('sideAuthLink'),
             toastContainer: document.getElementById('toastContainer'),
             sidebar: document.getElementById('sidebar'),
             sidebarOverlay: document.getElementById('sidebarOverlay'),
             menuToggle: document.getElementById('menuToggle'),
+            sidebarUserInfoContainer: document.getElementById('sidebarUserInfoContainer'),
+            sidebarNavLinks: document.getElementById('sidebarNavLinks'),
+            sidebarAuthButtonContainer: document.getElementById('sidebarAuthButtonContainer'),
+            tuesdayWarning: document.getElementById('tuesdayWarning'),
         };
 
         // ============================================
@@ -821,11 +1279,99 @@
         }
 
         // ============================================
+        // LOGOUT FUNCTION
+        // ============================================
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            showToast('Logged out successfully!', 'success');
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        }
+
+        // ============================================
+        // CHECK LOGIN STATUS
+        // ============================================
+        function isLoggedIn() {
+            const token = localStorage.getItem('token');
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+            return !!(token && user.id);
+        }
+
+        // ============================================
+        // UPDATE SIDEBAR UI BASED ON LOGIN
+        // ============================================
+        function updateSidebarUI() {
+            const loggedIn = isLoggedIn();
+            const user = JSON.parse(localStorage.getItem('user') || '{}');
+
+            if (loggedIn) {
+                // Show User Info
+                const name = user.name || 'Customer';
+                const initial = name[0].toUpperCase();
+                const role = user.role || 'Member';
+
+                el.sidebarUserInfoContainer.innerHTML = `
+                    <div class="user-info">
+                        <div class="avatar">${initial}</div>
+                        <div class="details">
+                            <div class="name">${name}</div>
+                            <div class="role">${role}</div>
+                        </div>
+                    </div>
+                `;
+
+                // Add Dashboard Link if not present
+                if (!document.querySelector('a[href="customer-dashboard.html"]')) {
+                    const dashboardLi = document.createElement('li');
+                    dashboardLi.innerHTML = `<a href="customer-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>`;
+                    // Insert after Book Now (index 2)
+                    el.sidebarNavLinks.insertBefore(dashboardLi, el.sidebarNavLinks.children[3]);
+                }
+
+                // Show Logout Button
+                el.sidebarAuthButtonContainer.innerHTML = `
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                `;
+            } else {
+                // Hide User Info
+                el.sidebarUserInfoContainer.innerHTML = '';
+
+                // Remove Dashboard Link if present
+                const dashboardLink = document.querySelector('a[href="customer-dashboard.html"]');
+                if (dashboardLink) dashboardLink.parentElement.remove();
+
+                // Show Login Button
+                el.sidebarAuthButtonContainer.innerHTML = `
+                    <ul class="nav-links" style="padding:0;">
+                        <li><a href="login.html" style="color:#ef4444;"><i class="fas fa-sign-in-alt"></i> Login to Account</a></li>
+                    </ul>
+                `;
+            }
+        }
+
+        // ============================================
+        // CHECK TUESDAY
+        // ============================================
+        function checkTuesday() {
+            const today = new Date();
+            const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, 2 = Tuesday...
+            
+            if (dayOfWeek === 2) {
+                el.tuesdayWarning.classList.add('show');
+            }
+        }
+
+        // ============================================
         // INIT
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
             loadServices();
-            checkAuth();
+            updateSidebarUI(); // Initial check
+            checkTuesday(); // Check if today is Tuesday
 
             // Sidebar events
             el.menuToggle.addEventListener('click', function(e) {
@@ -849,44 +1395,9 @@
                 }
             });
 
-            console.log('✅ Homepage Loaded');
+            console.log('✅ Homepage Loaded Successfully');
             console.log('📡 API URL:', CONFIG.API_BASE_URL);
         });
-
-        // ============================================
-        // CHECK AUTH
-        // ============================================
-        function checkAuth() {
-            const token = localStorage.getItem('token');
-            const user = JSON.parse(localStorage.getItem('user') || '{}');
-
-            if (token && user.id) {
-                const name = user.name || 'Customer';
-                const initial = name[0].toUpperCase();
-
-                el.headerName.textContent = name;
-                el.sideName.textContent = name;
-                el.sideRole.textContent = user.role || 'Customer';
-                el.headerAvatar.textContent = initial;
-                el.sideAvatar.textContent = initial;
-
-                // Update sidebar link
-                const role = user.role || 'customer';
-                const dashboard = role === 'admin' ? 'admin-dashboard.html' :
-                    role === 'staff' ? 'staff-dashboard.html' :
-                    'customer-dashboard.html';
-                el.sideAuthLink.innerHTML = '<i class="fas fa-home"></i> Dashboard';
-                el.sideAuthLink.href = dashboard;
-            } else {
-                el.headerName.textContent = 'Guest';
-                el.sideName.textContent = 'Guest';
-                el.sideRole.textContent = 'Not Logged In';
-                el.headerAvatar.innerHTML = '<i class="fas fa-user"></i>';
-                el.sideAvatar.innerHTML = '<i class="fas fa-user"></i>';
-                el.sideAuthLink.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
-                el.sideAuthLink.href = 'login.html';
-            }
-        }
 
         // ============================================
         // LOAD SERVICES
@@ -894,56 +1405,77 @@
         async function loadServices() {
             try {
                 const response = await fetch(`${CONFIG.API_BASE_URL}/api/services`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
                 const services = await response.json();
 
                 if (!services || services.length === 0) {
                     el.servicesGrid.innerHTML = `
-                                <p style="grid-column:1/-1; text-align:center; color:#94a3b8;">
-                                    No services available
-                                </p>
-                            `;
+                        <div style="grid-column:1/-1; text-align:center; padding:40px;">
+                            <i class="fas fa-info-circle" style="font-size:48px; color:#94a3b8; margin-bottom:16px;"></i>
+                            <p style="color:#94a3b8; font-size:16px;">No services available at the moment</p>
+                        </div>
+                    `;
                     return;
                 }
 
-                const icons = ['fa-cut', 'fa-trim', 'fa-paint-brush', 'fa-razor', 'fa-hand-sparkles', 'fa-smile'];
+                const icons = ['fa-cut', 'fa-spa', 'fa-paint-brush', 'fa-magic', 'fa-hand-sparkles', 'fa-star'];
 
                 el.servicesGrid.innerHTML = services.slice(0, 4).map((s, i) => `
-                            <div class="service-card">
-                                <span class="icon"><i class="fas ${icons[i % icons.length]}"></i></span>
-                                <h3>${s.name}</h3>
-                                <div class="price">₹${s.price}</div>
-                                <div class="duration"><i class="far fa-clock"></i> ${s.duration_minutes} min</div>
-                                <a href="booking.html?service=${s.id}" class="book-link">Book Now →</a>
-                            </div>
-                        `).join('');
+                    <div class="service-card">
+                        <span class="icon"><i class="fas ${icons[i % icons.length]}"></i></span>
+                        <h3>${s.name}</h3>
+                        <div class="price">₹${s.price}</div>
+                        <div class="duration"><i class="far fa-clock"></i> ${s.duration_minutes} minutes</div>
+                        <a href="booking.html?service=${s.id}" class="book-link">
+                            Book Now <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `).join('');
 
             } catch (error) {
                 console.error('Error loading services:', error);
                 el.servicesGrid.innerHTML = `
-                            <p style="grid-column:1/-1; text-align:center; color:#ef4444;">
-                                ⚠️ Unable to load services. Please refresh.
-                            </p>
-                        `;
+                    <div style="grid-column:1/-1; text-align:center; padding:40px;">
+                        <i class="fas fa-exclamation-triangle" style="font-size:48px; color:#ef4444; margin-bottom:16px;"></i>
+                        <p style="color:#ef4444; font-size:16px; margin-bottom:12px;">Unable to load services</p>
+                        <button onclick="loadServices()" style="padding:10px 20px; background:#10b981; color:white; border:none; border-radius:8px; cursor:pointer; font-size:14px;">
+                            <i class="fas fa-redo"></i> Try Again
+                        </button>
+                    </div>
+                `;
+                showToast('Failed to load services. Please try again.', 'error');
             }
         }
 
         // ============================================
-        // TOAST
+        // TOAST NOTIFICATION
         // ============================================
         function showToast(message, type = 'info') {
             const container = el.toastContainer;
             const className = type === 'success' ? 'toast-success' :
                 type === 'error' ? 'toast-error' : 'toast-info';
+            
+            const icon = type === 'success' ? 'check-circle' :
+                        type === 'error' ? 'exclamation-circle' : 'info-circle';
 
-            container.innerHTML = `<div class="toast ${className}">${message}</div>`;
+            container.innerHTML = `
+                <div class="toast ${className}">
+                    <i class="fas fa-${icon}"></i>
+                    <span>${message}</span>
+                </div>
+            `;
 
             setTimeout(() => {
                 container.innerHTML = '';
             }, 4000);
         }
 
-        console.log('✅ Homepage Loaded Successfully');
-        console.log('📡 API URL:', CONFIG.API_BASE_URL);
+        console.log('✅ Homepage Initialized');
+        console.log('📡 Backend API:', CONFIG.API_BASE_URL);
     </script>
 </body>
 </html>
