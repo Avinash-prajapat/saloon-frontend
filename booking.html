@@ -322,8 +322,6 @@
             color: var(--primary); 
         }
 
-        /* Header Right is clean now */
-
         /* ===== BOOKING PAGE ===== */
         .page-header {
             padding: 30px 24px 10px;
@@ -372,7 +370,7 @@
         .steps {
             display: flex;
             justify-content: center;
-            min-width: 600px; /* Force scroll on small screens */
+            min-width: 600px;
             gap: 0;
             position: relative;
         }
@@ -629,7 +627,7 @@
         }
         
         .slot-btn.disabled::after {
-            content: '\f05e'; /* FontAwesome ban icon */
+            content: '\f05e';
             font-family: "Font Awesome 6 Free";
             font-weight: 900;
             position: absolute;
@@ -1163,7 +1161,6 @@
                         <i class="fas fa-scissors"></i> Premium<span>Salon</span>
                     </a>
                 </div>
-                <!-- Right side removed as requested -->
             </div>
         </header>
 
@@ -1385,6 +1382,7 @@
             customerEmail: '',
             isReschedule: false,
             rescheduleBookingId: null,
+            slotsNeeded: 1,
         };
 
         // ============================================
@@ -1488,44 +1486,39 @@
             const user = JSON.parse(localStorage.getItem('user') || '{}');
 
             if (loggedIn) {
-                // Show User Info
                 el.sidebarUserInfo.style.display = 'flex';
                 el.sideName.textContent = user.name || 'Customer';
                 el.sideRole.textContent = user.role || 'Member';
                 el.sideAvatar.textContent = (user.name || 'C')[0].toUpperCase();
 
-                // Add Dashboard Link
+                // Remove existing dashboard link if any
+                const existingDash = el.sidebarNavLinks.querySelector('a[href="customer-dashboard.html"]');
+                if (existingDash) existingDash.parentElement.remove();
+
                 const dashboardLink = document.createElement('li');
                 dashboardLink.innerHTML = `<a href="customer-dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>`;
-                // Insert before Book Now
                 el.sidebarNavLinks.insertBefore(dashboardLink, el.sidebarNavLinks.children[2]);
 
-                // Add Logout Button
                 el.sidebarAuthButtonContainer.innerHTML = `
                     <button class="logout-btn" onclick="logout()">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </button>
                 `;
 
-                // Hide Overlay in Step 3
                 el.loginRequiredOverlay.classList.remove('active');
                 el.bookingActions.style.display = 'flex';
             } else {
-                // Hide User Info
                 el.sidebarUserInfo.style.display = 'none';
 
-                // Remove Dashboard Link if exists
-                const dashboardLink = el.sidebarNavLinks.querySelector('a[href="customer-dashboard.html"]');
-                if (dashboardLink) dashboardLink.parentElement.remove();
+                const existingDash = el.sidebarNavLinks.querySelector('a[href="customer-dashboard.html"]');
+                if (existingDash) existingDash.parentElement.remove();
 
-                // Add Login Button
                 el.sidebarAuthButtonContainer.innerHTML = `
                     <ul class="nav-links" style="padding:0;">
                         <li><a href="login.html" style="color:#ef4444;"><i class="fas fa-sign-in-alt"></i> Login to Book</a></li>
                     </ul>
                 `;
 
-                // Show Overlay in Step 3
                 if (state.step === 3) {
                     el.loginRequiredOverlay.classList.add('active');
                     el.bookingActions.style.display = 'none';
@@ -1549,26 +1542,25 @@
         // INIT
         // ============================================
         document.addEventListener('DOMContentLoaded', function() {
-            updateLoginUI(); // Initial check
+            updateLoginUI();
             loadServices();
             setupDatePicker();
             setupValidation();
             checkReschedule();
             setupSidebarEvents();
 
-            // Restore booking data after login
             const params = new URLSearchParams(window.location.search);
             if (params.get('restore') === '1') {
                 const savedData = localStorage.getItem('booking_data');
                 if (savedData) {
                     const data = JSON.parse(savedData);
-                    // We need to wait for services to load first
                     const checkAndRestore = setInterval(() => {
                         if (state.services.length > 0) {
                             clearInterval(checkAndRestore);
                             const service = state.services.find(s => s.id === data.service_id);
                             if (service) {
                                 state.selectedService = service;
+                                state.slotsNeeded = Math.ceil(service.duration_minutes / 15);
                                 document.querySelectorAll('.service-option').forEach(opt => {
                                     opt.classList.toggle('selected', opt.dataset.id === service.id);
                                 });
@@ -1638,13 +1630,13 @@
                 const booking = await response.json();
 
                 if (booking.id) {
-                    // Wait for services to load
                     const checkServices = setInterval(() => {
                         if (state.services.length > 0) {
                             clearInterval(checkServices);
                             const service = state.services.find(s => s.id === booking.service_id);
                             if (service) {
                                 state.selectedService = service;
+                                state.slotsNeeded = Math.ceil(service.duration_minutes / 15);
                                 selectService(service.id);
                             }
                             el.bookingDate.value = booking.booking_date;
@@ -1702,6 +1694,7 @@
                     const service = data.find(s => s.id === preselectedId);
                     if (service) {
                         state.selectedService = service;
+                        state.slotsNeeded = Math.ceil(service.duration_minutes / 15);
                         el.step1Next.disabled = false;
                     }
                 }
@@ -1719,11 +1712,12 @@
         // ============================================
         function selectService(serviceId) {
             state.selectedService = state.services.find(s => s.id === serviceId);
+            state.slotsNeeded = Math.ceil(state.selectedService.duration_minutes / 15);
             document.querySelectorAll('.service-option').forEach(opt => {
                 opt.classList.toggle('selected', opt.dataset.id === serviceId);
             });
             el.step1Next.disabled = false;
-            showToast(`✓ ${state.selectedService.name} selected`, 'success');
+            showToast(`✓ ${state.selectedService.name} selected (${state.selectedService.duration_minutes} min, ${state.slotsNeeded} slot${state.slotsNeeded > 1 ? 's' : ''})`, 'success');
         }
 
         // ============================================
@@ -1770,37 +1764,81 @@
                     return;
                 }
 
-                // Current Time for Buffer Logic
                 const now = new Date();
                 const currentHours = now.getHours();
                 const currentMinutes = now.getMinutes();
                 const isToday = date === new Date().toISOString().split('T')[0];
 
+                // Filter slots based on availability and slots_needed
+                const availableSlots = [];
+                const allSlots = slots;
+
+                for (let i = 0; i < allSlots.length; i++) {
+                    const s = allSlots[i];
+                    let isBooked = !s.available;
+                    let isDisabled = false;
+
+                    // Check if this slot is in the past (with 10 min buffer)
+                    if (isToday && !isBooked) {
+                        const [slotH, slotM] = s.time.split(':').map(Number);
+                        const slotTotalMin = slotH * 60 + slotM;
+                        const currentTotalMin = currentHours * 60 + currentMinutes;
+                        
+                        if (slotTotalMin <= currentTotalMin + 10) {
+                            isDisabled = true;
+                        }
+                    }
+
+                    // Check if we can book this slot based on slots_needed
+                    let canBook = true;
+                    if (!isBooked && !isDisabled && state.slotsNeeded > 1) {
+                        for (let j = 1; j < state.slotsNeeded; j++) {
+                            const nextIndex = i + j;
+                            if (nextIndex >= allSlots.length) {
+                                canBook = false;
+                                break;
+                            }
+                            const nextSlot = allSlots[nextIndex];
+                            // Check if next slot is available
+                            if (nextSlot.available === false) {
+                                canBook = false;
+                                break;
+                            }
+                            // Check if next slot is past time
+                            if (isToday) {
+                                const [nH, nM] = nextSlot.time.split(':').map(Number);
+                                const nTotalMin = nH * 60 + nM;
+                                if (nTotalMin <= currentTotalMin + 10) {
+                                    canBook = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    // If slots_needed > 1 and can't book, disable this slot
+                    if (state.slotsNeeded > 1 && !canBook && !isBooked) {
+                        isDisabled = true;
+                    }
+
+                    availableSlots.push({
+                        ...s,
+                        isBooked: isBooked,
+                        isDisabled: isDisabled,
+                        canBook: canBook
+                    });
+                }
+
                 el.slotsContainer.innerHTML = `
                     <div class="slots-grid">
-                        ${slots.map(s => {
-                            let isBooked = !s.available;
-                            let isDisabled = false;
+                        ${availableSlots.map(s => {
                             let disabledClass = '';
                             let onclickAttr = '';
 
-                            // Check if slot is in the past (with 10 min buffer)
-                            if (isToday && !isBooked) {
-                                const [slotH, slotM] = s.time.split(':').map(Number);
-                                const slotTotalMin = slotH * 60 + slotM;
-                                const currentTotalMin = currentHours * 60 + currentMinutes;
-                                
-                                // If slot time is less than current time + 10 mins
-                                if (slotTotalMin <= currentTotalMin + 10) {
-                                    isDisabled = true;
-                                    disabledClass = 'disabled';
-                                }
-                            }
-
-                            if (isBooked) {
+                            if (s.isBooked) {
                                 disabledClass = 'booked';
-                            } else if (isDisabled) {
-                                // Already set
+                            } else if (s.isDisabled) {
+                                disabledClass = 'disabled';
                             } else {
                                 onclickAttr = `onclick="selectSlot('${s.id}', '${s.time}', '${s.time_ampm || s.time}')"`;
                             }
@@ -1810,7 +1848,7 @@
                                         data-id="${s.id}" 
                                         data-time="${s.time}"
                                         ${onclickAttr}
-                                        ${isBooked || isDisabled ? 'disabled' : ''}>
+                                        ${s.isBooked || s.isDisabled ? 'disabled' : ''}>
                                     ${s.time}
                                     <span class="ampm">${s.time_ampm || ''}</span>
                                 </button>
@@ -1839,7 +1877,7 @@
                 btn.classList.toggle('selected', btn.dataset.id === slotId);
             });
             el.step2Next.disabled = false;
-            showToast(`✓ ${slotTime} ${slotAmpm} selected`, 'success');
+            showToast(`✓ ${slotTime} ${slotAmpm} selected (${state.slotsNeeded} slot${state.slotsNeeded > 1 ? 's' : ''})`, 'success');
         }
 
         // ============================================
@@ -1901,7 +1939,7 @@
 
             if (step === 3) {
                 updateSummary();
-                updateLoginUI(); // Re-check login status when reaching details step
+                updateLoginUI();
             }
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
@@ -1955,6 +1993,7 @@
                 return;
             }
 
+            // Check if slot is still available (with slots_needed)
             const btn = el.confirmBooking;
             btn.disabled = true;
             btn.innerHTML = '<span class="loading-spinner"></span> Processing...';
