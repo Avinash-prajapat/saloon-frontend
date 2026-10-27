@@ -1713,10 +1713,11 @@
         function selectService(serviceId) {
             state.selectedService = state.services.find(s => s.id === serviceId);
             state.slotsNeeded = Math.ceil(state.selectedService.duration_minutes / 15);
+            state.selectedSlot = null;
             document.querySelectorAll('.service-option').forEach(opt => {
                 opt.classList.toggle('selected', opt.dataset.id === serviceId);
             });
-            el.step1Next.disabled = false;
+            el.step2Next.disabled = true;
             showToast(`✓ ${state.selectedService.name} selected (${state.selectedService.duration_minutes} min, ${state.slotsNeeded} slot${state.slotsNeeded > 1 ? 's' : ''})`, 'success');
         }
 
