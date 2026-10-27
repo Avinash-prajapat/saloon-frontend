@@ -317,7 +317,7 @@
             if (selectedPayment === 'cash') {
                 // Pay at Shop
                 const confirmBooking = await createBooking('cash');
-                if (confirmBooking) {
+                if (confirmBooking && confirmBooking.success) {
                     showToast('✅ Booking confirmed! Pay at shop.', 'success');
                     setTimeout(() => {
                         window.location.href = `confirmation.html?booking_id=${confirmBooking.booking_id}`;
@@ -332,7 +332,8 @@
             try {
                 const response = await fetch(`${CONFIG.API_BASE_URL}/api/payment/create-order`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json',
+                             'Authorization': `Bearer ${localStorage.getItem('token')}`},
                     body: JSON.stringify({
                         amount: bookingData.amount,
                         booking_id: bookingData.bookingId
@@ -387,7 +388,7 @@
             try {
                 const verifyRes = await fetch(`${CONFIG.API_BASE_URL}/api/payment/verify`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${localStorage.getItem('token')}` },
                     body: JSON.stringify({
                         booking_id: bookingData.bookingId,
                         payment_id: response.razorpay_payment_id,
@@ -419,7 +420,7 @@
             try {
                 const response = await fetch(`${CONFIG.API_BASE_URL}/api/booking/create`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json','Authorization': `Bearer ${localStorage.getItem('token')}` },
                     body: JSON.stringify({
                         customer_name: bookingData.customerName,
                         phone: bookingData.customerPhone,
